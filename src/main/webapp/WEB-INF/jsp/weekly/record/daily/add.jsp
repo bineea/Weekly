@@ -38,7 +38,7 @@
 		 					$("#dailyForm").ajaxSubmit({
 		 						type: 'POST',
 		 						success: function(data, textStatus, jqXHR) {
-									if(jqXHR.getResponseHeader($.Constans.RESPONSE_HEADER_ERROR)) {
+									if(jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_ERROR)) {
 			 							$.showMsg(false, data.msg);
 									} else {
 										window.location.href = "${rootUrl }app/weekly/daily/record?dailyId="+data.msg;

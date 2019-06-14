@@ -12,16 +12,18 @@
 <%@ include file="/WEB-INF/jsp/weekly/common/include.jsp"%>
 <script>
 	$(document).ready(function() {
-		$("#projectForm").pageManage({
-			autoSearch:true,
-			bindPage:$.Constans.BIND_PAGE_CENTER,
-    		handleResult:$.Constans.HANDLE_RESULT_UL
+		$("#content").myInit({
+			search:{
+				autoSearch:true,
+				bindPage:$.My.Constans.BIND_PAGE_CENTER,
+	    		handleResult:$.My.Constans.HANDLE_RESULT_UL
+	    	}
 		});
 		
 		$("#next").click(function(){
 			var val=$('input:radio[name="projectId"]:checked').val();
 			if(val === null || val === '' || val == null || val == '') {
-				$.showMsg(false,"请选择对应的项目");
+				$.My.showMsg(false,"请选择对应的项目");
 			}
 			else {
 				$.ajax({
@@ -29,14 +31,14 @@
 					type:'POST',
 					data:{projectId: val},
 					success:function(data, textStatus, jqXHR) {
-						if(jqXHR.getResponseHeader($.Constans.RESPONSE_HEADER_ERROR)) {
-							$.showMsg(false,data.msg);
+						if(jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_ERROR)) {
+							$.My.showMsg(false,data.msg);
 						} else {
 							window.location.href = '${rootUrl}app/weekly/daily/demand?projectId='+val;
 						}
 					},
 					error:function(XMLHttpRequest, textStatus, errorThrown) {
-						$.showMsg(false,"系统异常，请稍后重试！");
+						$.My.showMsg(false,"系统异常，请稍后重试！");
 					}
 				});
 			}
@@ -95,7 +97,7 @@ table>tbody>tr.custom_clicked{
 	    <div class="container">
 	        <!-- BEGIN checkout -->
 	        <div class="checkout">
-	            <form:form id="projectForm" name="projectForm" modelAttribute="spe" method="POST" action="${rootUrl}app/weekly/daily/project">
+	            <form:form id="projectForm" name="projectForm" cssClass="my_search_form" modelAttribute="spe" method="POST" action="${rootUrl}app/weekly/daily/project">
 	                <!-- BEGIN checkout-header -->
 	                <div class="checkout-header">
 	                    <!-- BEGIN row -->

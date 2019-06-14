@@ -14,11 +14,11 @@ $(document).ready(function() {
 			$._hideModal();
 		},
 		success: function(responseText, status, xhr){
-			if(xhr.getResponseHeader($.Constans.RESPONSE_HEADER_ERROR)){
+			if(xhr.getResponseHeader($.My.Constans.RESPONSE_HEADER_ERROR)){
 				$.showWarnMsg(responseText.msg);
-			}else if(xhr.getResponseHeader($.Constans.RESPONSE_HEADER_NOTE) && '${!isRootMenu}'){
+			}else if(xhr.getResponseHeader($.My.Constans.RESPONSE_HEADER_NOTE) && '${!isRootMenu}'){
 				$._handleTableData(responseText, "update");
-				$.showMsg(true,new Base64().decode(xhr.getResponseHeader($.Constans.RESPONSE_HEADER_NOTE)));
+				$.showMsg(true,new Base64().decode(xhr.getResponseHeader($.My.Constans.RESPONSE_HEADER_NOTE)));
 			}
 		},
 		error: function(xhr, status, error) {

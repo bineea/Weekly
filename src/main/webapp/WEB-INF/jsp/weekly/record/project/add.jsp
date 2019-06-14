@@ -16,14 +16,30 @@
 		$("#addForm").ajaxForm({
 			type:'post',
 			success:function(data, textStatus, jqXHR) {
-				if(jqXHR.getResponseHeader($.Constans.RESPONSE_HEADER_ERROR)) {
-					$.showMsg(false,data.msg);
-				}else if(jqXHR.getResponseHeader($.Constans.RESPONSE_HEADER_JUMP)) {
-					window.location.href = new Base64().decode(jqXHR.getResponseHeader($.Constans.RESPONSE_HEADER_JUMP));
+				if(jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_ERROR)) {
+					$.My.showMsg(false,data.msg);
+				}else if(jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_CVE)) {
+					var ejson = data.msg;
+					var parent = this.currentTarget;
+					var	ejsonContent = $.parseJSON(ejson);
+					$.each(ejsonContent,
+							function(i, n) {
+								var eles=$("[name='"+i+"']",parent);
+								if(eles.length>1){
+									$("div[data-for='"+i+"']",parent).showPopover(n,{hideConcern:true});
+								}else {
+									$("[name='"+i+"']",parent).showPopover(n,{hideConcern:true});
+								}
+						});
+					// 操作失败,cve返回，显示警告信息
+					$.My.showMsg(false, $.My.Messages.ERR_CVE);
+					$(that.currentTarget).triggerHandler($.Event("myCVE",{relatedTarget:$element}),responseText);
+				}else if(jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_JUMP)) {
+					window.location.href = new Base64().decode(jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_JUMP));
 				}
 			},
 			error:function(xhr, status, error) {
-				$.showWarnMsg("系统异常，请稍后重试！");
+				$.My.showWarnMsg("系统异常，请稍后重试！");
 			}
 		});
 	});

@@ -14,8 +14,8 @@
 	$(document).ready(function() {
 		$("#demandForm").pageManage({
 			autoSearch:true,
-			bindPage:$.Constans.BIND_PAGE_CENTER,
-    		handleResult:$.Constans.HANDLE_RESULT_UL
+			bindPage:$.My.Constans.BIND_PAGE_CENTER,
+    		handleResult:$.My.Constans.HANDLE_RESULT_UL
 		});
 		
 		$("#demandAdd").click(function() {
@@ -27,7 +27,7 @@
 					projectId: projectVal
 				},
 				success:function(data, textStatus, jqXHR) {
-					if(jqXHR.getResponseHeader($.Constans.RESPONSE_HEADER_ERROR)) {
+					if(jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_ERROR)) {
 						$.showMsg(false,data.msg);
 					} else {
 						window.location.href = '${rootUrl}app/weekly/daily/demandAdd?projectId='+projectVal;
@@ -58,7 +58,7 @@
 						demandId: val
 					},
 					success:function(data, textStatus, jqXHR) {
-						if(jqXHR.getResponseHeader($.Constans.RESPONSE_HEADER_ERROR)) {
+						if(jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_ERROR)) {
 							$.showMsg(false,data.msg);
 						} else {
 							window.location.href = '${rootUrl}app/weekly/daily/add?projectId='+projectVal+'&demandId='+val;

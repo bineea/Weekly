@@ -15,10 +15,10 @@
 				$._hideModal();
 			},
 			success: function(responseText, status, xhr){
-				if(xhr.getResponseHeader($.Constans.RESPONSE_HEADER_ERROR)){
+				if(xhr.getResponseHeader($.My.Constans.RESPONSE_HEADER_ERROR)){
 					$.showMsg(false,responseText.msg);
-				}else if(xhr.getResponseHeader($.Constans.RESPONSE_HEADER_NOTE)){
-					$.showMsg(true,new Base64().decode(xhr.getResponseHeader($.Constans.RESPONSE_HEADER_NOTE)));
+				}else if(xhr.getResponseHeader($.My.Constans.RESPONSE_HEADER_NOTE)){
+					$.showMsg(true,new Base64().decode(xhr.getResponseHeader($.My.Constans.RESPONSE_HEADER_NOTE)));
 				}
 			},
 			error: function(xhr, status, error) {

@@ -13,10 +13,10 @@
 		$("#commentForm").ajaxForm({
 			type: "post", //提交方式 
 	        success: function (responseText, status, xhr) { //提交成功的回调函数
-	        	if(xhr.getResponseHeader($.Constans.RESPONSE_HEADER_ERROR)){
+	        	if(xhr.getResponseHeader($.My.Constans.RESPONSE_HEADER_ERROR)){
 					$.showWarnMsg(responseText.msg);
-				}else if(xhr.getResponseHeader($.Constans.RESPONSE_HEADER_NOTE)){
-					$.showMsg(true,new Base64().decode(xhr.getResponseHeader($.Constans.RESPONSE_HEADER_NOTE)));
+				}else if(xhr.getResponseHeader($.My.Constans.RESPONSE_HEADER_NOTE)){
+					$.showMsg(true,new Base64().decode(xhr.getResponseHeader($.My.Constans.RESPONSE_HEADER_NOTE)));
 					ajaxAllComments();
 				}
 	        },

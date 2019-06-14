@@ -16,10 +16,10 @@
 		$("#addForm").ajaxForm({
 			type:'post',
 			success:function(data, textStatus, jqXHR) {
-				if(jqXHR.getResponseHeader($.Constans.RESPONSE_HEADER_ERROR)) {
+				if(jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_ERROR)) {
 					$.showMsg(false,data.msg);
-				}else if(jqXHR.getResponseHeader($.Constans.RESPONSE_HEADER_JUMP)) {
-					window.location.href = new Base64().decode(jqXHR.getResponseHeader($.Constans.RESPONSE_HEADER_JUMP));
+				}else if(jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_JUMP)) {
+					window.location.href = new Base64().decode(jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_JUMP));
 				}
 			},
 			error:function(xhr, status, error) {

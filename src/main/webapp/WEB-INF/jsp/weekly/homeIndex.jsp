@@ -9,7 +9,7 @@
 
 <script>
 	$(document).ready(function() {
-		$("#dailyForm").pageManage({});
+		$("#myManager").myInit({});
 	});
 </script>
 </head>
@@ -41,11 +41,11 @@
 					<!-- begin section-container -->
 					<div class="section-container">
 						<!-- 若翻页时，删除输入框内容，则为全文搜索。。。 -->
-						<form:form id="dailyForm" name="dailyForm" modelAttribute="spe" method="post" action="${rootUrl}app/weekly/dailyIndex">
+						<form:form id="dailyForm" name="dailyForm" cssClass="my_search_form" modelAttribute="spe" method="post" action="${rootUrl}app/weekly/dailyIndex">
 							<div class="input-group sidebar-search">
 								<input name="operateContent" type="text" class="form-control" placeholder="Search dailies..." />
 								<span class="input-group-btn">
-									<button class="btn btn-inverse" type="submit"><i class="fa fa-search"></i></button>
+									<button class="btn btn-inverse my_search_submit" type="submit"><i class="fa fa-search"></i></button>
 								</span>
 							</div>
 						</form:form>

@@ -54,11 +54,11 @@
 		 						url: hrefUrl,
 		 						type: 'POST',
 		 						success: function(data, textStatus, jqXHR) {
-									if(jqXHR.getResponseHeader($.Constans.RESPONSE_HEADER_ERROR)) {
+									if(jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_ERROR)) {
 			 							$.showWarnMsg(data.msg);
-									} else if(jqXHR.getResponseHeader($.Constans.RESPONSE_HEADER_NOTE)) {
+									} else if(jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_NOTE)) {
 										$._handleTableData(data,"delete",trNode);
-										$.showMsg(true,new Base64().decode(jqXHR.getResponseHeader($.Constans.RESPONSE_HEADER_NOTE)));
+										$.showMsg(true,new Base64().decode(jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_NOTE)));
 									}
 		 						},
 		 						error:function(XMLHttpRequest, textStatus, errorThrown) {
