@@ -9,6 +9,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import my.weekly.common.entity.StringUUIDEntity;
 import my.weekly.dao.entity.dict.Area;
@@ -16,11 +19,22 @@ import my.weekly.dao.entity.dict.Area;
 @Entity
 @Table(name = "weekly_project")
 public class Project extends StringUUIDEntity {
+	@NotNull(message = "项目所属区域不能为空")
 	private Area area;
+	
+	@NotEmpty(message = "项目简称不能为空")
+	@Size(max = 6)
 	private String abbr;
+	
+	@NotEmpty(message = "项目名称不能为空")
 	private String name;
+	
+	@NotEmpty(message = "项目描述不能为空")
 	private String summary;
+	
 	private LocalDateTime createTime;
+	
+	//@Valid // 嵌套验证必须用@Valid
 	private User user;
 
 	@Enumerated(EnumType.STRING)

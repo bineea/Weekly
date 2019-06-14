@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -102,8 +103,9 @@ public class WeeklyDailyController extends AbstractController {
 		return prefix + "record/project/add";
 	}
 	
+	
 	@RequestMapping(value = "/daily/projectAdd", method = RequestMethod.POST)
-	public void dailyProjectAddPost(@ModelAttribute("project") Project project,
+	public void dailyProjectAddPost(@Valid @ModelAttribute("project") Project project,
 			HttpServletRequest request, HttpServletResponse response, Model model) throws MyManagerException, IOException {
 		projectManager.add(project, request);
 		toJump(response, request.getContextPath() + "/app/weekly/daily/project");

@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 import my.weekly.common.pub.MyManagerException;
 import my.weekly.dao.entity.Project;
@@ -47,16 +46,6 @@ public class ProjectManagerImpl extends AbstractManager implements ProjectManage
 	}
 	
 	private void validateProject(Project project) throws MyManagerException {
-		if(!StringUtils.hasText(project.getName()))
-			throw new MyManagerException("项目名称不能为空");
-		if(!StringUtils.hasText(project.getAbbr()))
-			throw new MyManagerException("项目简称不能为空");
-		if(!StringUtils.hasText(project.getSummary()))
-			throw new MyManagerException("项目描述不能为空");
-		if(project.getArea() == null)
-			throw new MyManagerException("项目所属区域不能为空");
-		if(project.getAbbr().length() > 6)
-			throw new MyManagerException("项目简称长度不能超过6");
 		List<Project> plist = projectRepo.findByNameOrAbbr(project.getName(), project.getAbbr());
 		if(plist != null && !plist.isEmpty())
 			throw new MyManagerException("项目名称或项目简称已存在");
