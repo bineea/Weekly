@@ -38,8 +38,8 @@
             <li>${data.summary }</li>
         </ul>
         <div class="footer">
-            <a href="#" class="btn btn-inverse btn-block">修改</a>
-            <a href="#" class="btn btn-inverse btn-block">删除</a>
+            <a href="${rootUrl }app/weekly/project/edit/${data.id }" class="btn btn-inverse btn-block update_op">修改</a>
+            <a href="${rootUrl }app/weekly/project/del/${data.id }" class="btn btn-inverse btn-block delete_op">删除</a>
         </div>
     </div>
 </li>

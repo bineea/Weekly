@@ -44,6 +44,40 @@
 			}
 			return false;
 		});
+		
+		$("#data_result").on("click", ".delete_op", function() {
+			var trNode = this.parentNode.parentNode;
+			var hrefUrl = this.href;
+			$.confirm({
+		    	theme: 'white',
+		        title: 'Are you sure',
+		        content: '确定删除该数据？',
+		        buttons: {   
+		        	confirm: {
+		            	text: '确认',
+		                keys: ['enter'],
+		                action: function(){
+		 					$.ajax({
+		 						url: hrefUrl,
+		 						type: 'POST',
+		 						success: function(data, textStatus, jqXHR) {
+		 							if($.My.handleSuccessRes(data, textStatus, jqXHR)) {
+		 								$.My.handleResultData(data, $.My.Constans.HANDLE_RESULT_UL, $.My.Constans.HANDLE_RESULT_DEL);
+		 							}
+		 						},
+		 						error:function(XMLHttpRequest, textStatus, errorThrown) {
+		 							$.showWarnMsg("系统异常，请稍后重试！");
+		 						}
+		 					});
+		                }
+		            },
+		            cancel: {
+		            	text: '取消'
+		            }
+		        }
+		    });
+			return false;
+		});
 	});
 	
 </script>
@@ -187,7 +221,7 @@ table>tbody>tr.custom_clicked{
 						
 	                </div>
 	                <div style="text-align:right;margin-right: 30px;">
-                    	<a id="projectAdd" href="${rootUrl }app/weekly/daily/projectAdd"><h6>需要增加新的项目</h6></a>
+                    	<a id="projectAdd" href="${rootUrl }app/weekly/project/add"><h6>需要增加新的项目</h6></a>
                     </div>
 	                <!-- END checkout-body -->
 	                <!-- BEGIN checkout-footer -->

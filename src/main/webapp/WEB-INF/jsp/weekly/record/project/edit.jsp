@@ -13,15 +13,13 @@
 <%@ include file="/WEB-INF/jsp/weekly/common/include.jsp"%>
 <script>
 	$(document).ready(function() {
-		$("#addForm").ajaxForm({
+		$("#editForm").ajaxForm({
 			type:'post',
 			success:function(data, textStatus, jqXHR) {
-				if($.My.handleSuccessRes(data, textStatus, jqXHR)) {
-					window.localtion.href = '${rootUrl}app/weekly/daily/project';
-				}
+				$.My.handleSuccessRes(data, textStatus, jqXHR);
 			},
 			error:function(xhr, status, error) {
-				$.My.showWarnMsg("系统异常，请稍后重试！");
+				$.My.showMsg(false, "系统异常，请稍后重试！");
 			}
 		});
 	});
@@ -39,7 +37,7 @@
 	    <div class="container">
 	        <!-- BEGIN checkout -->
 	        <div class="checkout">
-	            <form:form cssClass="form-horizontal" method="POST" id="addForm" name="addForm" modelAttribute="project" action="${rootUrl }app/weekly/project/add">
+	            <form:form cssClass="form-horizontal" method="POST" id="editForm" name="editForm" modelAttribute="project" action="${rootUrl }app/weekly/project/edit">
 	                <!-- BEGIN checkout-header -->
 	                <div class="checkout-header">
 	                    <!-- BEGIN row -->
@@ -48,7 +46,7 @@
 	                        <div class="col-md-4 col-sm-4">
 	                            <div class="step active">
 	                                <a href="###">
-	                                    <div class="number">0.5</div>
+	                                    <div class="number">0.7</div>
 	                                    <div class="info">
 	                                        <div class="title">创建项目</div>
 	                                        <div class="desc">创建新的项目</div>
@@ -63,23 +61,24 @@
 	                <!-- END checkout-header -->
 	                <!-- BEGIN checkout-body -->
 	                <div class="checkout-body">
+	                	<input type="hidden" name="id" value="${projectModel.id }"/>
 	                	<h4 class="checkout-title">Describe specific project</h4>
 						<div class="form-group">
                             <label class="col-md-3 control-label">项目名称 <span class="text-danger">*</span></label>
                             <div class="col-md-6">
-                                <input type="text" class="form-control required" name="name" placeholder="项目全称"/>
+                                <input type="text" class="form-control required" name="name" placeholder="项目全称" value="${projectModel.name }"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 control-label">项目简称 <span class="text-danger">*</span></label>
                             <div class="col-md-6">
-                                <input type="text" class="form-control required" name="abbr" placeholder="项目简称（长度不能超过6）"/>
+                                <input type="text" class="form-control required" name="abbr" placeholder="项目简称（长度不能超过6）" value="${projectModel.abbr }"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 control-label">项目描述 <span class="text-danger">*</span></label>
                             <div class="col-md-6">
-                                <input type="text" class="form-control required" name="summary" placeholder="项目简单描述"/>
+                                <input type="text" class="form-control required" name="summary" placeholder="项目简单描述" value="${projectModel.summary }"/>
                             </div>
                         </div>
 						<div class="form-group">
@@ -88,7 +87,7 @@
 	                            <select name="area" class="form-control required selectpicker" data-size="10" data-live-search="true" data-style="btn-inverse">
 				                    <option value="">请选择...</option>
 				                    <c:forEach items="${areas}" var="a">
-										<option value="${a}">${a.value}</option>
+										<option value="${a}" ${a eq projectModel.area?'selected':''} >${a.value}</option>
 									</c:forEach>
 				                </select>
                             </div>

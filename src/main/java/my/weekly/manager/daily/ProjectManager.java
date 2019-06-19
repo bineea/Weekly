@@ -30,4 +30,21 @@ public interface ProjectManager {
 	 * @throws MyManagerException
 	 */
 	Project add(Project project, HttpServletRequest request) throws MyManagerException;
+	
+	/**
+	 * 修改项目
+	 * @param project
+	 * @param request
+	 * @return
+	 * @throws MyManagerException
+	 */
+	Project edit(Project project, HttpServletRequest request) throws MyManagerException;
+	
+	/**
+	 * 删除项目
+	 * @param id
+	 * @param request
+	 * @throws MyManagerException
+	 */
+	void del(String id, HttpServletRequest request) throws MyManagerException;
 }

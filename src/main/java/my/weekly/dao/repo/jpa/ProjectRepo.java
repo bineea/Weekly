@@ -15,6 +15,6 @@ public interface ProjectRepo extends JpaRepository<Project, String>, JpaSpecific
 
 	Page<Project> findAll(Specification<Project> spec, Pageable pageable);
 	
-	@Query(value=" select p from Project p where p.name = ?1 or p.abbr = ?2")
-	List<Project> findByNameOrAbbr(String name, String abbr);
+	@Query(value=" select p from Project p where p.name = ?1 or p.abbr = ?2 order by createTime desc")
+	List<Project> findByNameOrAbbrDesc(String name, String abbr);
 }

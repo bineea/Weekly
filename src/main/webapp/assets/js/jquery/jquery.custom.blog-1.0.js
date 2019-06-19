@@ -168,26 +168,6 @@
 			},
 			
 			/******************************************************************
-			 * 验证提示
-			 * 
-			 * @param  ejson 服务器端返回的校验json
-			 *		   parent  容器
-			 * 
-			 *****************************************************************/	
-			validationTip :function(ejson,parent){
-				var	ejsonContent = $.parseJSON($(ejson).html());
-				$.each(ejsonContent,
-						function(i, n) {
-							var eles=$("[name='"+i+"']",parent);
-							if(eles.length>1){
-								$("div[data-for='"+i+"']",parent).showPopover(n,{hideConcern:true});
-							}else {
-								$("[name='"+i+"']",parent).showPopover(n,{hideConcern:true});
-							}
-					});
-			},
-			
-			/******************************************************************
 			 * 
 			 * 日志输出函数
 			 * 
@@ -217,205 +197,6 @@
 				}
 			},
 			
-			/******************************************************************
-			 * 
-			 * ajaxHref，对带有href属性的a元素ajax请求。
-			 * 支持get/post方式
-			 * 
-			 * 支持通过data-selector增加参数,如data-selector参数有值，ajax请求强制转为post
-			 * 方法内容主要步骤包括：
-			 * 1、获取url
-			 * 2、弹出confirmMessage确认框
-			 * 3、解析data-selector组装参数,
-			 * 4、发送ajax请求，同时显示加载中，有data-selector属性，请求方式为POST
-			 * 5、请求失败处理，包括弹出失败消息框、弹出失败校验提示、触发失败事件（taijiJME、taijiME、taijiCVE、taijiERR）。
-			 * 6、业务成功方法bsSuccess交由调用者实现，如弹出成功框，修改表格，触发事件。
-			 * 
-			 * @param opts: {method:"GET",
-			 *					bsSuccess:function(responseText,note){},
-			 *					async:true,
-			 *					complete:function(){}
-			 *				}
-			 *
-			 * @version 3.0
-			 * 
-			 * @since 3.0
-			 * 
-			 *****************************************************************/			
-			ajaxHref : function(element,opts){
-				var $element=$(element);
-				// 获取当前被点击下载链接的URL,
-				var $url = $.My.getUrl(element);
-				//如果没有获取到URL,直接返回。
-				if (!$url) {
-					$.My.showMsg(false, $.My.Messages.ERR_URL);
-					return;
-				}
-				
-				var that=this;
-				var execAjax=function(){
-					//如果当前还有未完成的操作，直接返回。
-					if (that.isRunning === true) {
-						that.warn($.My.Messages.WAR_OPERATE);
-						return;
-					} else {
-						that.isRunning = true;
-					}
-					//禁用当前按钮，防止用户猛击
-					$element.prop("disabled",true);
-					//加载状态
-					$.My.showLoading();
-					
-					var containerDiv=that.currentTarget;
-					if($element.parents(".modal-content").size()>0){
-						containerDiv=$element.parents(".modal-content:last");
-					}
-					
-					var bsSuccess=opts.bsSuccess||function(){};
-					var bsComplete=opts.complete||function(){};
-					//TODO 下一版用type替换method参数，和jquery的ajax参数保持一致
-					if(!opts.type&&opts.method){
-						opts.type=opts.method;
-					}
-					opts.success=function(responseText,status,xhr){
-						//完成加载
-					   that.isRunning = false;
-					   $.My.hideLoading();
-					   var responseHeader = {
-								note:xhr.getResponseHeader($.My.Constans.RESPONSE_HEADER_NOTE),
-								error:xhr.getResponseHeader($.My.Constans.RESPONSE_HEADER_ERROR),
-								cve:xhr.getResponseHeader($.My.Constans.RESPONSE_HEADER_CVE),
-								jump:xhr.getResponseHeader($.My.Constans.RESPONSE_HEADER_JUMP)
-						};
-						if (responseHeader.error) {
-							// 操作失败,error返回，显示警告信息
-							$.My.showMsg(false, that.decode(false, responseHeader.error));
-							$(that.currentTarget).triggerHandler($.Event("myERROR",{relatedTarget:$element}),responseText);
-						} else if (responseHeader.cve) {
-//							var ejson = $(responseText).find("#taiji_ejson");
-//							that.validationTip(ejson,containerDiv);
-//							// 操作失败,cve返回，显示警告信息
-//							$.My.showWarn($.Taiji.Messages.ERR_CVE);
-//							$(that.currentTarget).triggerHandler($.Event("taijiCVE",{relatedTarget:$element}),responseText);
-						} else if (responseHeader.jump) {
-							window.location=responseHeader.jump;
-						}else {
-							bsSuccess.call(that,responseText,responseHeader.note&&that.decode(responseHeader.note));
-						}
-					};
-					opts.complete=function(xhr){
-						$element.prop("disabled",false);
-						bsComplete.call(that,xhr);
-					};
-					var dataObj={};
-					var defaults={
-					   type:"GET",
-					   url: $url,
-					   data:dataObj,
-					   traditional:true,
-					   async:true,
-					   error : function (xhr) {
-						   that._handleOperateError(xhr.status,$element);
-						   $(that.currentTarget).triggerHandler($.Event("myERROR",{relatedTarget:$element}),$.My.Messages.ERR_RESPONSE + xhr.status);
-					   }
-					};
-					var options = $.extend({}, defaults, opts);
-					
-					var myXhr=$.ajax(options);
-				}; //end execAjax
-				
-			 },
-			
-			/******************************************************************
-			 * 
-			 * ajaxForm通用方法。
-			 * 方法功能主要步骤包括：
-		     *    1、发送表单提交ajax请求，同时显示加载中
-		     *    2、请求失败处理，包括弹出失败消息框、弹出失败校验提示、触发失败事件。
-		     *	  3、业务成功处理，后台返回的响应头包含note认为操作成功。回调方法bsSuccess交由调用者实现，如弹出成功框，修改表格，触发事件。
-			 *
-			 * @param options说明
-			 *		bsSuccess:function(responseText,note){}:业务成功函数
-			 * 
-			 *****************************************************************/
-			 ajaxForm : function(form, options) {
-			  //如果当前还有未完成的操作，直接返回。
-				if (this.isRunning === true) {
-					this.warn($.My.Messages.WAR_OPERATE);
-					return;
-				} else {
-					this.isRunning = true;
-				}
-				//提示操作进行中
-				$.My.showLoading();
-				var that = this,$form = $(form);
-				//ajax的配置项目
-				var settings = {
-					success : function(data, status, xhr) {
-						var responseHeader = {
-								note:xhr.getResponseHeader($.My.Constans.RESPONSE_HEADER_NOTE),
-								error:xhr.getResponseHeader($.My.Constans.RESPONSE_HEADER_ERROR),
-								cve:xhr.getResponseHeader($.My.Constans.RESPONSE_HEADER_CVE),
-								jump:xhr.getResponseHeader($.My.Constans.RESPONSE_HEADER_JUMP)
-						};
-						$.My.hideLoading();
-						that.isRunning = false;
-						//根据返回的头部信息，获知当前操作状态
-						if (responseHeader.note) {
-							options.bsSuccess.call(that,data,that.decode(responseHeader.note));
-						} else if (responseHeader.error) {
-							// 操作失败,me返回，显示警告信息
-							$.My.showMsg(false, that.decode(responseHeader.me));
-							$(that.currentTarget).triggerHandler($.Event("MyERROR",{relatedTarget:$form}),data);
-						} else if (responseHeader.cve) {
-//							var ejson = $(data).find("#My_ejson");
-//							that.validationTip(ejson,form);
-//							// 操作失败,cve返回，显示警告信息
-//							$.My.showWarn($.My.Messages.ERR_CVE);
-//							$(that.currentTarget).triggerHandler($.Event("MyCVE",{relatedTarget:$form}),data);
-						}else if (responseHeader.jump) {
-							window.location=responseHeader.jump;
-						}else{
-							// 其他情况，暂时不处理
-							$.My.showMsg(false, $.My.Messages.ERR_RESPONSE);
-							$(that.currentTarget).triggerHandler($.Event("MyERROR",{relatedTarget:$form}),$.My.Messages.ERR_RESPONSE + xhr.status);
-						}
-						
-					},
-					error : function(xhr) {
-						that._handleOperateError(xhr.status);
-						$(that.currentTarget).triggerHandler($.Event("MyERROR",{relatedTarget:$form}),$.My.Messages.ERR_RESPONSE + xhr.status);
-					},
-					dataType : "html",
-					forceSync : true
-				};
-				//将页面传过来的ajax配置项与当前的配置项进行合并
-				//TODO 需要考虑那个在前的问题，免得页面覆盖了此处的success和error处理函数.
-				$.extend(settings, options);
-				//处理form表单的enctype="multipart/form-data"属性， 20150408
-				var $files = $(":file", $form);
-				if($files.size() === 0){
-					$(form).removeProp("enctype");
-				}else{
-					var filesSize = $files.size();
-					$files.each(function() {
-						if (!$(this).val()){
-							filesSize--;
-							$(this).prop("disabled", true);
-						}
-					});
-					if(filesSize === 0){
-						$(form).removeProp("enctype");
-					}else{
-						$(form).prop("enctype","multipart/form-data");
-					}
-				}
-				$(form).ajaxSubmit(settings);
-				$(":file", $form).each(function() {
-					$(this).prop("disabled", false);
-				});
-			},
-
 		}
 	});
 	
@@ -488,7 +269,10 @@
 			BIND_PAGE_CENTER:"bind_center",
 			BIND_PAGE_RIGHT:"bind_right",
 			HANDLE_RESULT_UL:"handle_ul",
-			HANDLE_RESULT_TABLE:"handle_table"
+			HANDLE_RESULT_TABLE:"handle_table",
+			HANDLE_RESULT_ADD:"handle_add",
+			HANDLE_RESULT_UPD:"handle_upd",
+			HANDLE_RESULT_DEL:"handle_del"
 		},
 		/**********************************************************************
 		 * 
@@ -639,6 +423,90 @@
 		 *****************************************************************/
 		showProcess : function(percent,message,duration) {
 			alert("暂未开发。。。");
+		},
+		
+		/******************************************************************
+		 * 
+		 * 处理Ajax成功响应
+		 *
+		 *****************************************************************/
+		handleSuccessRes : function(data, textStatus, jqXHR) {
+			var responseHeader = {
+					note:jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_NOTE),
+					error:jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_ERROR),
+					cve:jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_CVE),
+					jump:jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_JUMP)
+			};
+			if (responseHeader.error) {
+				// 操作失败,error返回，显示警告信息
+				$.My.showMsg(false, data.msg);
+				return false;
+			} else if (responseHeader.cve) {
+				var ejson = data.msg;
+				var parent = this.currentTarget;
+				var	ejsonContent = $.parseJSON(ejson);
+				$.each(ejsonContent,
+						function(i, n) {
+							var eles=$("[name='"+i+"']",parent);
+							if(eles.length>1){
+								$("div[data-for='"+i+"']",parent).showPopover(n,{hideConcern:true});
+							}else {
+								$("[name='"+i+"']",parent).showPopover(n,{hideConcern:true});
+							}
+						});
+				// 操作失败,cve返回，显示警告信息
+				$.My.showMsg(false, $.My.Messages.ERR_CVE);
+				return false;
+			} else if (responseHeader.jump) {
+				window.location = $.My.base64.decode(responseHeader.jump);
+				return false;
+			} else if (responseHeader.note) {
+				$.My.showMsg(true, $.My.base64.decode(responseHeader.note));
+				return true;
+			} else {
+				$.My.showMsg(false, "返回未知响应类型！！！");
+				return false;
+			}
+		},
+		
+		/******************************************************************
+		 * 
+		 * 处理结果数据
+		 *
+		 *****************************************************************/
+//		HANDLE_RESULT_UL:"handle_ul",
+//		HANDLE_RESULT_TABLE:"handle_table",
+//		HANDLE_RESULT_ADD:"handle_add",
+//		HANDLE_RESULT_UPD:"handle_upd",
+//		HANDLE_RESULT_DEL:"handle_del"
+		handleResultData : function(responseText, handleType, hanleOperate) {
+			if(handleType==$.My.Constans.HANDLE_RESULT_UL) {
+				var $li = $(responseText).find("#result_data li");
+				if(hanleOperate==$.My.Constans.HANDLE_RESULT_ADD){
+					var $ubody=$('#data_result', this.currentTarget).find("> ul");
+					$ubody.find(".custom_clicked").removeClass("custom_clicked");
+					$ubody.prepend($li);
+				} else if(hanleOperate==$.My.Constans.HANDLE_RESULT_UPD){
+					$("#data_result",this.currentTarget).find(".custom_clicked")
+													   .replaceWith($li.addClass("custom_clicked"));
+				} else if(hanleOperate==$.My.Constans.HANDLE_RESULT_DEL){
+					$('#data_result', this.currentTarget).find(".custom_clicked").remove();
+				}
+				this._bindULDataClick();
+			} else if (handleType==$.My.Constans.HANDLE_RESULT_TABLE) {
+				var $row = $(responseText).find("#result_data tr");
+				if(hanleOperate==$.My.Constans.HANDLE_RESULT_ADD){
+					var $tbody=$('#data-table', this.currentTarget).find("> tbody");
+					$tbody.find(".custom_clicked").removeClass("custom_clicked");
+					$tbody.prepend($row);
+				} else if(hanleOperate==$.My.Constans.HANDLE_RESULT_UPD){
+					$("#data-table",this.currentTarget).find(".custom_clicked")
+													   .replaceWith($row.addClass("custom_clicked"));
+				} else if(hanleOperate==$.My.Constans.HANDLE_RESULT_DEL){
+					$('#data-table', this.currentTarget).find(".custom_clicked").remove();
+				}
+				this._bindTableDataClick();
+			}
 		},
 		
 		/**********************************************************************
@@ -853,17 +721,26 @@
 						$this.isRunning = false;
 						
 						if(responseHeader.note){
-							$.My.showNote($this.decode(responseHeader.note));
-							$($this.currentTarget).triggerHandler("myNOTE",$this.decode(responseHeader.note));
+							$.My.showMsg(true, $.My.base64.decode(responseHeader.note));
 						}else if(responseHeader.error){
-							$.My.showMsg(false, $this.decode(responseHeader.error));
-							$($this.currentTarget).triggerHandler("myERROR",$this.decode(responseHeader.error));
+							$.My.showMsg(false, data.msg);
 						}else if(responseHeader.cve){
-//							var ejson = $(responseText).find("#taiji_ejson");
-//							$this.validationTip(ejson,$this.currentTarget);
-//							$($this.currentTarget).triggerHandler("taijiCVE",responseText);
+							var ejson = data.msg;
+							var parent = this.currentTarget;
+							var	ejsonContent = $.parseJSON(ejson);
+							$.each(ejsonContent,
+									function(i, n) {
+										var eles=$("[name='"+i+"']",parent);
+										if(eles.length>1){
+											$("div[data-for='"+i+"']",parent).showPopover(n,{hideConcern:true});
+										}else {
+											$("[name='"+i+"']",parent).showPopover(n,{hideConcern:true});
+										}
+									});
+							// 操作失败,cve返回，显示警告信息
+							$.My.showMsg(false, $.My.Messages.ERR_CVE);
 						}else if (responseHeader.jump) {
-							window.location=responseHeader.jump;
+							window.location = $.My.base64.decode(responseHeader.jump);
 						}else{
 							if($this.settings.search.bindPage === $.My.Constans.BIND_PAGE_CENTER) {
 								$this._bindPager($responseText.find("#query_pager"), $.My.Constans.BIND_PAGE_CENTER);
@@ -978,7 +855,7 @@
 							}
 						}
 						var $li_next = $("<li ><a href='javascript:;' class='my_pager_item' value='"+(currentPage + 1)+"'>»</a></li>").appendTo($ul); 
-						if(currentPage === totalPages){
+						if(currentPage === totalPages - 1 ){
 							$li_next.addClass("disabled").find("a").removeClass("my_pager_item");
 						}
 						$(this).html($ul);
