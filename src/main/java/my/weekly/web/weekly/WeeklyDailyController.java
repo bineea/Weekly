@@ -5,7 +5,6 @@ import java.util.Arrays;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,8 +21,6 @@ import my.weekly.common.tools.HttpResponseHelper;
 import my.weekly.dao.entity.Daily;
 import my.weekly.dao.entity.Demand;
 import my.weekly.dao.entity.Project;
-import my.weekly.dao.entity.dict.Area;
-import my.weekly.dao.entity.dict.DemandType;
 import my.weekly.dao.entity.dict.HandleStatus;
 import my.weekly.dao.repo.Spe.WeeklyDailyPageSpe;
 import my.weekly.dao.repo.Spe.WeeklyDemandPageSpe;
@@ -34,7 +31,6 @@ import my.weekly.manager.daily.ProjectManager;
 import my.weekly.model.MyFinals;
 import my.weekly.model.NoteModel;
 import my.weekly.model.weekly.DailyModel;
-import my.weekly.model.weekly.DemandModel;
 import my.weekly.web.AbstractController;
 
 @Controller
@@ -97,20 +93,6 @@ public class WeeklyDailyController extends AbstractController {
 		return prefix + "record/project/queryResult";
 	}
 	
-	@RequestMapping(value = "/daily/projectAdd", method = RequestMethod.GET)
-	public String dailyProjectAddGet(HttpServletRequest request, Model model) {
-		model.addAttribute("areas", Area.values());
-		return prefix + "record/project/add";
-	}
-	
-	
-	@RequestMapping(value = "/daily/projectAdd", method = RequestMethod.POST)
-	public void dailyProjectAddPost(@Valid @ModelAttribute("project") Project project,
-			HttpServletRequest request, HttpServletResponse response, Model model) throws MyManagerException, IOException {
-		projectManager.add(project, request);
-		toJump(response, request.getContextPath() + "/app/weekly/daily/project");
-	}
-	
 	@RequestMapping(value = "/daily/demand", method = RequestMethod.GET)
 	public String dailyRecordDemandGet(@RequestParam(name = "projectId", required = true) String projectId,
 			@RequestParam(name = "demandId", required = false) String demandId,
@@ -130,22 +112,6 @@ public class WeeklyDailyController extends AbstractController {
 		model.addAttribute("totalPages", page.getTotalPages());
 		model.addAttribute("totalElements", page.getTotalElements());
 		return prefix + "record/demand/queryResult";
-	}
-	
-	@RequestMapping(value = "/daily/demandAdd", method = RequestMethod.GET)
-	public String dailyDemandAddGet(@RequestParam(name = "projectId", required = true) String projectId,
-			HttpServletRequest request, Model model) {
-		Project project = projectManager.findById(projectId);
-		model.addAttribute("project", project);
-		model.addAttribute("demandTypes", DemandType.values());
-		return prefix + "record/demand/add";
-	}
-	
-	@RequestMapping(value = "/daily/demandAdd", method = RequestMethod.POST)
-	public void dailyDemandAddPost(@ModelAttribute("demandModel") DemandModel demandModel,
-			HttpServletRequest request, HttpServletResponse response, Model model) throws MyManagerException, IOException {
-		Demand demand = demandManager.add(demandModel, request);
-		toJump(response, request.getContextPath() + "/app/weekly/daily/demand?projectId=" + demand.getProject().getId());
 	}
 	
 	@RequestMapping(value = "/daily/add", method = RequestMethod.GET)
