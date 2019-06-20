@@ -39,4 +39,21 @@ public interface DemandManager {
 	 */
 	void updateStatus(Demand demand);
 	
+	/**
+	 * 修改需求
+	 * @param demand
+	 * @param request
+	 * @return
+	 * @throws MyManagerException
+	 */
+	Demand edit(Demand demand, HttpServletRequest request) throws MyManagerException;
+	
+	/**
+	 * 删除需求
+	 * @param id
+	 * @param request
+	 * @throws MyManagerException
+	 */
+	void del(String id, HttpServletRequest request) throws MyManagerException;
+	
 }

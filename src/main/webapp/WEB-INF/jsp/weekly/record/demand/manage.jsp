@@ -12,10 +12,13 @@
 <%@ include file="/WEB-INF/jsp/weekly/common/include.jsp"%>
 <script>
 	$(document).ready(function() {
-		$("#demandForm").pageManage({
-			autoSearch:true,
-			bindPage:$.My.Constans.BIND_PAGE_CENTER,
-    		handleResult:$.My.Constans.HANDLE_RESULT_UL
+		
+		$("#content").myInit({
+			search:{
+				autoSearch:true,
+				bindPage:$.My.Constans.BIND_PAGE_CENTER,
+	    		handleResult:$.My.Constans.HANDLE_RESULT_UL
+	    	}
 		});
 		
 		$("#demandAdd").click(function() {
@@ -27,14 +30,12 @@
 					projectId: projectVal
 				},
 				success:function(data, textStatus, jqXHR) {
-					if(jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_ERROR)) {
-						$.showMsg(false,data.msg);
-					} else {
-						window.location.href = '${rootUrl}app/weekly/daily/demandAdd?projectId='+projectVal;
+					if($.My.handleSuccessRes(data, textStatus, jqXHR)) {
+						window.location.href = '${rootUrl}app/weekly/demand/add?projectId='+projectVal;
 					}
 				},
 				error:function(XMLHttpRequest, textStatus, errorThrown) {
-					$.showMsg(false,"系统异常，请稍后重试！");
+					$.My.showMsg(false,"系统异常，请稍后重试！");
 				}
 			});
 			return false;
@@ -44,10 +45,10 @@
 			var projectVal = $("#projectId").val();
 			var val=$('input:radio[name="demandId"]:checked').val();
 			if(projectVal === null || projectVal === '' || projectVal == null || projectVal == '') {
-				$.showMsg(false,"系统异常");
+				$.My.showMsg(false,"系统异常");
 			}
 			if(val === null || val === '' || val == null || val == '') {
-				$.showMsg(false,"请选择对应的需求");
+				$.My.showMsg(false,"请选择对应的需求");
 			}
 			else {
 				$.ajax({
@@ -58,17 +59,49 @@
 						demandId: val
 					},
 					success:function(data, textStatus, jqXHR) {
-						if(jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_ERROR)) {
-							$.showMsg(false,data.msg);
-						} else {
+						if($.My.handleSuccessRes(data, textStatus, jqXHR)) {
 							window.location.href = '${rootUrl}app/weekly/daily/add?projectId='+projectVal+'&demandId='+val;
 						}
 					},
 					error:function(XMLHttpRequest, textStatus, errorThrown) {
-						$.showMsg(false,"系统异常，请稍后重试！");
+						$.My.showMsg(false,"系统异常，请稍后重试！");
 					}
 				});
 			}
+			return false;
+		});
+		
+		$("#data_result").on("click", ".delete_op", function() {
+			var trNode = this.parentNode.parentNode;
+			var hrefUrl = this.href;
+			$.confirm({
+		    	theme: 'white',
+		        title: 'Are you sure',
+		        content: '确定删除该数据？',
+		        buttons: {   
+		        	confirm: {
+		            	text: '确认',
+		                keys: ['enter'],
+		                action: function(){
+		 					$.ajax({
+		 						url: hrefUrl,
+		 						type: 'POST',
+		 						success: function(data, textStatus, jqXHR) {
+		 							if($.My.handleSuccessRes(data, textStatus, jqXHR)) {
+		 								$.My.handleResultData(data, $.My.Constans.HANDLE_RESULT_UL, $.My.Constans.HANDLE_RESULT_DEL);
+		 							}
+		 						},
+		 						error:function(XMLHttpRequest, textStatus, errorThrown) {
+		 							$.showWarnMsg("系统异常，请稍后重试！");
+		 						}
+		 					});
+		                }
+		            },
+		            cancel: {
+		            	text: '取消'
+		            }
+		        }
+		    });
 			return false;
 		});
 	});
@@ -124,7 +157,7 @@ table>tbody>tr.custom_clicked{
 	    <div class="container">
 	        <!-- BEGIN checkout -->
 	        <div class="checkout">
-	            <form:form id="demandForm" name="demandForm" modelAttribute="spe" method="POST" action="${rootUrl}app/weekly/daily/demand">
+	            <form:form id="demandForm" name="demandForm" cssClass="my_search_form" modelAttribute="spe" method="POST" action="${rootUrl}app/weekly/daily/demand">
 	            	<input type="hidden" id="projectId" name="projectId" value="${projectId }"/>
 	                <!-- BEGIN checkout-header -->
 	                <div class="checkout-header">

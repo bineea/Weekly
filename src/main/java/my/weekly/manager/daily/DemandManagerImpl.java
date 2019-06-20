@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import my.weekly.common.pub.MyManagerException;
@@ -108,5 +109,33 @@ public class DemandManagerImpl extends AbstractManager implements DemandManager 
 			}
 		}
 		
+	}
+
+	@Override
+	public Demand edit(Demand demand, HttpServletRequest request) throws MyManagerException {
+		Optional<Demand> demandOpt = demandRepo.findById(demand.getId());
+		if(!demandOpt.isPresent())
+			throw new MyManagerException("需求信息不存在");
+		Demand other = demandRepo.findByProjectAndTitle(demandOpt.get().getProject().getId(), demand.getTitle());
+		if(other != null && !demand.getId().equals(other.getId()))
+			throw new MyManagerException("需求标题已存在");
+		Demand d = demandOpt.get();
+		d.setTitle(demand.getTitle());
+		d.setDemandType(demand.getDemandType());
+		d.setSummary(demand.getSummary());
+		d.setUpdateTime(LocalDateTime.now());
+		demandRepo.save(d);
+		return d;
+	}
+
+	@Override
+	public void del(String id, HttpServletRequest request) throws MyManagerException {
+		Optional<Demand> demandOpt = demandRepo.findById(id);
+		if(!demandOpt.isPresent())
+			throw new MyManagerException("需求信息不存在");
+		List<Daily> dailyList = dailyRepo.findByDemandDesc(id);
+		if(!CollectionUtils.isEmpty(dailyList))
+			throw new MyManagerException("存在关联该项目的日报数据，无法删除");
+		demandRepo.delete(demandOpt.get());
 	}
 }

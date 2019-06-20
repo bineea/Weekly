@@ -48,8 +48,8 @@
 	                                <a href="###">
 	                                    <div class="number">0.7</div>
 	                                    <div class="info">
-	                                        <div class="title">创建项目</div>
-	                                        <div class="desc">创建新的项目</div>
+	                                        <div class="title">修改项目</div>
+	                                        <div class="desc">修改已有的项目</div>
 	                                    </div>
 	                                </a>
 	                            </div>

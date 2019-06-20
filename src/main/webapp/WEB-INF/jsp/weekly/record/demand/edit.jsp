@@ -13,15 +13,13 @@
 <%@ include file="/WEB-INF/jsp/weekly/common/include.jsp"%>
 <script>
 	$(document).ready(function() {
-		$("#addForm").ajaxForm({
+		$("#editForm").ajaxForm({
 			type:'post',
 			success:function(data, textStatus, jqXHR) {
-				if($.My.handleSuccessRes(data, textStatus, jqXHR)) {
-					window.localtion.href = '${rootUrl}app/weekly/daily/demand';
-				}
+				$.My.handleSuccessRes(data, textStatus, jqXHR);
 			},
 			error:function(xhr, status, error) {
-				$.showWarnMsg("系统异常，请稍后重试！");
+				$.My.showMsg(false, "系统异常，请稍后重试！");
 			}
 		});
 	});
@@ -39,7 +37,7 @@
 	    <div class="container">
 	        <!-- BEGIN checkout -->
 	        <div class="checkout">
-	            <form:form cssClass="form-horizontal" method="POST" id="addForm" name="addForm" modelAttribute="demandModel" action="${rootUrl }app/weekly/demand/add">
+	            <form:form cssClass="form-horizontal" method="POST" id="editForm" name="editForm" modelAttribute="demandModel" action="${rootUrl }app/weekly/demand/edit">
 	                <input type="hidden" id="projectId" name="projectId" value="${project.id }" />
 	                <!-- BEGIN checkout-header -->
 	                <div class="checkout-header">
@@ -49,10 +47,10 @@
 	                        <div class="col-md-4 col-sm-4">
 	                            <div class="step active">
 	                                <a href="###">
-	                                    <div class="number">1.5</div>
+	                                    <div class="number">1.7</div>
 	                                    <div class="info">
-	                                        <div class="title">创建需求</div>
-	                                        <div class="desc">创建新的需求事件</div>
+	                                        <div class="title">修改需求</div>
+	                                        <div class="desc">修改已有的需求事件</div>
 	                                    </div>
 	                                </a>
 	                            </div>
@@ -64,17 +62,18 @@
 	                <!-- END checkout-header -->
 	                <!-- BEGIN checkout-body -->
 	                <div class="checkout-body">
+	                	<input type="hidden" name="id" value="${demandModel.id }"/>
 	                	<h4 class="checkout-title">Describe specific demand</h4>
 	                	<div class="form-group">
                             <label class="col-md-3 control-label">项目名称 <span class="text-danger">*</span></label>
                             <div class="col-md-6">
-                                <input type="text" class="form-control required" value="${project.name }" readonly="readonly"/>
+                                <input type="text" class="form-control required" value="${demandModel.project.name }" readonly="readonly"/>
                             </div>
                         </div>
 						<div class="form-group">
                             <label class="col-md-3 control-label">需求标题 <span class="text-danger">*</span></label>
                             <div class="col-md-6">
-                                <input type="text" class="form-control required" name="title"/>
+                                <input type="text" class="form-control required" name="title" value="${demandModel.title }"/>
                             </div>
                         </div>
 						<div class="form-group">
@@ -83,7 +82,7 @@
 	                            <select name="demandType" class="form-control required selectpicker" data-size="10" data-live-search="true" data-style="btn-inverse">
 				                    <option value="">请选择...</option>
 				                    <c:forEach items="${demandTypes}" var="type">
-										<option value="${type}">${type.value}</option>
+										<option value="${type}" ${type eq demandModel.demandType?'selected':''} >${type.value}</option>
 									</c:forEach>
 				                </select>
                             </div>
@@ -91,7 +90,7 @@
                         <div class="form-group">
                             <label class="col-md-3 control-label">需求描述 <span class="text-danger">*</span></label>
                             <div class="col-md-6">
-                            	<textarea class="form-control required" name="summary" placeholder="" rows="10"></textarea>
+                            	<textarea class="form-control required" name="summary" placeholder="" rows="10">${demandModel.summary }</textarea>
                             </div>
                         </div>
 	                </div>
