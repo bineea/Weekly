@@ -492,6 +492,7 @@
 				} else if(hanleOperate==$.My.Constans.HANDLE_RESULT_DEL){
 					$('#data_result', this.currentTarget).find(".custom_clicked").remove();
 				}
+				//FIXME 无法调用方法
 				this._bindULDataClick();
 			} else if (handleType==$.My.Constans.HANDLE_RESULT_TABLE) {
 				var $row = $(responseText).find("#result_data tr");
@@ -505,6 +506,7 @@
 				} else if(hanleOperate==$.My.Constans.HANDLE_RESULT_DEL){
 					$('#data-table', this.currentTarget).find(".custom_clicked").remove();
 				}
+				//FIXME 无法调用方法
 				this._bindTableDataClick();
 			}
 		},
