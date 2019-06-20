@@ -9,6 +9,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import my.weekly.common.entity.StringUUIDEntity;
 import my.weekly.dao.entity.dict.DemandType;
@@ -17,8 +19,14 @@ import my.weekly.dao.entity.dict.HandleStatus;
 @Entity
 @Table(name = "weekly_demand")
 public class Demand extends StringUUIDEntity {
+	
+	@NotEmpty(message = "需求标题不能为空")
 	private String title;
+	
+	@NotEmpty(message = "需求描述不能为空")
 	private String summary;
+	
+	@NotNull(message = "需求类型不能为空")
 	private DemandType demandType;
 	private LocalDateTime createTime;
 	private LocalDateTime updateTime;
