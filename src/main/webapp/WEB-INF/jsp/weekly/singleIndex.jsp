@@ -35,8 +35,8 @@
         <!-- end post-info -->
         <!-- begin read-btn-container -->
         <div class="read-btn-container">
-            <a href="${rootUrl }app/blog/content/${data.id}"><i class="fa fa-angle-double-right"></i>修改 </a>
-            <a href="${rootUrl }app/blog/content/${data.id}"><i class="fa fa-angle-double-right"></i>删除 </a>
+            <a href="${rootUrl }app/weekly/daily/edit/${data.id}"><i class="fa fa-angle-double-right update_op"></i>修改 </a>
+            <a href="${rootUrl }app/weekly/daily/del/${data.id}"><i class="fa fa-angle-double-right delete_op"></i>删除 </a>
         </div>
         <!-- end read-btn-container -->
     </div>
