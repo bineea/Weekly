@@ -60,7 +60,7 @@ public class WeeklyProjectController extends AbstractController {
 	@RequestMapping(value = "/project/del/{id}", method = RequestMethod.POST)
 	public void dailyProjectDel(@PathVariable("id") String id, 
 			HttpServletRequest request, HttpServletResponse response) throws MyManagerException, IOException {
-//		projectManager.del(id, request);
+		projectManager.del(id, request);
 		addSuccess(response, "成功删除项目数据");
 	}
 }
