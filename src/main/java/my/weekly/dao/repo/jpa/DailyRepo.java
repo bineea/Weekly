@@ -1,5 +1,6 @@
 package my.weekly.dao.repo.jpa;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -20,4 +21,7 @@ public interface DailyRepo extends JpaRepository<Daily, String>, JpaSpecificatio
 	
 	@Query(value = " select d from Daily d where d.demand.id = ?1 and d.user.id = ?2 order by createTime desc")
 	List<Daily> findByDemandAndUserDesc(String demandId, String userId);
+	
+	@Query(value = " select d from Daily d where d.demand.id = ?1 and operateDate = ?2")
+	Daily findByDemandAndOperateDate(String demandId, LocalDate operateDate);
 }

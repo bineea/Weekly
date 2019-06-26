@@ -6,12 +6,21 @@ import my.weekly.dao.entity.dict.HandleStatus;
 import my.weekly.model.BaseModel;
 
 public class DailyModel extends BaseModel {
+	private String dailyId;
 	private String projectId;
 	private String demandId;
 	private String operateContent;
 	private String sqlContent;
 	private HandleStatus handleStatus;
 	private LocalDate operateDate;
+
+	public String getDailyId() {
+		return dailyId;
+	}
+
+	public void setDailyId(String dailyId) {
+		this.dailyId = dailyId;
+	}
 
 	public String getProjectId() {
 		return projectId;

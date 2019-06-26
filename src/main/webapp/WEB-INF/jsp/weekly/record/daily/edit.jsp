@@ -38,9 +38,7 @@
 		 					$("#dailyForm").ajaxSubmit({
 		 						type: 'POST',
 		 						success: function(data, textStatus, jqXHR) {
-									if(jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_ERROR)) {
-			 							$.showMsg(false, data.msg);
-									} else {
+									if($.My.handleSuccessRes(data, textStatus, jqXHR)) {
 										window.location.href = "${rootUrl }app/weekly/daily/record?dailyId="+data.msg;
 									}
 		 						},
@@ -72,7 +70,8 @@
 	    <div class="container">
 	        <!-- BEGIN checkout -->
 	        <div class="checkout">
-	            <form:form cssClass="form-horizontal" method="POST" id="dailyForm" name="dailyForm" modelAttribute="dailyModel" action="${rootUrl }app/weekly/daily/add">
+	            <form:form cssClass="form-horizontal" method="POST" id="dailyForm" name="dailyForm" modelAttribute="dailyModel" action="${rootUrl }app/weekly/daily/edit">
+	            	<input type="hidden" id="dailyId" name="dailyId" value="${daily.id }" />
 	            	<input type="hidden" id="projectId" name="projectId" value="${project.id }" />
 	            	<input type="hidden" id="demandId" name="demandId" value="${demand.id }" />
 	                <!-- BEGIN checkout-header -->
@@ -154,7 +153,7 @@
                             <label class="col-md-3 control-label">操作日期<span class="text-danger">*</span></label>
 							<div class="col-md-6">
 	                            <div id="operateTime" class="input-group date">
-	                                <input type="text" class="form-control required" name="operateDate" placeholder="具体操作执行日期"/>
+	                                <input type="text" class="form-control required" name="operateDate" placeholder="具体操作执行日期" value="${daily.operateDate }"/>
 	                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 	                            </div>
 							</div>
@@ -165,7 +164,7 @@
 	                            <select name="handleStatus" class="form-control required selectpicker" data-size="10" data-live-search="true" data-style="btn-inverse">
 				                    <option value="">请选择...</option>
 				                    <c:forEach items="${handleStatues}" var="handleSta">
-										<option value="${handleSta}">${handleSta.value}</option>
+										<option value="${handleSta}" ${handleSta eq daily.handleStatus?'selected':''}  >${handleSta.value}</option>
 									</c:forEach>
 				                </select>
                             </div>
@@ -173,14 +172,14 @@
 						<div class="form-group">
                             <label class="col-md-3 control-label">具体操作 <span class="text-danger">*</span></label>
                             <div class="col-md-6">
-                                <textarea class="form-control required" name="operateContent" placeholder="" rows="10"></textarea>
+                                <textarea class="form-control required" name="operateContent" placeholder="" rows="10">${daily.operateContent }</textarea>
                             </div>
                         </div>
                         <c:if test="${demand.demandType eq 'ZSSJXG' }">
 	                        <div class="form-group">
 	                            <label class="col-md-3 control-label">SQL语句 <span class="text-danger">*</span></label>
 	                            <div class="col-md-6">
-	                                <textarea class="form-control required" name="sqlContent" placeholder="" rows="10"></textarea>
+	                                <textarea class="form-control required" name="sqlContent" placeholder="" rows="10">${daily.sqlContent }</textarea>
 	                            </div>
 	                        </div>
                         </c:if>

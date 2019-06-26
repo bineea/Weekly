@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -144,11 +145,40 @@ public class WeeklyDailyController extends AbstractController {
 		HttpResponseHelper.responseJson(note.toJson(), response);
 	}
 	
+	@RequestMapping(value = "/daily/edit/{dailyId}", method = RequestMethod.GET)
+	public String dailyEditGet(@PathVariable(name = "dailyId", required = true) String dailyId,
+			HttpServletRequest request, Model model) {
+		Daily daily = dailyManager.findById(dailyId);
+		model.addAttribute("daily", daily);
+		model.addAttribute("project", daily.getDemand().getProject());
+		model.addAttribute("demand", daily.getDemand());
+		model.addAttribute("handleStatues", HandleStatus.values());
+		return prefix + "record/daily/edit";
+	}
+	
+	@RequestMapping(value = "/daily/edit", method = RequestMethod.POST)
+	public void dailyEditPost(@ModelAttribute(name = "dailyModel") DailyModel dailyModel,
+			HttpServletRequest request,
+			HttpServletResponse response,
+			Model model) throws IOException, MyManagerException {
+		Daily daily = dailyManager.modifyDaily(dailyModel, request);
+		addSuccess(response, "修改日报成功");
+		NoteModel note = new NoteModel(true, daily.getId());
+		HttpResponseHelper.responseJson(note.toJson(), response);
+	}
+	
 	@RequestMapping(value = "/daily/record", method = RequestMethod.GET)
 	public String dailyRecordGet(@RequestParam(name = "dailyId", required = true) String dailyId,
 			HttpServletRequest request, Model model) {
 		Daily daily = dailyManager.findById(dailyId);
 		model.addAttribute("daily", daily);
 		return prefix + "record/daily/result";
+	}
+	
+	@RequestMapping(value = "/daily/del/{id}", method = RequestMethod.POST)
+	public void dailyDel(@PathVariable("id") String id, 
+			HttpServletRequest request, HttpServletResponse response) throws MyManagerException, IOException {
+		dailyManager.del(id, request);
+		addSuccess(response, "成功删除日报数据");
 	}
 }

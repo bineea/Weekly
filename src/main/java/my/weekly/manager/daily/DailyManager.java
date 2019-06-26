@@ -29,4 +29,19 @@ public interface DailyManager {
 	 */
 	Daily createDaily(DailyModel dailyModel, HttpServletRequest request) throws MyManagerException;
 	
+	/**修改日报
+	 * @param dailyModel
+	 * @param request
+	 * @return
+	 * @throws MyManagerException
+	 */
+	Daily modifyDaily(DailyModel dailyModel, HttpServletRequest request) throws MyManagerException;
+	
+	/**删除日报
+	 * @param id
+	 * @param request
+	 * @throws MyManagerException
+	 */
+	void del(String id, HttpServletRequest request) throws MyManagerException;
+	
 }
