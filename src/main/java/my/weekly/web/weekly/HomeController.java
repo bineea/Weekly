@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import my.weekly.dao.repo.Spe.WeeklyDailyPageSpe;
+import my.weekly.manager.quartz.TestScheduler;
 import my.weekly.web.AbstractController;
 
 @Controller
@@ -15,6 +16,12 @@ public class HomeController extends AbstractController {
 	
 	@RequestMapping(value = "weekly/homeIndex", method = RequestMethod.GET)
 	public String weeklyHomeIndexGet(@ModelAttribute("spe") WeeklyDailyPageSpe spe) {
+		TestScheduler t = new TestScheduler();
+		try {
+			t.test();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return prefix + "homeIndex";
 	}
 	

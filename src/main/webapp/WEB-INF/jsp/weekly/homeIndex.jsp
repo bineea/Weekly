@@ -10,6 +10,8 @@
 <script>
 	$(document).ready(function() {
 		$("#myManager").myInit({});
+		
+		
 	});
 </script>
 </head>

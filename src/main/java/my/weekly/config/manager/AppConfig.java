@@ -1,5 +1,7 @@
 package my.weekly.config.manager;
 
+import java.io.IOException;
+
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -13,10 +15,13 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.aspectj.AnnotationTransactionAspect;
 
 import com.alibaba.druid.pool.DruidDataSource;
+
+import my.weekly.manager.quartz.MyJobFactory;
 
 @Configuration
 //注解开启对Spring Data JPA Repostory的支持
@@ -115,6 +120,27 @@ public class AppConfig
 		AnnotationTransactionAspect aspect = AnnotationTransactionAspect.aspectOf();
 		aspect.setTransactionManager(transactionManager());
 		return aspect;
+	}
+	
+	//quartz 配置
+	@Bean(name = "quartzProperties")
+	public PropertiesFactoryBean loadQuartzProperties()
+	{
+		PropertiesFactoryBean propertiesFactory = new PropertiesFactoryBean();
+		propertiesFactory.setLocation(new ClassPathResource("config/quartz.properties"));
+		propertiesFactory.setFileEncoding("utf-8");
+		return propertiesFactory;
+	}
+	
+	@Bean(name = "schedulerFactoryBean", destroyMethod = "destroy")
+	public SchedulerFactoryBean schedulerFactory(MyJobFactory myJobFactory) throws IOException {
+		SchedulerFactoryBean  schedulerFac = new SchedulerFactoryBean();
+		schedulerFac.setOverwriteExistingJobs(false);
+		schedulerFac.setAutoStartup(true);
+		schedulerFac.setJobFactory(myJobFactory);
+		schedulerFac.setQuartzProperties(loadQuartzProperties().getObject());
+		schedulerFac.setStartupDelay(5);
+		return schedulerFac;
 	}
 	
 }
