@@ -1,5 +1,6 @@
 package my.weekly.web.weekly;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,11 +15,14 @@ public class HomeController extends AbstractController {
 
 	private final String prefix = "weekly/";
 	
+	@Autowired
+	private TestScheduler testScheduler;
+	
 	@RequestMapping(value = "weekly/homeIndex", method = RequestMethod.GET)
 	public String weeklyHomeIndexGet(@ModelAttribute("spe") WeeklyDailyPageSpe spe) {
-		TestScheduler t = new TestScheduler();
+		
 		try {
-			t.test();
+			testScheduler.test();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
