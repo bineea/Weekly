@@ -132,6 +132,7 @@ public class AppConfig
 		return propertiesFactory;
 	}
 	
+	// @Bean注解修饰带参数的方法时，按照参数类型获取对应的参数bean
 	@Bean(name = "schedulerFactoryBean", destroyMethod = "destroy")
 	public SchedulerFactoryBean schedulerFactory(MyJobFactory myJobFactory) throws IOException {
 		SchedulerFactoryBean  schedulerFac = new SchedulerFactoryBean();
