@@ -4,20 +4,24 @@ import org.quartz.CronScheduleBuilder;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
-import org.quartz.SchedulerFactory;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
-import org.quartz.impl.StdSchedulerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Component;
 
 import my.weekly.manager.AbstractManager;
 
 @Component
 public class TestScheduler extends AbstractManager {
+	
+	@Autowired
+	private SchedulerFactoryBean schedulerFactoryBean;
 
 	public void test() throws Exception {
-		 SchedulerFactory schedFact = new StdSchedulerFactory();
-		 Scheduler scheduler = schedFact.getScheduler();
+//		 SchedulerFactory schedFact = new StdSchedulerFactory();
+//		 Scheduler scheduler = schedFact.getScheduler();
+		 Scheduler scheduler = schedulerFactoryBean.getScheduler();
 		 scheduler.start();
 		 // define the job and tie it to our HelloJob class
 		  JobDetail job = JobBuilder.newJob(HelloJob.class)
