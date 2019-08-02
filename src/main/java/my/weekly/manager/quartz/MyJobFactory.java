@@ -6,7 +6,7 @@ import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.scheduling.quartz.AdaptableJobFactory;
 import org.springframework.stereotype.Component;
 
-//TODO 尚未理解
+//Job由quartz管理，需要将Job加入到spring容器管理中，才能正常的使用autowired注入
 @Component
 public class MyJobFactory extends AdaptableJobFactory {
 	
