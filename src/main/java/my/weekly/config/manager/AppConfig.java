@@ -6,10 +6,7 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
-import org.springframework.context.annotation.AdviceMode;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.*;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -120,28 +117,6 @@ public class AppConfig
 		AnnotationTransactionAspect aspect = AnnotationTransactionAspect.aspectOf();
 		aspect.setTransactionManager(transactionManager());
 		return aspect;
-	}
-	
-	//quartz 配置
-	@Bean(name = "quartzProperties")
-	public PropertiesFactoryBean loadQuartzProperties()
-	{
-		PropertiesFactoryBean propertiesFactory = new PropertiesFactoryBean();
-		propertiesFactory.setLocation(new ClassPathResource("config/quartz.properties"));
-		propertiesFactory.setFileEncoding("utf-8");
-		return propertiesFactory;
-	}
-	
-	// @Bean注解修饰带参数的方法时，按照参数类型获取对应的参数bean
-	@Bean(name = "schedulerFactoryBean", destroyMethod = "destroy")
-	public SchedulerFactoryBean schedulerFactory(MyJobFactory myJobFactory) throws IOException {
-		SchedulerFactoryBean  schedulerFac = new SchedulerFactoryBean();
-		schedulerFac.setOverwriteExistingJobs(false);
-		schedulerFac.setAutoStartup(true);
-		schedulerFac.setJobFactory(myJobFactory);
-		schedulerFac.setQuartzProperties(loadQuartzProperties().getObject());
-		schedulerFac.setStartupDelay(5);
-		return schedulerFac;
 	}
 	
 }

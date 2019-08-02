@@ -5,6 +5,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration.Dynamic;
 
+import my.weekly.config.manager.QuartzConfig;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import ch.qos.logback.ext.spring.web.LogbackConfigListener;
@@ -15,7 +16,7 @@ public class MyWebAppInitializer extends AbstractAnnotationConfigDispatcherServl
 {
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class[] {AppConfig.class};
+		return new Class[] {AppConfig.class, QuartzConfig.class};
 	}
 
 	@Override
