@@ -18,6 +18,8 @@ public class MyFinals {
 	public static final String jsTreeRootReq = "#";
 //	默认文章摘要字符长度
 	public static final int DEFAULT_SUMMANY_LENGTH = 27;
+//	Excel文件名后缀xlsx
+	public static final String EXCEL_XLSX = "xlsx";
 	
 //	手机号码正则
 	public static final String mobileRegexp = "^1[3|4|5|7|8|9]{1}[0-9]{9}$";
