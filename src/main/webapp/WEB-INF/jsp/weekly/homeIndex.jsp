@@ -9,9 +9,47 @@
 
 <script>
 	$(document).ready(function() {
-		$("#myManager").myInit({});
-		
-		
+		$("#content").myInit({
+			search:{
+				autoSearch:true,
+				bindPage:$.My.Constans.BIND_PAGE_CENTER,
+				handleResult:$.My.Constans.HANDLE_RESULT_UL
+			}
+		});
+
+		$("#data_result").on("click", ".delete_op", function() {
+			var trNode = this.parentNode.parentNode.parentNode;
+			var hrefUrl = this.href;
+			$.confirm({
+				theme: 'white',
+				title: 'Are you sure',
+				content: '确定删除该数据？',
+				buttons: {
+					confirm: {
+						text: '确认',
+						keys: ['enter'],
+						action: function(){
+							$.ajax({
+								url: hrefUrl,
+								type: 'POST',
+								success: function(data, textStatus, jqXHR) {
+									if($.My.handleSuccessRes(data, textStatus, jqXHR)) {
+										$.My.handleResultData(data, $.My.Constans.HANDLE_RESULT_UL, $.My.Constans.HANDLE_RESULT_DEL);
+									}
+								},
+								error:function(XMLHttpRequest, textStatus, errorThrown) {
+									$.showWarnMsg("系统异常，请稍后重试！");
+								}
+							});
+						}
+					},
+					cancel: {
+						text: '取消'
+					}
+				}
+			});
+			return false;
+		});
 	});
 </script>
 </head>
