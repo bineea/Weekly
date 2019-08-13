@@ -334,6 +334,12 @@
 			<version>4.1.0</version>
 		</dependency>
 
+		<!-- Java推送邮件依赖 -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>javax.mail-api</artifactId>
+			<version>1.6.1</version>
+		</dependency>
 
 	</dependencies>
 </project>
