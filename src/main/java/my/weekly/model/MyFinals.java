@@ -11,7 +11,7 @@ public class MyFinals {
 //	默认分页查询页码
 	public static final int DEFAULT_PAGE_NUM = 0;
 //	默认分页查询单页数量
-	public static final int DEFAULT_PAGE_SIZE = 7;
+	public static final int DEFAULT_PAGE_SIZE = 10;
 //	默认分页查询单页文章数量
 	public static final int DEFAULT_WEEKLY_SIZE = 3;
 //	jstree请求根目录ID
