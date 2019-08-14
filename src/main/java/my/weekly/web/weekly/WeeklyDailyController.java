@@ -49,6 +49,7 @@ public class WeeklyDailyController extends AbstractController {
 	
 	@RequestMapping(value = "/dailyIndex", method = RequestMethod.POST)
 	public String dailyIndexPost(@ModelAttribute("spe") WeeklyDailyPageSpe spe, HttpServletRequest request, Model model) {
+		spe.setPageSize(5);
 		Page<Daily> page = dailyManager.pageQuery(spe);
 		model.addAttribute("queryResult", page.getContent());
 		model.addAttribute("currentPage", page.getNumber());
