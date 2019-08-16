@@ -5,10 +5,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>My Weekly</title>
 
-<link href="${rootUrl}assets/css/e-commerce/style.min.css" rel="stylesheet" />
-<link href="${rootUrl}assets/css/e-commerce/style-responsive.min.css" rel="stylesheet" />
-<link href="${rootUrl}assets/css/e-commerce/theme/default.css" id="theme" rel="stylesheet" />
-<link href="${rootUrl}assets/css/e-commerce/animate.min.css" rel="stylesheet" />
+<link href="${rootUrl}assets/e-commerceCss/style.min.css" rel="stylesheet" />
+<link href="${rootUrl}assets/e-commerceCss/style-responsive.min.css" rel="stylesheet" />
+<link href="${rootUrl}assets/e-commerceCss/theme/default.css" id="theme" rel="stylesheet" />
+<link href="${rootUrl}assets/e-commerceCss/animate.min.css" rel="stylesheet" />
 
 <%@ include file="/WEB-INF/jsp/weekly/common/include.jsp"%>
 <script>

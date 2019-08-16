@@ -5,9 +5,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>My Weekly</title>
 
-<link href="${rootUrl}assets/css/e-commerce/style.min.css" rel="stylesheet" />
-<link href="${rootUrl}assets/css/one-page-parallax/style.min.css" rel="stylesheet" />
-<link href="${rootUrl}assets/css/one-page-parallax/theme/default.css" id="theme" rel="stylesheet" />
+<link href="${rootUrl}assets/e-commerceCss/style.min.css" rel="stylesheet" />
+<link href="${rootUrl}assets/one-page-parallaxCss/style.min.css" rel="stylesheet" />
+<link href="${rootUrl}assets/one-page-parallaxCss/theme/default.css" id="theme" rel="stylesheet" />
 
 <%@ include file="/WEB-INF/jsp/weekly/common/include.jsp"%>
 <script>

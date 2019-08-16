@@ -7,10 +7,10 @@
 <link href="${rootUrl}assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
 <link href="${rootUrl}assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
 <link href="${rootUrl}assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-<link href="${rootUrl}assets/css/animate.min.css" rel="stylesheet" />
-<link href="${rootUrl}assets/css/style.min.css" rel="stylesheet" />
-<link href="${rootUrl}assets/css/style-responsive.min.css" rel="stylesheet" />
-<link href="${rootUrl}assets/css/theme/default.css" rel="stylesheet" id="theme" />
+<link href="${rootUrl}assets/manageCss/animate.min.css" rel="stylesheet" />
+<link href="${rootUrl}assets/manageCss/style.min.css" rel="stylesheet" />
+<link href="${rootUrl}assets/manageCss/style-responsive.min.css" rel="stylesheet" />
+<link href="${rootUrl}assets/manageCss/theme/default.css" rel="stylesheet" id="theme" />
 <link href="${rootUrl}assets/plugins/jquery-confirm/dist/jquery-confirm.min.css" rel="stylesheet"/>
 <!-- ================== END BASE CSS STYLE ================== -->
 

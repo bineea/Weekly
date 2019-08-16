@@ -6,10 +6,10 @@
 <!-- ================== BEGIN BASE CSS STYLE ================== -->
 <link href="${rootUrl}assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
 <link href="${rootUrl}assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-<link href="${rootUrl}assets/css/blog/animate.min.css" rel="stylesheet" />
-<link href="${rootUrl}assets/css/blog/style.min.css" rel="stylesheet" />
-<link href="${rootUrl}assets/css/blog/style-responsive.min.css" rel="stylesheet" />
-<link href="${rootUrl}assets/css/blog/theme/default.css" id="theme" rel="stylesheet" />
+<link href="${rootUrl}assets/blogCss/animate.min.css" rel="stylesheet" />
+<link href="${rootUrl}assets/blogCss/style.min.css" rel="stylesheet" />
+<link href="${rootUrl}assets/blogCss/style-responsive.min.css" rel="stylesheet" />
+<link href="${rootUrl}assets/blogCss/theme/default.css" id="theme" rel="stylesheet" />
 <link href="${rootUrl}assets/plugins/jquery-confirm/dist/jquery-confirm.min.css" rel="stylesheet"/>
 <!-- ================== END BASE CSS STYLE ================== -->
    
