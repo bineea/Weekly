@@ -1,4 +1,7 @@
 package my.weekly.web.weekly;
 
-public class WeeklyUserController {
+import my.weekly.web.AbstractController;
+
+public class WeeklyUserController extends AbstractController {
+
 }

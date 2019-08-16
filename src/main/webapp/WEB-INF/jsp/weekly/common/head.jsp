@@ -12,7 +12,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a href="index.html" class="navbar-brand">
+			<a href="${rootUrl }app/weekly/homeIndex" class="navbar-brand">
 				<span class="brand-logo"></span>
 				<span class="brand-text">
 					My Weekly
@@ -32,8 +32,18 @@
 				<li>
 					<a href="${rootUrl }app/weekly/daily/combine" >WEEKLY</a>
 				</li>
+				<li style="width:2px;height:24px;margin-top:13px;background:black;"></li>
 				<li>
-					<a href="${rootUrl }app/weekly/user/manage" >ABOUT ME</a>
+					<a href="javascript:;" data-toggle="dropdown">
+						<img src="${rootUrl }assets/img/user-1.jpg" style="float:left;width:20px;height:20px;border-radius:40px;margin-right:10px;" alt="用户头像" />
+						<span class="hidden-md hidden-sm hidden-xs">ABOUT ME</span>
+						<b class="caret"></b>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href="#">Edit Profile</a></li>
+						<li><a href="#">Modify Password</a></li>
+						<li><a href="#">Log Out</a></li>
+					</ul>
 				</li>
 			</ul>
 		</div>
