@@ -29,6 +29,12 @@
 				<li>
 					<a href="${rootUrl }app/weekly/daily/project" >RECORD</a>
 				</li>
+				<li>
+					<a href="${rootUrl }app/weekly/daily/combine" >WEEKLY</a>
+				</li>
+				<li>
+					<a href="${rootUrl }app/weekly/user/manage" >ABOUT ME</a>
+				</li>
 			</ul>
 		</div>
 		<!-- end navbar-collapse -->

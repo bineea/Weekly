@@ -16,12 +16,4 @@
 		</div>
 	</div>
 	<!-- end section-container -->
-	<!-- begin section-container -->
-	<div class="section-container">
-		<h4 class="section-title"><span>Functions</span></h4>
-		<ul class="sidebar-social-list">
-			<li><a href="#"><i class="fa fa-envelope" style="margin-right: 10px;"></i>Send Email</a></li>
-		</ul>
-	</div>
-	<!-- end section-container -->
 <!-- end col-3 -->

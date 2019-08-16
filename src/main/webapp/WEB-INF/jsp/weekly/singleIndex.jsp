@@ -35,8 +35,8 @@
         <!-- end post-info -->
         <!-- begin read-btn-container -->
         <div class="read-btn-container">
-            <a class="update_op" href="${rootUrl }app/weekly/daily/edit/${data.id}"><i class="fa fa-angle-double-right"></i>修改 </a>
-            <a class="delete_op" href="${rootUrl }app/weekly/daily/del/${data.id}"><i class="fa fa-angle-double-right"></i>删除 </a>
+            <a class="update_op" href="${rootUrl }app/weekly/daily/edit/${data.id}">Edit&nbsp;<i class="fa fa-angle-double-right"></i></a>
+            <a class="delete_op" href="${rootUrl }app/weekly/daily/del/${data.id}">Delete&nbsp;<i class="fa fa-angle-double-right"></i></a>
         </div>
         <!-- end read-btn-container -->
     </div>
