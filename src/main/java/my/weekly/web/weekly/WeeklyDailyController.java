@@ -45,7 +45,7 @@ public class WeeklyDailyController extends AbstractController {
 	@Autowired
 	private DemandManager demandManager;
 	
-	private String prefix = "weekly/";
+	private final String prefix = "weekly/";
 	
 	@RequestMapping(value = "/dailyIndex", method = RequestMethod.POST)
 	public String dailyIndexPost(@ModelAttribute("spe") WeeklyDailyPageSpe spe, HttpServletRequest request, Model model) {
@@ -183,13 +183,4 @@ public class WeeklyDailyController extends AbstractController {
 		addSuccess(response, "成功删除日报数据");
 	}
 
-	@RequestMapping(value="/daily/combine", method=RequestMethod.GET)
-	public String dailyCombineGet(HttpServletRequest request) {
-
-		return null;
-	}
-
-	public void dailyCombinePost(HttpServletRequest request, HttpServletResponse response) {
-
-	}
 }

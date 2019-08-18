@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html;charset=utf-8"
     pageEncoding="utf-8"%>
-<%@ include file="/WEB-INF/jsp/common/tag.jsp"%>
+<%@ include file="/WEB-INF/jsp/weekly/common/tag.jsp"%>
 <link href="${rootUrl}assets/plugins/ionicons/css/ionicons.min.css" rel="stylesheet" />
 <script>
 	$(document).ready(function() {

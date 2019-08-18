@@ -21,7 +21,8 @@
 		$("#operateTime").datepicker({
 			opens: 'right',
 			format: 'yyyy-mm-dd',
-			endDate: '0d', 
+			endDate: '0d',
+			todayHighlight: true,
 			autoclose: true
 		});
 		

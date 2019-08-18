@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html;charset=utf-8"
     pageEncoding="utf-8"%>
-<%@ include file="/WEB-INF/jsp/common/tag.jsp"%>
+<%@ include file="/WEB-INF/jsp/weekly/common/tag.jsp"%>
 
 <%-- 表格样式
 <tr>

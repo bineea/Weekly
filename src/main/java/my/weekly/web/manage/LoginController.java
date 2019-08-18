@@ -1,4 +1,4 @@
-package my.weekly.web;
+package my.weekly.web.manage;
 
 import java.io.IOException;
 import java.util.Base64;
@@ -7,6 +7,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import my.weekly.web.AbstractController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,7 +27,7 @@ import my.weekly.model.MySession;
 import my.weekly.model.acl.UserInfoModel;
 
 @Controller
-public class LoginController extends AbstractController 
+public class LoginController extends AbstractController
 {
 	@Autowired
 	private UserManager userManager;
@@ -51,7 +52,7 @@ public class LoginController extends AbstractController
 			if(MyFinals.COOKIE_USER.equals(cookie.getName()))
 				model.addAttribute("loginName", StringUtils.hasText(cookie.getValue()) ? new String(Base64.getDecoder().decode(cookie.getValue()), "utf-8") : null);
 		}
-		return "login";
+		return "manage/login";
 	}
 	
 	@RequestMapping(value="common/login",method=RequestMethod.POST)

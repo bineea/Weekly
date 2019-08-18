@@ -997,3 +997,30 @@
 		});
 	}
 })(jQuery);
+
+(function ($) {
+	var handleSelectAll = function () {
+		"use strict";
+		$('[data-click=checkbox-select-all]').click(function(e) {
+			e.preventDefault();
+			if ($(this).closest('tr').hasClass('active')) {
+				$('table tr').removeClass('active');
+			} else {
+				$('table tr').addClass('active');
+			}
+		});
+	};
+
+	var handleSelectSingle = function () {
+		"use strict";
+		$('[data-click=checkbox-select-single]').click(function(e) {
+			e.preventDefault();
+			var targetRow = $(this).closest('tr');
+			if ($(targetRow).hasClass('active')) {
+				$(targetRow).removeClass('active');
+			} else {
+				$(targetRow).addClass('active');
+			}
+		});
+	};
+})(jQuery);

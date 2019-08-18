@@ -6,8 +6,8 @@
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
 <title>My Weekly | 用户管理</title>
 
-<%@ include file="/WEB-INF/jsp/common/include.jsp"%>
-<%@ include file="/WEB-INF/jsp/common/sidebarInit.jsp"%>
+<%@ include file="/WEB-INF/jsp/manage/common/include.jsp"%>
+<%@ include file="/WEB-INF/jsp/manage/common/sidebarInit.jsp"%>
 <script>
 	$(document).ready(function (){
 		$("#pageQueryForm").manage({});
@@ -80,9 +80,9 @@
 <body>
 	<!-- begin #page-container -->
 	<div id="page-container" class="fade page-sidebar-fixed page-header-fixed">
-		<%@ include file="/WEB-INF/jsp/common/head.jsp"%>
+		<%@ include file="/WEB-INF/jsp/manage/common/head.jsp"%>
 
-		<%@ include file="/WEB-INF/jsp/common/sidebar.jsp"%>
+		<%@ include file="/WEB-INF/jsp/manage/common/sidebar.jsp"%>
 		
 		<!-- begin #content -->
 		<div id="content" class="content">

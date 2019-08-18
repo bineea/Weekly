@@ -9,7 +9,7 @@
 	<meta charset="utf-8" />
 	<title>My Weekly | Login Page</title>
 	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
-	<%@ include file="/WEB-INF/jsp/common/include.jsp"%>
+	<%@ include file="/WEB-INF/jsp/manage/common/include.jsp"%>
 	<script>
 		$(document).ready(function() {
 			App.init();
