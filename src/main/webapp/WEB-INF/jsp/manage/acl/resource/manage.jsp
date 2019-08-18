@@ -6,8 +6,8 @@
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
 <title>My Weekly | 资源管理</title>
 
-<%@ include file="/WEB-INF/jsp/common/include.jsp"%>
-<%@ include file="/WEB-INF/jsp/common/sidebarInit.jsp"%>
+<%@ include file="/WEB-INF/jsp/manage/common/include.jsp"%>
+<%@ include file="/WEB-INF/jsp/manage/common/sidebarInit.jsp"%>
 <!-- ================== BEGIN PAGE LEVEL CSS ================== -->
 <link href="${rootUrl}assets/plugins/jstree/dist/themes/default/style.min.css" rel="stylesheet" />
 <!-- ================== END PAGE LEVEL CSS ================== -->
@@ -191,9 +191,9 @@
 <body>
 	<!-- begin #page-container -->
 	<div id="page-container" class="fade page-sidebar-fixed page-header-fixed">
-		<%@ include file="/WEB-INF/jsp/common/head.jsp"%>
+		<%@ include file="/WEB-INF/jsp/manage/common/head.jsp"%>
 
-		<%@ include file="/WEB-INF/jsp/common/sidebar.jsp"%>
+		<%@ include file="/WEB-INF/jsp/manage/common/sidebar.jsp"%>
 		
 		<!-- begin #content -->
 		<div id="content" class="content">

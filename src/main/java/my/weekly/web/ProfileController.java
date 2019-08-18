@@ -34,7 +34,7 @@ public class ProfileController extends AbstractController {
 	@RequestMapping(value = "/modPasswd", method = RequestMethod.GET)
 	public String modPasswdGet(@ModelAttribute("userInfoModel") UserInfoModel userInfoModel, Model model,
 			HttpServletRequest request) {
-		return "modPasswd";
+		return "manage/modPasswd";
 	}
 	
 	@RequestMapping(value = "/modPasswd", method = RequestMethod.POST)
@@ -54,7 +54,7 @@ public class ProfileController extends AbstractController {
 		model.addAttribute("name", user.getName());
 		model.addAttribute("email", user.getEmail());
 		model.addAttribute("male", user.getMale());
-		return "modProfile";
+		return "manage/modProfile";
 	}
 	
 	@RequestMapping(value = "/modProfile", method = RequestMethod.POST)
