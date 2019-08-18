@@ -1,8 +1,6 @@
 package my.weekly.dao.repo.jpa;
 
-import java.time.LocalDate;
-import java.util.List;
-
+import my.weekly.dao.entity.Daily;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -10,7 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
-import my.weekly.dao.entity.Daily;
+import java.time.LocalDate;
+import java.util.List;
 
 public interface DailyRepo extends JpaRepository<Daily, String>, JpaSpecificationExecutor<Daily>{
 
@@ -24,4 +23,7 @@ public interface DailyRepo extends JpaRepository<Daily, String>, JpaSpecificatio
 	
 	@Query(value = " select d from Daily d where d.demand.id = ?1 and operateDate = ?2")
 	Daily findByDemandAndOperateDate(String demandId, LocalDate operateDate);
+
+	@Query(value = " select d from Daily d where d.operateDate >= ?1 and d.operateDate <= ?2 and d.user.id = ?3 order by d.operateDate asc")
+	List<Daily> findByOperateDateAndUserAsc(LocalDate startOpDate, LocalDate endOpDate, String userId);
 }

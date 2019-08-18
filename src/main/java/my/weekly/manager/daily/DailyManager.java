@@ -2,6 +2,7 @@ package my.weekly.manager.daily;
 
 import javax.servlet.http.HttpServletRequest;
 
+import my.weekly.model.weekly.WeeklyModel;
 import org.springframework.data.domain.Page;
 
 import my.weekly.common.pub.MyManagerException;
@@ -43,5 +44,11 @@ public interface DailyManager {
 	 * @throws MyManagerException
 	 */
 	void del(String id, HttpServletRequest request) throws MyManagerException;
+
+	/**创建周报
+	 *
+	 * @throws MyManagerException
+	 */
+	void combine(WeeklyModel model, HttpServletRequest request) throws MyManagerException;
 	
 }

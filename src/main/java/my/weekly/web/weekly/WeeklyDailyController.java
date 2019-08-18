@@ -182,4 +182,14 @@ public class WeeklyDailyController extends AbstractController {
 		dailyManager.del(id, request);
 		addSuccess(response, "成功删除日报数据");
 	}
+
+	@RequestMapping(value="/daily/combine", method=RequestMethod.GET)
+	public String dailyCombineGet(HttpServletRequest request) {
+
+		return null;
+	}
+
+	public void dailyCombinePost(HttpServletRequest request, HttpServletResponse response) {
+
+	}
 }

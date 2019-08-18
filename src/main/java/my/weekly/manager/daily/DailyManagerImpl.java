@@ -3,15 +3,18 @@ package my.weekly.manager.daily;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
+import my.weekly.model.weekly.WeeklyModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import my.weekly.common.pub.MyManagerException;
@@ -135,6 +138,17 @@ public class DailyManagerImpl extends AbstractManager implements DailyManager {
 		if(!user.getId().equals(dopt.get().getUser().getId()))
 			throw new MyManagerException("只允许日报作者删除日报信息");
 		dailyRepo.delete(dopt.get());
+	}
+
+	@Override
+	public void combine(WeeklyModel model, HttpServletRequest request) throws MyManagerException {
+		User user = LoginHelper.getLoginUser(request);
+		if(user == null)
+			throw new MyManagerException("用户信息异常，需重新登录");
+		List<Daily> dailyList = dailyRepo.findByOperateDateAndUserAsc(model.getStartOpDate(), model.getEndOpDate(), user.getId());
+		if(CollectionUtils.isEmpty(dailyList))
+		    throw new MyManagerException("未查询到相关日报数据，无法生成周报");
+
 	}
 
 }
