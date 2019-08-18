@@ -45,77 +45,12 @@
 			return false;
 		});
 		
-		$("#data_result").on("click", ".delete_op", function() {
-			var trNode = this.parentNode.parentNode;
-			var hrefUrl = this.href;
-			$.confirm({
-		    	theme: 'white',
-		        title: 'Are you sure',
-		        content: '确定删除该数据？',
-		        buttons: {   
-		        	confirm: {
-		            	text: '确认',
-		                keys: ['enter'],
-		                action: function(){
-		 					$.ajax({
-		 						url: hrefUrl,
-		 						type: 'POST',
-		 						success: function(data, textStatus, jqXHR) {
-		 							if($.My.handleSuccessRes(data, textStatus, jqXHR)) {
-		 								$.My.handleResultData(data, $.My.Constans.HANDLE_RESULT_UL, $.My.Constans.HANDLE_RESULT_DEL);
-		 							}
-		 						},
-		 						error:function(XMLHttpRequest, textStatus, errorThrown) {
-		 							$.showWarnMsg("系统异常，请稍后重试！");
-		 						}
-		 					});
-		                }
-		            },
-		            cancel: {
-		            	text: '取消'
-		            }
-		        }
-		    });
-			return false;
-		});
+
 	});
 	
 </script>
 
 <style type="text/css">
-
-/* 表格点击样式
-table>tbody>tr.custom_clicked{
-	background-color: #cceeee;
-	font-size:1.25em;
-	font-weight:bold;
-	box-shadow: 10px 10px 5px #888888;
-} */
-
-/* ul点击样式 */
-.pricing-table .custom_clicked {
-    padding: 0px;
-    margin-top: -30px;
-}
-.pricing-table .custom_clicked .features > li {
-    padding: 15px 0;
-}
-.pricing-table .custom_clicked h3 {
-    padding: 20px 30px;
-}
-.pricing-table .custom_clicked .price .price-figure {
-    height: 90px;
-}
-.pricing-table .custom_clicked .price .price-number {
-    color: #fff;
-}
-.pricing-table .custom_clicked h3,
-.pace-progress {
-    background: #008a8a;
-}
-.pricing-table .custom_clicked .price {
-    background: #00acac;
-}
 
 </style>
 </head>
