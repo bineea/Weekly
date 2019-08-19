@@ -64,7 +64,6 @@
 			}
 			return false;
 		});
-		
 
 	});
 	
@@ -162,7 +161,7 @@
 								<tr>
 									<th style="padding: 0px;">
 										<div class="checkbox checkbox-css">
-											<input type="checkbox" id="checkbox_all" data-click="checkbox-select-all" value="" />
+											<input type="checkbox" id="checkbox_all" class="checkbox-select-all" value="" />
 											<label for="checkbox_all" style="margin-top:6px;">
 												Select All
 											</label>

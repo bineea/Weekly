@@ -9,7 +9,7 @@
 	</td>
     <td style="padding: 0px;width: 100px;">
         <div class="checkbox checkbox-css">
-            <input type="checkbox" id="checkbox_${data.id }" data-click="checkbox-select-single" value="${data.id }" />
+            <input type="checkbox" id="checkbox_${data.id }" class="checkbox-select-single" value="${data.id }" />
             <label for="checkbox_${data.id }" style="margin-top: 6px;">
                 <javatime:format value="${data.operateDate }" pattern="yyyy-MM-dd"  />
             </label>

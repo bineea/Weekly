@@ -998,29 +998,37 @@
 	}
 })(jQuery);
 
-(function ($) {
-	var handleSelectAll = function () {
-		"use strict";
-		$('[data-click=checkbox-select-all]').click(function(e) {
-			e.preventDefault();
-			if ($(this).closest('tr').hasClass('active')) {
-				$('table tr').removeClass('active');
-			} else {
-				$('table tr').addClass('active');
+/******************************************************************************
+ *
+ * 复选框全选
+ *
+ *****************************************************************************/
+(function($){
+	$.My.extendMethod({
+		name:"checkboxSelect",
+		event:{
+			change:{
+				"checkAll":"_handleCheckAll"
 			}
-		});
-	};
+		},
+		eventHandler:{
+			_handleCheckAll:function(element){
+				if($(element).is(":checked")){
+					$(this.settings.checkboxSelect.checkAll,this.currentTarget).prop("checked",true);
+					$(this.settings.checkboxSelect.checkOne,this.currentTarget).prop("checked",true);
+				} else {
+					$(this.settings.checkboxSelect.checkAll,this.currentTarget).prop("checked",false);
+					$(this.settings.checkboxSelect.checkOne,this.currentTarget).prop("checked",false);
+				}
+			}
+		},
+		//可配置项
+		config : {
+			//批量选择checkbox的class
+			checkAll:'.checkbox-select-all',
+			//单项的
+			checkOne:'.checkbox-select-single'
+		}
 
-	var handleSelectSingle = function () {
-		"use strict";
-		$('[data-click=checkbox-select-single]').click(function(e) {
-			e.preventDefault();
-			var targetRow = $(this).closest('tr');
-			if ($(targetRow).hasClass('active')) {
-				$(targetRow).removeClass('active');
-			} else {
-				$(targetRow).addClass('active');
-			}
-		});
-	};
+	});
 })(jQuery);
