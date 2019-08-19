@@ -149,7 +149,7 @@
 							</div>
 						</div>
 						<div class="input-group col-md-6 m-r-10 m-b-5">
-							<input type="text" class="form-control" placeholder="Search Daily Content" />
+							<input type="text" class="form-control" name="operateContent" placeholder="Search Daily Content" />
 							<span class="input-group-btn">
                                 <button class="btn btn-sm btn-inverse" type="submit"><i class="fa fa-search"></i></button>
                             </span>
@@ -160,10 +160,10 @@
 						<table id="data-table" class="table table-cart">
 							<thead>
 								<tr>
-									<th>
+									<th style="padding: 0px;">
 										<div class="checkbox checkbox-css">
-											<input type="checkbox" id="checkbox_css_1" data-click="checkbox-select-all" value="" />
-											<label for="checkbox_css_1">
+											<input type="checkbox" id="checkbox_all" data-click="checkbox-select-all" value="" />
+											<label for="checkbox_all" style="margin-top:6px;">
 												Select All
 											</label>
 										</div>

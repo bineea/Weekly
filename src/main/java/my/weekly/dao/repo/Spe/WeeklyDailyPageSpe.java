@@ -1,11 +1,14 @@
 package my.weekly.dao.repo.Spe;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.criteria.Predicate;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 
@@ -13,12 +16,30 @@ import my.weekly.dao.entity.Daily;
 import my.weekly.dao.entity.dict.HandleStatus;
 
 public class WeeklyDailyPageSpe extends AbstractPageSpecification<Daily> {
+	@Getter
+	@Setter
 	private LocalDateTime startTime;
+	@Getter
+	@Setter
 	private LocalDateTime endTime;
+	@Getter
+	@Setter
 	private String operateContent;
+	@Getter
+	@Setter
 	private String userId;
+	@Getter
+	@Setter
 	private String demandId;
+	@Getter
+	@Setter
 	private HandleStatus handleStatus;
+	@Getter
+	@Setter
+	private LocalDate startOpDate;
+	@Getter
+	@Setter
+	private LocalDate endOpDate;
 	
 	@Override
 	public Specification<Daily> handleSpecification() {
@@ -33,62 +54,18 @@ public class WeeklyDailyPageSpe extends AbstractPageSpecification<Daily> {
 			if(handleStatus != null)
 				predicateList.add(criteriaBuilder.equal(root.get("handleStatus"), handleStatus));
 			if(startTime != null)
-				predicateList.add(criteriaBuilder.lessThanOrEqualTo(root.get("createTime").as(LocalDateTime.class), startTime));
+				predicateList.add(criteriaBuilder.greaterThanOrEqualTo(root.get("createTime").as(LocalDateTime.class), startTime));
 			if(endTime != null)
-				predicateList.add(criteriaBuilder.greaterThanOrEqualTo(root.get("createTime").as(LocalDateTime.class), endTime));
+				predicateList.add(criteriaBuilder.lessThanOrEqualTo(root.get("createTime").as(LocalDateTime.class), endTime));
+			if(startOpDate != null)
+				predicateList.add(criteriaBuilder.greaterThanOrEqualTo(root.get("operateDate").as(LocalDate.class), startOpDate));
+			if(endOpDate != null)
+				predicateList.add(criteriaBuilder.lessThanOrEqualTo(root.get("operateDate").as(LocalDate.class), endOpDate));
 			query.where(predicateList.stream().toArray(Predicate[]::new));
 			query.orderBy(criteriaBuilder.desc(root.get("createTime").as(LocalDateTime.class)), criteriaBuilder.desc(root.get("id").as(String.class)));
 			return query.getRestriction();
 		};
 		return spe;
-	}
-
-	public LocalDateTime getStartTime() {
-		return startTime;
-	}
-
-	public void setStartTime(LocalDateTime startTime) {
-		this.startTime = startTime;
-	}
-
-	public LocalDateTime getEndTime() {
-		return endTime;
-	}
-
-	public void setEndTime(LocalDateTime endTime) {
-		this.endTime = endTime;
-	}
-
-	public String getOperateContent() {
-		return operateContent;
-	}
-
-	public void setOperateContent(String operateContent) {
-		this.operateContent = operateContent;
-	}
-
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-
-	public String getDemandId() {
-		return demandId;
-	}
-
-	public void setDemandId(String demandId) {
-		this.demandId = demandId;
-	}
-
-	public HandleStatus getHandleStatus() {
-		return handleStatus;
-	}
-
-	public void setHandleStatus(HandleStatus handleStatus) {
-		this.handleStatus = handleStatus;
 	}
 
 }

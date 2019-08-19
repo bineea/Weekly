@@ -7,20 +7,25 @@
 	<td hidden="hidden">
 		<input name="dailyId" type="radio" value="${data.id }">
 	</td>
-    <td class="checkbox-select">
-        <a href="#" data-click="checkbox-select-single"><i class="fa fa-square-o fa-fw"></i></a>
+    <td style="padding: 0px;width: 100px;">
+        <div class="checkbox checkbox-css">
+            <input type="checkbox" id="checkbox_${data.id }" data-click="checkbox-select-single" value="${data.id }" />
+            <label for="checkbox_${data.id }" style="margin-top: 6px;">
+                <javatime:format value="${data.operateDate }" pattern="yyyy-MM-dd"  />
+            </label>
+        </div>
     </td>
-    <td>
-        ${data.name }
+    <td class="text-center" style="width: 350px;">
+        【${data.demand.project.abbr }】${data.demand.title }
     </td>
-    <td class="text-center">${data.summary }</td>
     <td class="text-center">
-        ${data.area.value }
-    </td>
-    <td class="text-center">
-       ${data.user.name }
-    </td>
-    <td  class="text-center">
-    	操作
+        <c:choose>
+            <c:when test="${fn:length(data.operateContent) > 60}">
+                ${fn:substring(data.operateContent, 0, 60)}...
+            </c:when>
+            <c:otherwise>
+                ${data.operateContent }
+            </c:otherwise>
+        </c:choose>
     </td>
 </tr>

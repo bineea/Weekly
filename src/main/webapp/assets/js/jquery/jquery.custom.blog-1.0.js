@@ -725,7 +725,7 @@
 						if(responseHeader.note){
 							$.My.showMsg(true, $.My.base64.decode(responseHeader.note));
 						}else if(responseHeader.error){
-							$.My.showMsg(false, data.msg);
+							$.My.showMsg(false, responseText.msg);
 						}else if(responseHeader.cve){
 							var ejson = data.msg;
 							var parent = this.currentTarget;
