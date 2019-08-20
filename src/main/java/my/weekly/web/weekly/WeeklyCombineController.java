@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -52,10 +53,10 @@ public class WeeklyCombineController extends AbstractController {
     }
 
     @RequestMapping(value="/daily/weekly", method=RequestMethod.POST)
-    public void daily2WeeklyPost(@Valid @ModelAttribute WeeklyModel weeklyModel,
-                                 HttpServletRequest request, HttpServletResponse response)
+    public void daily2WeeklyPost(
+            @ModelAttribute WeeklyModel weeklyModel,
+            HttpServletRequest request, HttpServletResponse response)
             throws MyManagerException, IOException {
         String fileName = dailyManager.combine(weeklyModel, request);
-
     }
 }

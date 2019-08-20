@@ -55,11 +55,13 @@
 				$.ajax({
 					url:'${rootUrl}app/weekly/daily/weekly',
 					type:'POST',
+					traditional:true,
 					data:{
 						startOpDate:startOpDateVal,
 						endOpDate:endOpDateVal,
 						operateContent:operateContentVal,
-						dailyIds: checkboxVal},
+						dailyIds: checkboxVal
+					},
 					success:function(data, textStatus, jqXHR) {
 						if(jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_ERROR)) {
 							$.My.showMsg(false,data.msg);

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import my.weekly.model.BaseModel;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -25,5 +26,5 @@ public class WeeklyModel extends BaseModel {
     @NotEmpty
     @Getter
     @Setter
-    private List<String> dailyIdList;
+    private List<String> dailyIds;
 }
