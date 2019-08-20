@@ -31,7 +31,7 @@ public class PoiWriteExcelInfo extends BaseModel {
     private String savePath;
 
     public static void validateInfo(PoiWriteExcelInfo info) throws MyManagerException, IOException {
-        Assert.isNull(info, "PoiWriteExcelInfo不能为空");
+        Assert.notNull(info, "PoiWriteExcelInfo不能为空");
         if(!StringUtils.hasText(info.getTempletName()))
             throw new MyManagerException("Excel模板文件不能为空");
         File templet = new ClassPathResource("templet/excel/"+info.getTempletName()).getFile();

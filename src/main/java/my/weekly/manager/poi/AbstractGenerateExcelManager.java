@@ -28,7 +28,7 @@ public interface AbstractGenerateExcelManager<E> {
             PoiWriteExcelInfo.validateInfo(info);
             f = new File(info.getSavePath() + File.separator + info.getFileName());
             outputStream = new FileOutputStream(f);
-            workbook = new XSSFWorkbook(new ClassPathResource("templet/"+info.getTempletName()).getInputStream());
+            workbook = new XSSFWorkbook(new ClassPathResource("templet/excel/"+info.getTempletName()).getInputStream());
             XSSFSheet sheet = workbook.getSheetAt(info.getSheetNo());
             int rno = 0;
             for(E e : dataList) {
@@ -38,9 +38,13 @@ public interface AbstractGenerateExcelManager<E> {
             }
             workbook.write(outputStream);
         } finally {
-            outputStream.flush();
-            outputStream.close();
-            workbook.close();
+            if(outputStream != null) {
+                outputStream.flush();
+                outputStream.close();
+            }
+            if(workbook != null) {
+                workbook.close();
+            }
         }
         return f;
     }

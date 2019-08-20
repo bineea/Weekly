@@ -7,9 +7,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -159,7 +157,7 @@ public class DailyManagerImpl extends AbstractManager implements DailyManager, A
 		List<Daily> dailyList = dailyRepo.findByOperateDateAndUserAsc(model.getStartOpDate(), model.getEndOpDate(), user.getId());
 		if(CollectionUtils.isEmpty(dailyList))
 		    throw new MyManagerException("未查询到相关日报数据，无法生成周报");
-		if(!dailyList.stream().map(d -> d.getId()).collect(Collectors.toList()).containsAll(model.getDailyIdList()))
+		if(!dailyList.stream().map(d -> d.getId()).collect(Collectors.toList()).containsAll(model.getDailyIds()))
 			throw new MyManagerException("数据异常，已选择日报数据与操作时间不匹配");
 		PoiWriteExcelInfo info = initWriteInfo();
 		info.setFileName(user.getName()
@@ -168,7 +166,8 @@ public class DailyManagerImpl extends AbstractManager implements DailyManager, A
 				+ DateTimeFormatter.ISO_LOCAL_DATE.format(model.getStartOpDate())
 				+ "海南省小客车保有量调控工作情况.xlsx");
 		info.setSavePath(MyFinals.FILE_TMP_PATH + "weekly" + File.separator + user.getId());
-		File f = generateExcel(info, dailyList.stream().filter(d -> model.getDailyIdList().contains(d.getId())).collect(Collectors.toList()));
+		File f = generateExcel(info, dailyList.stream().filter(d -> model.getDailyIds().contains(d.getId())).collect(Collectors.toList()));
+		logger.info(f.getAbsolutePath());
 		return f.getName();
 	}
 
@@ -183,28 +182,27 @@ public class DailyManagerImpl extends AbstractManager implements DailyManager, A
 
 	@Override
 	public void fillData(Row row, Daily daily) {
-		ZoneId zoneId = ZoneId.systemDefault();
-		Cell cell = row.getCell(0);
-		cell.setCellValue(Date.from(daily.getOperateDate().atStartOfDay(zoneId).toInstant()));
-		cell = row.getCell(1);
+		Cell cell = getCell(row,0);
+		cell.setCellValue(daily.getOperateDate().format(DateTimeFormatter.ofPattern("yyyy/M/d")));
+		cell = getCell(row,1);
 		cell.setCellValue("海南");
-		cell = row.getCell(2);
+		cell = getCell(row,2);
 		cell.setCellValue("调控办");
-		cell = row.getCell(3);
+		cell = getCell(row,3);
 		cell.setCellValue("摇号服务");
-		cell = row.getCell(4);
+		cell = getCell(row,4);
 		cell.setCellValue(daily.getDemand().getDemandType().getValue());
-		cell = row.getCell(5);
+		cell = getCell(row,5);
 		cell.setCellValue(daily.getDemand().getSummary());
-		cell = row.getCell(6);
+		cell = getCell(row,6);
 		cell.setCellValue(daily.getOperateContent());
-		cell = row.getCell(7);
+		cell = getCell(row,7);
 		cell.setCellValue("无");
-		cell = row.getCell(8);
+		cell = getCell(row,8);
 		cell.setCellValue(daily.getHandleStatus().getValue());
-		cell = row.getCell(9);
+		cell = getCell(row,9);
 		cell.setCellValue("否");
-		cell = row.getCell(10);
+		cell = getCell(row,10);
 		cell.setCellValue(daily.getUser().getName());
 	}
 }
