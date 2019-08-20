@@ -12,7 +12,6 @@ import org.springframework.util.StringUtils;
 import java.io.File;
 import java.io.IOException;
 
-@AllArgsConstructor
 public class PoiWriteExcelInfo extends BaseModel {
 
     @Getter
@@ -35,13 +34,13 @@ public class PoiWriteExcelInfo extends BaseModel {
         Assert.isNull(info, "PoiWriteExcelInfo不能为空");
         if(!StringUtils.hasText(info.getTempletName()))
             throw new MyManagerException("Excel模板文件不能为空");
-        File templet = new ClassPathResource("templet/"+info.getTempletName()).getFile();
+        File templet = new ClassPathResource("templet/excel/"+info.getTempletName()).getFile();
         if(!templet.exists())
             throw new MyManagerException("Excel模板文件不存在");
         if(!StringUtils.hasText(info.getFileName()))
-            throw new MyManagerException("");
+            throw new MyManagerException("文件名称不能为空");
         if(!StringUtils.hasText(info.getSavePath()))
-            throw new MyManagerException("");
+            throw new MyManagerException("文件保存路径不能为空");
         File toSave = new File(info.getSavePath());
         if(!toSave.exists()) {
             toSave.mkdirs();

@@ -10,6 +10,8 @@ import my.weekly.dao.entity.Daily;
 import my.weekly.dao.repo.Spe.WeeklyDailyPageSpe;
 import my.weekly.model.weekly.DailyModel;
 
+import java.io.IOException;
+
 public interface DailyManager {
 
 	/**分页查询
@@ -49,6 +51,6 @@ public interface DailyManager {
 	 *
 	 * @throws MyManagerException
 	 */
-	void combine(WeeklyModel model, HttpServletRequest request) throws MyManagerException;
+	String combine(WeeklyModel model, HttpServletRequest request) throws MyManagerException, IOException;
 	
 }

@@ -41,20 +41,31 @@
 		});
 
 		$("#next").click(function(){
-			var val=$('input:radio[name="projectId"]:checked').val();
-			if(val === null || val === '' || val == null || val == '') {
-				$.My.showMsg(false,"请选择对应的项目");
+			var startOpDateVal = $("#startOpDate").val();
+			var endOpDateVal = $("#endOpDate").val();
+			var operateContentVal = $("#operateContent").val();
+			var checkboxVal = new Array();
+			$("input:checkbox[class='checkbox-select-single']:checked").each(function (i) {
+				checkboxVal.push($(this).val())
+			});
+			if(checkboxVal == '' || checkboxVal == null || checkboxVal.length <= 0) {
+				$.My.showMsg(false, '请选择需要的日报数据');
 			}
 			else {
 				$.ajax({
-					url:'${rootUrl}app/weekly/daily/check',
+					url:'${rootUrl}app/weekly/daily/weekly',
 					type:'POST',
-					data:{projectId: val},
+					data:{
+						startOpDate:startOpDateVal,
+						endOpDate:endOpDateVal,
+						operateContent:operateContentVal,
+						dailyIds: checkboxVal},
 					success:function(data, textStatus, jqXHR) {
 						if(jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_ERROR)) {
 							$.My.showMsg(false,data.msg);
 						} else {
-							window.location.href = '${rootUrl}app/weekly/daily/demand?projectId='+val;
+							//返回File文件唯一标识
+							//window.location.href = '${rootUrl}app/weekly/daily/demand?projectId='+val;
 						}
 					},
 					error:function(XMLHttpRequest, textStatus, errorThrown) {
@@ -136,19 +147,19 @@
 				<div class="checkout-body">
 					<form:form id="dailyForm" name="dailyForm" cssClass="form-inline my_search_form" modelAttribute="spe" method="POST" action="${rootUrl}app/weekly/daily/combine">
 						<div class="form-group m-r-10 m-b-5">
-							<div id="startOpDate" class="input-group date">
-								<input type="text" class="form-control" name="startOpDate" placeholder="START DATE" />
+							<div class="input-group date">
+								<input type="text" class="form-control" id="startOpDate" name="startOpDate" placeholder="START DATE" />
 								<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 							</div>
 						</div>
 						<div class="form-group m-r-10 m-b-5">
-							<div id="endOpDate" class="input-group date">
-								<input type="text" class="form-control" name="endOpDate" placeholder="END DATE" />
+							<div class="input-group date">
+								<input type="text" class="form-control" id="endOpDate" name="endOpDate" placeholder="END DATE" />
 								<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 							</div>
 						</div>
 						<div class="input-group col-md-6 m-r-10 m-b-5">
-							<input type="text" class="form-control" name="operateContent" placeholder="Search Daily Content" />
+							<input type="text" class="form-control" id="operateContent" name="operateContent" placeholder="Search Daily Content" />
 							<span class="input-group-btn">
                                 <button class="btn btn-sm btn-inverse" type="submit"><i class="fa fa-search"></i></button>
                             </span>

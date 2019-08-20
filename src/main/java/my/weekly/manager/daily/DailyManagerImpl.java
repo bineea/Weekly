@@ -1,14 +1,25 @@
 package my.weekly.manager.daily;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import my.weekly.manager.poi.AbstractGenerateExcelManager;
+import my.weekly.model.MyFinals;
+import my.weekly.model.poi.PoiWriteExcelInfo;
 import my.weekly.model.weekly.WeeklyModel;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -32,7 +43,7 @@ import my.weekly.manager.LoginHelper;
 import my.weekly.model.weekly.DailyModel;
 
 @Service
-public class DailyManagerImpl extends AbstractManager implements DailyManager {
+public class DailyManagerImpl extends AbstractManager implements DailyManager, AbstractGenerateExcelManager<Daily> {
 
 	@Autowired
 	private DailyRepo dailyRepo;
@@ -81,7 +92,7 @@ public class DailyManagerImpl extends AbstractManager implements DailyManager {
 			throw new MyManagerException("未查询到对应需求信息");
 		if(!demandOpt.get().getProject().getId().equals(projectOpt.get().getId()))
 			throw new MyManagerException("对应需求与所属项目不匹配");
-		if(!StringUtils.hasText(dailyModel.getSqlContent()) && demandOpt.get().getDemandType() == DemandType.ZSSJXG)
+		if(!StringUtils.hasText(dailyModel.getSqlContent()) && demandOpt.get().getDemandType() == DemandType.SJKXG)
 			throw new MyManagerException("sql语句不能为空");
 		
 	}
@@ -141,14 +152,59 @@ public class DailyManagerImpl extends AbstractManager implements DailyManager {
 	}
 
 	@Override
-	public void combine(WeeklyModel model, HttpServletRequest request) throws MyManagerException {
+	public String combine(WeeklyModel model, HttpServletRequest request) throws MyManagerException, IOException {
 		User user = LoginHelper.getLoginUser(request);
 		if(user == null)
 			throw new MyManagerException("用户信息异常，需重新登录");
 		List<Daily> dailyList = dailyRepo.findByOperateDateAndUserAsc(model.getStartOpDate(), model.getEndOpDate(), user.getId());
 		if(CollectionUtils.isEmpty(dailyList))
 		    throw new MyManagerException("未查询到相关日报数据，无法生成周报");
-
+		if(!dailyList.stream().map(d -> d.getId()).collect(Collectors.toList()).containsAll(model.getDailyIdList()))
+			throw new MyManagerException("数据异常，已选择日报数据与操作时间不匹配");
+		PoiWriteExcelInfo info = initWriteInfo();
+		info.setFileName(user.getName()
+				+ DateTimeFormatter.ISO_LOCAL_DATE.format(model.getStartOpDate())
+				+ "至"
+				+ DateTimeFormatter.ISO_LOCAL_DATE.format(model.getStartOpDate())
+				+ "海南省小客车保有量调控工作情况.xlsx");
+		info.setSavePath(MyFinals.FILE_TMP_PATH + "weekly" + File.separator + user.getId());
+		File f = generateExcel(info, dailyList.stream().filter(d -> model.getDailyIdList().contains(d.getId())).collect(Collectors.toList()));
+		return f.getName();
 	}
 
+	@Override
+	public PoiWriteExcelInfo initWriteInfo() {
+		PoiWriteExcelInfo info = new PoiWriteExcelInfo();
+		info.setRowNo(1);
+		info.setSheetNo(0);
+		info.setTempletName("SystemMaintainTemplet.xlsx");
+		return info;
+	}
+
+	@Override
+	public void fillData(Row row, Daily daily) {
+		ZoneId zoneId = ZoneId.systemDefault();
+		Cell cell = row.getCell(0);
+		cell.setCellValue(Date.from(daily.getOperateDate().atStartOfDay(zoneId).toInstant()));
+		cell = row.getCell(1);
+		cell.setCellValue("海南");
+		cell = row.getCell(2);
+		cell.setCellValue("调控办");
+		cell = row.getCell(3);
+		cell.setCellValue("摇号服务");
+		cell = row.getCell(4);
+		cell.setCellValue(daily.getDemand().getDemandType().getValue());
+		cell = row.getCell(5);
+		cell.setCellValue(daily.getDemand().getSummary());
+		cell = row.getCell(6);
+		cell.setCellValue(daily.getOperateContent());
+		cell = row.getCell(7);
+		cell.setCellValue("无");
+		cell = row.getCell(8);
+		cell.setCellValue(daily.getHandleStatus().getValue());
+		cell = row.getCell(9);
+		cell.setCellValue("否");
+		cell = row.getCell(10);
+		cell.setCellValue(daily.getUser().getName());
+	}
 }

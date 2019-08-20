@@ -1,5 +1,6 @@
 package my.weekly.model;
 
+import java.io.File;
 import java.util.regex.Pattern;
 
 import org.springframework.util.StringUtils;
@@ -20,9 +21,11 @@ public class MyFinals {
 	public static final int DEFAULT_SUMMANY_LENGTH = 27;
 //	Excel文件名后缀xlsx
 	public static final String EXCEL_XLSX = "xlsx";
+//	生成文件临时路径
+	public static final String FILE_TMP_PATH = File.separator + "tmp" + File.separator;
 	
 //	手机号码正则
-	public static final String mobileRegexp = "^1[3|4|5|7|8|9]{1}[0-9]{9}$";
+	public static final String mobileRegexp = "^1[0-9]{10}$";
 	public static final Pattern mobilePattern = Pattern.compile(mobileRegexp);
 //	邮箱地址正则
 	public static final String emailRegexp = "^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z0-9]{2,6}$";

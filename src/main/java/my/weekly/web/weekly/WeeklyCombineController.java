@@ -4,6 +4,7 @@ import my.weekly.common.pub.MyManagerException;
 import my.weekly.dao.entity.Daily;
 import my.weekly.dao.repo.Spe.WeeklyDailyPageSpe;
 import my.weekly.manager.daily.DailyManager;
+import my.weekly.model.weekly.WeeklyModel;
 import my.weekly.web.AbstractController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,9 +13,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.List;
 
 @Controller
 @RequestMapping("weekly")
@@ -46,7 +52,10 @@ public class WeeklyCombineController extends AbstractController {
     }
 
     @RequestMapping(value="/daily/weekly", method=RequestMethod.POST)
-    public void daily2WeeklyPost(HttpServletRequest request, HttpServletResponse response) {
+    public void daily2WeeklyPost(@Valid @ModelAttribute WeeklyModel weeklyModel,
+                                 HttpServletRequest request, HttpServletResponse response)
+            throws MyManagerException, IOException {
+        String fileName = dailyManager.combine(weeklyModel, request);
 
     }
 }

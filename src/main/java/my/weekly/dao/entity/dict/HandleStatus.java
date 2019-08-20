@@ -3,7 +3,7 @@ package my.weekly.dao.entity.dict;
 public enum HandleStatus {
 	NEW("未处理") {},
 	DOING("处理中") {},
-	DONE("处理完成") {},
+	DONE("已处理") {},
 	;
 	
 	private String value;
