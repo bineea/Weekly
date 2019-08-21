@@ -11,8 +11,8 @@ import java.sql.Blob;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="weekly_email_annex")
-public class EmailAnnex extends StringUUIDEntity {
+@Table(name="weekly_weekly_file")
+public class WeeklyFile extends StringUUIDEntity {
     @NotBlank
     @Getter(onMethod_={@Column(name="name")})
     @Setter
@@ -31,4 +31,8 @@ public class EmailAnnex extends StringUUIDEntity {
     @Getter(onMethod_={@Column(name="create_time")})
     @Setter
     private LocalDateTime createTime;
+    @NotNull
+    @Getter(onMethod_={@ManyToOne,@JoinColumn(name="user_id")})
+    @Setter
+    private User user;
 }

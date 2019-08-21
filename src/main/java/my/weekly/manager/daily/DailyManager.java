@@ -2,6 +2,7 @@ package my.weekly.manager.daily;
 
 import javax.servlet.http.HttpServletRequest;
 
+import my.weekly.dao.entity.WeeklyFile;
 import my.weekly.model.weekly.WeeklyModel;
 import org.springframework.data.domain.Page;
 
@@ -51,6 +52,6 @@ public interface DailyManager {
 	 *
 	 * @throws MyManagerException
 	 */
-	String combine(WeeklyModel model, HttpServletRequest request) throws MyManagerException, IOException;
+	WeeklyFile combine(WeeklyModel model, HttpServletRequest request) throws MyManagerException, IOException;
 	
 }

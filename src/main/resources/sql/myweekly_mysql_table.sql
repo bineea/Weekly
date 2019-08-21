@@ -102,3 +102,31 @@ CREATE TABLE `weekly_daily` (
   CONSTRAINT `daily_user_id` FOREIGN KEY (`user_id`) REFERENCES `weekly_user` (`id`),
 	CONSTRAINT `daily_demand_id` FOREIGN KEY (`demand_id`) REFERENCES `weekly_demand` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `weekly_weekly_file` (
+  `id` varchar(32) NOT NULL,
+  `name` varchar(512) NOT NULL,
+  `file` blob NOT NULL,
+  `save_path` varchar(512) NOT NULL,
+  `create_time` datetime(0) NOT NULL,
+  `send_email_id` varchar(32),
+  `user_id` varchar(32) NOT NULL,
+  PRIMARY KEY (`id`),
+	KEY `send_email_id` (`send_email_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `wf_send_email_id` FOREIGN KEY (`send_email_id`) REFERENCES `weekly_send_email` (`id`),
+	CONSTRAINT `wf_user_id` FOREIGN KEY (`user_id`) REFERENCES `weekly_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `weekly_send_email` (
+  `id` varchar(32) NOT NULL,
+  `account` varchar(64) NOT NULL,
+	`recipients` varchar(256) NOT NULL,
+	`content` varchar(4000) NOT NULL,
+  `title` varchar(256) NOT NULL,
+  `create_time` datetime(0) NOT NULL,
+  `user_id` varchar(32) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+	CONSTRAINT `se_user_id` FOREIGN KEY (`user_id`) REFERENCES `weekly_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

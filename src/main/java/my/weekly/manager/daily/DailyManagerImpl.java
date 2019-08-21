@@ -1,23 +1,25 @@
 package my.weekly.manager.daily;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import my.weekly.dao.entity.*;
+import my.weekly.dao.repo.jpa.WeeklyFileRepo;
 import my.weekly.manager.poi.AbstractGenerateExcelManager;
 import my.weekly.model.MyFinals;
 import my.weekly.model.poi.PoiWriteExcelInfo;
 import my.weekly.model.weekly.WeeklyModel;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.hibernate.engine.jdbc.NonContextualLobCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -27,10 +29,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import my.weekly.common.pub.MyManagerException;
-import my.weekly.dao.entity.Daily;
-import my.weekly.dao.entity.Demand;
-import my.weekly.dao.entity.Project;
-import my.weekly.dao.entity.User;
 import my.weekly.dao.entity.dict.DemandType;
 import my.weekly.dao.repo.Spe.WeeklyDailyPageSpe;
 import my.weekly.dao.repo.jpa.DailyRepo;
@@ -49,6 +47,8 @@ public class DailyManagerImpl extends AbstractManager implements DailyManager, A
 	private ProjectRepo projectRepo;
 	@Autowired
 	private DemandRepo demandRepo;
+	@Autowired
+	private WeeklyFileRepo weeklyFileRepo;
 	
 	@Override
 	public Page<Daily> pageQuery(WeeklyDailyPageSpe spe) {
@@ -150,7 +150,7 @@ public class DailyManagerImpl extends AbstractManager implements DailyManager, A
 	}
 
 	@Override
-	public String combine(WeeklyModel model, HttpServletRequest request) throws MyManagerException, IOException {
+	public WeeklyFile combine(WeeklyModel model, HttpServletRequest request) throws MyManagerException, IOException {
 		User user = LoginHelper.getLoginUser(request);
 		if(user == null)
 			throw new MyManagerException("用户信息异常，需重新登录");
@@ -167,8 +167,19 @@ public class DailyManagerImpl extends AbstractManager implements DailyManager, A
 				+ "海南省小客车保有量调控工作情况.xlsx");
 		info.setSavePath(MyFinals.FILE_TMP_PATH + "weekly" + File.separator + user.getId());
 		File f = generateExcel(info, dailyList.stream().filter(d -> model.getDailyIds().contains(d.getId())).collect(Collectors.toList()));
-		logger.info(f.getAbsolutePath());
-		return f.getName();
+		WeeklyFile wf = saveWeeklyFile(f, user);
+		return wf;
+	}
+
+	private WeeklyFile saveWeeklyFile(File file, User user) throws IOException {
+		WeeklyFile weeklyFile = new WeeklyFile();
+		weeklyFile.setName(file.getName());
+		weeklyFile.setFile(NonContextualLobCreator.INSTANCE.createBlob(new FileInputStream(file), file.length()));
+		weeklyFile.setSavePath(file.getAbsolutePath());
+		weeklyFile.setUser(user);
+		weeklyFile.setCreateTime(LocalDateTime.now());
+		weeklyFileRepo.save(weeklyFile);
+		return weeklyFile;
 	}
 
 	@Override
