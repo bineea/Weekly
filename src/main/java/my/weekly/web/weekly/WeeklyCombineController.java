@@ -1,9 +1,11 @@
 package my.weekly.web.weekly;
 
 import my.weekly.common.pub.MyManagerException;
+import my.weekly.common.tools.HttpResponseHelper;
 import my.weekly.dao.entity.Daily;
 import my.weekly.dao.repo.Spe.WeeklyDailyPageSpe;
 import my.weekly.manager.daily.DailyManager;
+import my.weekly.model.NoteModel;
 import my.weekly.model.weekly.WeeklyModel;
 import my.weekly.web.AbstractController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,9 +56,26 @@ public class WeeklyCombineController extends AbstractController {
 
     @RequestMapping(value="/daily/weekly", method=RequestMethod.POST)
     public void daily2WeeklyPost(
-            @ModelAttribute WeeklyModel weeklyModel,
+            @Valid @ModelAttribute WeeklyModel weeklyModel,
             HttpServletRequest request, HttpServletResponse response)
             throws MyManagerException, IOException {
         String fileName = dailyManager.combine(weeklyModel, request);
+        addSuccess(response, "汇总日报成功");
+        NoteModel note = new NoteModel(true, fileName);
+        HttpResponseHelper.responseJson(note.toJson(), response);
+    }
+
+    @RequestMapping(value="/daily/sendEmail", method=RequestMethod.GET)
+    public String dailySendEmailGet(
+            @RequestParam(value="fileName", required=true) String fileName,
+            HttpServletRequest request) {
+
+        return prefix + "weekly/sendEmail";
+    }
+
+    @RequestMapping(value="/daily/sendEmail", method=RequestMethod.POST)
+    public String dailySendEmailPost() {
+
+        return prefix + "weekly/result";
     }
 }

@@ -2,6 +2,7 @@
     pageEncoding="utf-8"%>
 <!DOCTYPE html>
 <html>
+<head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>My Weekly</title>
 
@@ -55,6 +56,7 @@
 				$.ajax({
 					url:'${rootUrl}app/weekly/daily/weekly',
 					type:'POST',
+					//ajax提交数组数据，必须设定traditional:true；防止深度序列化
 					traditional:true,
 					data:{
 						startOpDate:startOpDateVal,
@@ -66,8 +68,7 @@
 						if(jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_ERROR)) {
 							$.My.showMsg(false,data.msg);
 						} else {
-							//返回File文件唯一标识
-							//window.location.href = '${rootUrl}app/weekly/daily/demand?projectId='+val;
+							window.location.href = '${rootUrl}app/weekly/daily/?fileName='+data.msg;
 						}
 					},
 					error:function(XMLHttpRequest, textStatus, errorThrown) {
