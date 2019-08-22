@@ -53,26 +53,30 @@
 				$.My.showMsg(false, '请选择需要的日报数据');
 			}
 			else {
-				$.ajax({
-					url:'${rootUrl}app/weekly/daily/weekly',
-					type:'POST',
-					//ajax提交数组数据，必须设定traditional:true；防止深度序列化
-					traditional:true,
-					data:{
-						startOpDate:startOpDateVal,
-						endOpDate:endOpDateVal,
-						operateContent:operateContentVal,
-						dailyIds: checkboxVal
-					},
-					success:function(data, textStatus, jqXHR) {
-						if(jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_ERROR)) {
-							$.My.showMsg(false,data.msg);
-						} else {
-							window.location.href = '${rootUrl}app/weekly/daily/sendEmail?weeklyFileId='+data.msg;
+				$.confirm({
+					theme: 'white',
+					title: 'Are you sure',
+					content: 'Do you need to send email?',
+					buttons: {
+						confirm: {
+							text: 'yes',
+							btnClass: 'btn-dark',
+							keys: ['enter'],
+							action: function () {
+								$.alert('yes!');
+							}
+						},
+						no: {
+							text: 'no',
+							btnClass: 'btn-default',
+							action: function(){
+								$.alert('no!');
+							}
+						},
+						cancel: {
+							text: 'cancel',
+							btnClass: 'btn-red'
 						}
-					},
-					error:function(XMLHttpRequest, textStatus, errorThrown) {
-						$.My.showMsg(false,"系统异常，请稍后重试！");
 					}
 				});
 			}
@@ -80,6 +84,35 @@
 		});
 
 	});
+
+	function combineDaily(startOpDateVal, endOpDateVal, operateContentVal, checkboxVal, toSend) {
+		$.ajax({
+			url:'${rootUrl}app/weekly/daily/weekly',
+			type:'POST',
+			//ajax提交数组数据，必须设定traditional:true；防止深度序列化
+			traditional:true,
+			data:{
+				startOpDate:startOpDateVal,
+				endOpDate:endOpDateVal,
+				operateContent:operateContentVal,
+				dailyIds: checkboxVal
+			},
+			success:function(data, textStatus, jqXHR) {
+				if(jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_ERROR)) {
+					$.My.showMsg(false,data.msg);
+				} else {
+					if(toSend) {
+						window.location.href = '${rootUrl}app/weekly/daily/sendEmail?weeklyFileId='+data.msg;
+					} else {
+						window.location.href = '${rootUrl}app/weekly/daily/weeklyFile/result?weeklyFileId='+data.msg;
+					}
+				}
+			},
+			error:function(XMLHttpRequest, textStatus, errorThrown) {
+				$.My.showMsg(false,"系统异常，请稍后重试！");
+			}
+		});
+	}
 	
 </script>
 

@@ -75,8 +75,22 @@ public class WeeklyCombineController extends AbstractController {
     }
 
     @RequestMapping(value="/daily/sendEmail", method=RequestMethod.POST)
-    public String dailySendEmailPost() {
-
+    public String dailySendEmailPost(Model model) {
+        model.addAttribute("toSendEmail", true);
         return prefix + "weekly/result";
+    }
+
+    @RequestMapping(value="/daily/weeklyFile/result", method=RequestMethod.GET)
+    public String daily2WeeklyFileResult(
+            @RequestParam(value="weeklyFileId", required=true) String weeklyFileId,
+            Model model) {
+
+        model.addAttribute("toSendEmail", false);
+        return prefix + "weekly/result";
+    }
+
+    @RequestMapping(value="/daily/weeklyFile/download", method=RequestMethod.GET)
+    public void daily2WeeklyFileDownload() {
+
     }
 }

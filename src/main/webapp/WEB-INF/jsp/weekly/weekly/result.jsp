@@ -94,33 +94,66 @@
                 <div class="checkout-body">
 					<!-- BEGIN checkout-message -->
                     <div class="checkout-message">
-                        <h1>Thank you! <small>Your Daily has successfully submitted with the following details.</small></h1>
-                        <div class="table-responsive2">
-                            <table class="table table-payment-summary">
-                                <tbody>
-                                    <tr>
-                                        <td class="field">操作日期</td>
-                                        <td class="value"><javatime:format value="${daily.operateDate}" pattern="yyyy-MM-dd"  /></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="field">处理状态</td>
-                                        <td class="value">${daily.handleStatus.value }</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="field">所属项目</td>
-                                        <td class="value">${daily.demand.project.name }</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="field">对应需求</td>
-                                        <td class="value">${daily.demand.title }</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="field">具体操作</td>
-                                        <td class="value">${daily.operateContent }</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                        <c:choose>
+                            <c:when test="">
+                                <h1>Thank you! <small>Your Daily has successfully submitted with the following details.</small></h1>
+                                <div class="table-responsive2">
+                                    <table class="table table-payment-summary">
+                                        <tbody>
+                                        <tr>
+                                            <td class="field">操作日期</td>
+                                            <td class="value"><javatime:format value="${daily.operateDate}" pattern="yyyy-MM-dd"  /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="field">处理状态</td>
+                                            <td class="value">${daily.handleStatus.value }</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="field">所属项目</td>
+                                            <td class="value">${daily.demand.project.name }</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="field">对应需求</td>
+                                            <td class="value">${daily.demand.title }</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="field">具体操作</td>
+                                            <td class="value">${daily.operateContent }</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <h1>Thank you! <small>Your Daily has successfully submitted with the following details.</small></h1>
+                                <div class="table-responsive2">
+                                    <table class="table table-payment-summary">
+                                        <tbody>
+                                        <tr>
+                                            <td class="field">操作日期</td>
+                                            <td class="value"><javatime:format value="${daily.operateDate}" pattern="yyyy-MM-dd"  /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="field">处理状态</td>
+                                            <td class="value">${daily.handleStatus.value }</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="field">所属项目</td>
+                                            <td class="value">${daily.demand.project.name }</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="field">对应需求</td>
+                                            <td class="value">${daily.demand.title }</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="field">具体操作</td>
+                                            <td class="value">${daily.operateContent }</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                     <!-- END checkout-message -->
                 </div>
