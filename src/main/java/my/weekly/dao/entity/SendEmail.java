@@ -28,9 +28,9 @@ public class SendEmail extends StringUUIDEntity {
     @Getter(onMethod_= {@Column(name="content")})
     @Setter
     private String content; //内容
-    @Getter(onMethod_= {@Column(name="title")})
+    @Getter(onMethod_= {@Column(name="subject")})
     @Setter
-    private String title; //标题
+    private String subject; //主题
     @NotNull
     @Getter(onMethod_= {@ManyToOne, @JoinColumn(name="user_id")})
     @Setter

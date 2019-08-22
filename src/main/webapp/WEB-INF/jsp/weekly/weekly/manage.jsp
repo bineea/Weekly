@@ -35,7 +35,7 @@
 
 		$("#content").myInit({
 			search:{
-				autoSearch:true,
+				autoSearch:false,
 				bindPage:$.My.Constans.BIND_PAGE_CENTER,
 	    		handleResult:$.My.Constans.HANDLE_RESULT_TABLE
 	    	}
@@ -68,7 +68,7 @@
 						if(jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_ERROR)) {
 							$.My.showMsg(false,data.msg);
 						} else {
-							window.location.href = '${rootUrl}app/weekly/daily/?fileName='+data.msg;
+							window.location.href = '${rootUrl}app/weekly/daily/sendEmail?weeklyFileId='+data.msg;
 						}
 					},
 					error:function(XMLHttpRequest, textStatus, errorThrown) {

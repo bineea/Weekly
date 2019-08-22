@@ -34,7 +34,7 @@ public class SendEmailManagerImpl extends AbstractManager implements SendEmailMa
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessge,true);
         mimeMessageHelper.setFrom(sendEmailInfo.getAccount());
         mimeMessageHelper.setTo(sendEmailInfo.getRecipientList().toArray(new String[] {}));
-        mimeMessageHelper.setSubject(sendEmailInfo.getTitle());
+        mimeMessageHelper.setSubject(sendEmailInfo.getSubject());
         mimeMessageHelper.setText(sendEmailInfo.getContent(),true);
         if(!CollectionUtils.isEmpty(sendEmailInfo.getAnnexList()))
         {

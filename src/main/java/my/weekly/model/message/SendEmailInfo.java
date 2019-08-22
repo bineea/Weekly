@@ -44,7 +44,7 @@ public class SendEmailInfo extends BaseModel {
     private String content; //内容
     @Getter
     @Setter
-    private String title; //标题
+    private String subject; //主题
 
     public static void validateInfo(SendEmailInfo sendEmailInfo) throws MyManagerException {
         Assert.isNull(sendEmailInfo, "EmailInfo不能为空");

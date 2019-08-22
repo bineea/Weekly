@@ -3,6 +3,7 @@ package my.weekly.web.weekly;
 import my.weekly.common.pub.MyManagerException;
 import my.weekly.common.tools.HttpResponseHelper;
 import my.weekly.dao.entity.Daily;
+import my.weekly.dao.entity.WeeklyFile;
 import my.weekly.dao.repo.Spe.WeeklyDailyPageSpe;
 import my.weekly.manager.daily.DailyManager;
 import my.weekly.model.NoteModel;
@@ -59,17 +60,17 @@ public class WeeklyCombineController extends AbstractController {
             @Valid @ModelAttribute WeeklyModel weeklyModel,
             HttpServletRequest request, HttpServletResponse response)
             throws MyManagerException, IOException {
-        String fileName = dailyManager.combine(weeklyModel, request);
+        WeeklyFile weeklyFile = dailyManager.combine(weeklyModel, request);
         addSuccess(response, "汇总日报成功");
-        NoteModel note = new NoteModel(true, fileName);
+        NoteModel note = new NoteModel(true, weeklyFile.getId());
         HttpResponseHelper.responseJson(note.toJson(), response);
     }
 
     @RequestMapping(value="/daily/sendEmail", method=RequestMethod.GET)
     public String dailySendEmailGet(
-            @RequestParam(value="fileName", required=true) String fileName,
-            HttpServletRequest request) {
-
+            @RequestParam(value="weeklyFileId", required=true) String weeklyFileId,
+            HttpServletRequest request, Model model) {
+        model.addAttribute("weeklyFileId", weeklyFileId);
         return prefix + "weekly/sendEmail";
     }
 

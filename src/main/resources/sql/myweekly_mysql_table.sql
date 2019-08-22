@@ -123,7 +123,7 @@ CREATE TABLE `weekly_send_email` (
   `account` varchar(64) NOT NULL,
 	`recipients` varchar(256) NOT NULL,
 	`content` varchar(4000) NOT NULL,
-  `title` varchar(256) NOT NULL,
+  `subject` varchar(256) NOT NULL,
   `create_time` datetime(0) NOT NULL,
   `user_id` varchar(32) NOT NULL,
   PRIMARY KEY (`id`),
