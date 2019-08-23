@@ -4,9 +4,11 @@ import my.weekly.common.pub.MyManagerException;
 import my.weekly.common.tools.HttpResponseHelper;
 import my.weekly.dao.entity.Daily;
 import my.weekly.dao.entity.WeeklyFile;
+import my.weekly.dao.entity.dict.EmailConfType;
 import my.weekly.dao.repo.Spe.WeeklyDailyPageSpe;
 import my.weekly.manager.daily.DailyManager;
 import my.weekly.model.NoteModel;
+import my.weekly.model.message.SendEmailInfo;
 import my.weekly.model.weekly.WeeklyModel;
 import my.weekly.web.AbstractController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,12 +72,14 @@ public class WeeklyCombineController extends AbstractController {
     public String dailySendEmailGet(
             @RequestParam(value="weeklyFileId", required=true) String weeklyFileId,
             HttpServletRequest request, Model model) {
+        model.addAttribute("emailConfTypes", EmailConfType.values());
         model.addAttribute("weeklyFileId", weeklyFileId);
         return prefix + "weekly/sendEmail";
     }
 
     @RequestMapping(value="/daily/sendEmail", method=RequestMethod.POST)
-    public String dailySendEmailPost(Model model) {
+    public String dailySendEmailPost(@ModelAttribute SendEmailInfo info, Model model) {
+
         model.addAttribute("toSendEmail", true);
         return prefix + "weekly/result";
     }
@@ -84,13 +88,15 @@ public class WeeklyCombineController extends AbstractController {
     public String daily2WeeklyFileResult(
             @RequestParam(value="weeklyFileId", required=true) String weeklyFileId,
             Model model) {
-
+        model.addAttribute("weeklyFile", dailyManager.findFileById(weeklyFileId));
         model.addAttribute("toSendEmail", false);
         return prefix + "weekly/result";
     }
 
     @RequestMapping(value="/daily/weeklyFile/download", method=RequestMethod.GET)
-    public void daily2WeeklyFileDownload() {
+    public void daily2WeeklyFileDownload(
+            @RequestParam(value="weeklyFileId", required=true) String weeklyFileId,
+            HttpServletRequest request, HttpServletResponse response) {
 
     }
 }

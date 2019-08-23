@@ -38,6 +38,9 @@ public class SendEmailInfo extends BaseModel {
     @Getter
     @Setter
     private List<File> annexList; //附件
+    @Getter
+    @Setter
+    private List<String> fileIdList; //附件
     @NotBlank
     @Getter
     @Setter

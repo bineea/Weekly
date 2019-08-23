@@ -2,7 +2,10 @@ package my.weekly.manager.daily;
 
 import javax.servlet.http.HttpServletRequest;
 
+import my.weekly.dao.entity.SendEmail;
 import my.weekly.dao.entity.WeeklyFile;
+import my.weekly.model.message.SendEmailInfo;
+import my.weekly.model.message.SendEmailResult;
 import my.weekly.model.weekly.WeeklyModel;
 import org.springframework.data.domain.Page;
 
@@ -53,5 +56,15 @@ public interface DailyManager {
 	 * @throws MyManagerException
 	 */
 	WeeklyFile combine(WeeklyModel model, HttpServletRequest request) throws MyManagerException, IOException;
-	
+
+	/**查询周报文件信息
+	 * @param weeklyFileId
+	 * @return
+	 */
+	WeeklyFile findFileById(String weeklyFileId);
+
+	/**发送周报邮件
+	 * @return
+	 */
+	SendEmailResult weekly2SendEmail(SendEmailInfo info, HttpServletRequest request);
 }

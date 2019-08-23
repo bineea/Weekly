@@ -15,6 +15,8 @@ import my.weekly.dao.entity.*;
 import my.weekly.dao.repo.jpa.WeeklyFileRepo;
 import my.weekly.manager.poi.AbstractGenerateExcelManager;
 import my.weekly.model.MyFinals;
+import my.weekly.model.message.SendEmailInfo;
+import my.weekly.model.message.SendEmailResult;
 import my.weekly.model.poi.PoiWriteExcelInfo;
 import my.weekly.model.weekly.WeeklyModel;
 import org.apache.poi.ss.usermodel.Cell;
@@ -169,6 +171,16 @@ public class DailyManagerImpl extends AbstractManager implements DailyManager, A
 		File f = generateExcel(info, dailyList.stream().filter(d -> model.getDailyIds().contains(d.getId())).collect(Collectors.toList()));
 		WeeklyFile wf = saveWeeklyFile(f, user);
 		return wf;
+	}
+
+	@Override
+	public WeeklyFile findFileById(String weeklyFileId) {
+		return weeklyFileRepo.findById(weeklyFileId).orElse(null);
+	}
+
+	@Override
+	public SendEmailResult weekly2SendEmail(SendEmailInfo info, HttpServletRequest request) {
+		return null;
 	}
 
 	private WeeklyFile saveWeeklyFile(File file, User user) throws IOException {
