@@ -3,12 +3,13 @@ package my.weekly.web.weekly;
 import my.weekly.common.pub.MyManagerException;
 import my.weekly.common.tools.HttpResponseHelper;
 import my.weekly.dao.entity.Daily;
-import my.weekly.dao.entity.WeeklyFile;
+import my.weekly.dao.entity.MailAttachment;
 import my.weekly.dao.entity.dict.EmailConfType;
 import my.weekly.dao.repo.Spe.WeeklyDailyPageSpe;
 import my.weekly.manager.daily.DailyManager;
 import my.weekly.model.NoteModel;
 import my.weekly.model.message.SendEmailInfo;
+import my.weekly.model.message.SendEmailResult;
 import my.weekly.model.weekly.WeeklyModel;
 import my.weekly.web.AbstractController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +21,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
+import java.sql.SQLException;
 
 @Controller
 @RequestMapping("weekly")
@@ -62,9 +62,9 @@ public class WeeklyCombineController extends AbstractController {
             @Valid @ModelAttribute WeeklyModel weeklyModel,
             HttpServletRequest request, HttpServletResponse response)
             throws MyManagerException, IOException {
-        WeeklyFile weeklyFile = dailyManager.combine(weeklyModel, request);
+        MailAttachment mailAttachment = dailyManager.combine(weeklyModel, request);
         addSuccess(response, "汇总日报成功");
-        NoteModel note = new NoteModel(true, weeklyFile.getId());
+        NoteModel note = new NoteModel(true, mailAttachment.getId());
         HttpResponseHelper.responseJson(note.toJson(), response);
     }
 
@@ -78,10 +78,14 @@ public class WeeklyCombineController extends AbstractController {
     }
 
     @RequestMapping(value="/daily/sendEmail", method=RequestMethod.POST)
-    public String dailySendEmailPost(@ModelAttribute SendEmailInfo info, Model model) {
-
-        model.addAttribute("toSendEmail", true);
-        return prefix + "weekly/result";
+    public void dailySendEmailPost(@ModelAttribute SendEmailInfo info,
+                                   HttpServletRequest request, HttpServletResponse response )
+            throws MyManagerException, IOException, MessagingException, SQLException {
+        SendEmailResult result = dailyManager.weekly2SendEmail(info, request);
+        if(result.getMailAttachmentList().size() > 1)
+            throw new MyManagerException("尚不支持返回多个附件信息");
+        NoteModel note = new NoteModel(true, result.getMailAttachmentList().stream().findFirst().get().getId());
+        HttpResponseHelper.responseJson(note.toJson(), response);
     }
 
     @RequestMapping(value="/daily/weeklyFile/result", method=RequestMethod.GET)
@@ -89,7 +93,6 @@ public class WeeklyCombineController extends AbstractController {
             @RequestParam(value="weeklyFileId", required=true) String weeklyFileId,
             Model model) {
         model.addAttribute("weeklyFile", dailyManager.findFileById(weeklyFileId));
-        model.addAttribute("toSendEmail", false);
         return prefix + "weekly/result";
     }
 

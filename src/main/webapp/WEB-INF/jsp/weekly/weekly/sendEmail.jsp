@@ -102,14 +102,24 @@
                         <h4 class="checkout-title">Describe specific email</h4>
                         <div class="form-group">
                             <label class="col-md-3 control-label">Email <span class="text-danger">*</span></label>
-                            <div class="col-md-6">
-                                <input type="text" class="form-control required" name="account" placeholder="邮箱账号"/>
+                            <div class="form-inline">
+                                <div class="col-md-4" style="padding-right: 0px;">
+                                    <input type="text" class="form-control required" style="width: 100%;" name="account" placeholder="邮箱账号"/>
+                                </div>
+                                <div class="col-md-2" style="padding-left: 0px;">
+                                    <select name="confType" class="form-control required selectpicker" style="width: 100%;" data-size="10" data-live-search="true" data-style="btn-inverse">
+                                        <option value="">请选择...</option>
+                                        <c:forEach items="${emailConfTypes}" var="confType">
+                                            <option value="${confType}">${confType.suffix}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 control-label">Password <span class="text-danger">*</span></label>
                             <div class="col-md-6">
-                                <input type="text" class="form-control required" name="passwd" placeholder="邮箱密码"/>
+                                <input type="password" class="form-control required" name="passwd" placeholder="邮箱密码"/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -135,7 +145,7 @@
                     <!-- END checkout-body -->
                     <!-- BEGIN checkout-footer -->
                     <div class="checkout-footer">
-                        <a id="back" href="${rootUrl }app/weekly/daily/project" class="btn btn-white btn-lg pull-left">Back</a>
+                        <a id="giveUp" href="${rootUrl}app/weekly/daily/mailAttachment/result?weeklyFileId=${weeklyFileId}" class="btn btn-white btn-lg pull-left">GiveUp</a>
                         <button type="submit" class="btn btn-inverse btn-lg p-l-30 p-r-30 m-l-10">Submit</button>
                     </div>
                     <!-- END checkout-footer -->

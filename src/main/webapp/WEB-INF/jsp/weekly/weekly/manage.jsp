@@ -104,7 +104,7 @@
 					if(toSend) {
 						window.location.href = '${rootUrl}app/weekly/daily/sendEmail?weeklyFileId='+data.msg;
 					} else {
-						window.location.href = '${rootUrl}app/weekly/daily/weeklyFile/result?weeklyFileId='+data.msg;
+						window.location.href = '${rootUrl}app/weekly/daily/mailAttachment/result?weeklyFileId='+data.msg;
 					}
 				}
 			},

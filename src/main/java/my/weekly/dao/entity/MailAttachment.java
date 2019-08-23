@@ -11,8 +11,8 @@ import java.sql.Blob;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="weekly_weekly_file")
-public class WeeklyFile extends StringUUIDEntity {
+@Table(name="weekly_mail_attachment")
+public class MailAttachment extends StringUUIDEntity {
     @NotBlank
     @Getter(onMethod_={@Column(name="name")})
     @Setter
@@ -21,10 +21,6 @@ public class WeeklyFile extends StringUUIDEntity {
     @Getter(onMethod_={@Column(name="file")})
     @Setter
     private Blob file;
-    @NotBlank
-    @Getter(onMethod_= {@Column(name="save_path")})
-    @Setter
-    private String savePath;
     @Getter(onMethod_={@ManyToOne,@JoinColumn(name="send_email_id")})
     @Setter
     private SendEmail sendEmail;

@@ -19,6 +19,6 @@ public enum EmailConfType {
     @Getter
     private String protocol;
     @Getter
-    private String Suffix;
+    private String suffix;
 
 }

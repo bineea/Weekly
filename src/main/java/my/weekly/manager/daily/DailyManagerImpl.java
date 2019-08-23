@@ -3,16 +3,20 @@ package my.weekly.manager.daily;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 
 import my.weekly.dao.entity.*;
-import my.weekly.dao.repo.jpa.WeeklyFileRepo;
+import my.weekly.dao.repo.jpa.MailAttachmentRepo;
+import my.weekly.manager.message.SendEmailManager;
 import my.weekly.manager.poi.AbstractGenerateExcelManager;
 import my.weekly.model.MyFinals;
 import my.weekly.model.message.SendEmailInfo;
@@ -23,7 +27,10 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.hibernate.engine.jdbc.NonContextualLobCreator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -50,7 +57,9 @@ public class DailyManagerImpl extends AbstractManager implements DailyManager, A
 	@Autowired
 	private DemandRepo demandRepo;
 	@Autowired
-	private WeeklyFileRepo weeklyFileRepo;
+	private MailAttachmentRepo mailAttachmentRepo;
+	@Autowired
+	private SendEmailManager sendEmailManager;
 	
 	@Override
 	public Page<Daily> pageQuery(WeeklyDailyPageSpe spe) {
@@ -152,7 +161,7 @@ public class DailyManagerImpl extends AbstractManager implements DailyManager, A
 	}
 
 	@Override
-	public WeeklyFile combine(WeeklyModel model, HttpServletRequest request) throws MyManagerException, IOException {
+	public MailAttachment combine(WeeklyModel model, HttpServletRequest request) throws MyManagerException, IOException {
 		User user = LoginHelper.getLoginUser(request);
 		if(user == null)
 			throw new MyManagerException("用户信息异常，需重新登录");
@@ -169,29 +178,43 @@ public class DailyManagerImpl extends AbstractManager implements DailyManager, A
 				+ "海南省小客车保有量调控工作情况.xlsx");
 		info.setSavePath(MyFinals.FILE_TMP_PATH + "weekly" + File.separator + user.getId());
 		File f = generateExcel(info, dailyList.stream().filter(d -> model.getDailyIds().contains(d.getId())).collect(Collectors.toList()));
-		WeeklyFile wf = saveWeeklyFile(f, user);
+		MailAttachment wf = saveMailAttachment(f, user);
 		return wf;
 	}
 
 	@Override
-	public WeeklyFile findFileById(String weeklyFileId) {
-		return weeklyFileRepo.findById(weeklyFileId).orElse(null);
+	public MailAttachment findFileById(String weeklyFileId) {
+		return mailAttachmentRepo.findById(weeklyFileId).orElse(null);
 	}
 
 	@Override
-	public SendEmailResult weekly2SendEmail(SendEmailInfo info, HttpServletRequest request) {
-		return null;
+	public SendEmailResult weekly2SendEmail(SendEmailInfo info, HttpServletRequest request) throws MyManagerException, IOException, MessagingException, SQLException {
+		validateSendEmailInfo(info);
+		info.setTemplet(null);
+		sendEmailManager.sendEmailHandler(info);
+		SendEmailResult result = sendEmailManager.saveSendEmailByInfo(info, request);
+		return result;
 	}
 
-	private WeeklyFile saveWeeklyFile(File file, User user) throws IOException {
-		WeeklyFile weeklyFile = new WeeklyFile();
-		weeklyFile.setName(file.getName());
-		weeklyFile.setFile(NonContextualLobCreator.INSTANCE.createBlob(new FileInputStream(file), file.length()));
-		weeklyFile.setSavePath(file.getAbsolutePath());
-		weeklyFile.setUser(user);
-		weeklyFile.setCreateTime(LocalDateTime.now());
-		weeklyFileRepo.save(weeklyFile);
-		return weeklyFile;
+	private void validateSendEmailInfo(SendEmailInfo info) throws MyManagerException {
+		SendEmailInfo.validateInfo(info);
+		if(!CollectionUtils.isEmpty(info.getMailAttachmentIds())) {
+			for(String fileId : info.getMailAttachmentIds()) {
+				Optional<MailAttachment> mailAttachmentOpt = mailAttachmentRepo.findById(fileId);
+				if(!mailAttachmentOpt.isPresent())
+					throw new MyManagerException("附件信息异常，附件ID:"+fileId+"对应数据不存在");
+			}
+		}
+	}
+
+	private MailAttachment saveMailAttachment(File file, User user) throws IOException {
+		MailAttachment mailAttachment = new MailAttachment();
+		mailAttachment.setName(file.getName());
+		mailAttachment.setFile(NonContextualLobCreator.INSTANCE.createBlob(new FileInputStream(file), file.length()));
+		mailAttachment.setUser(user);
+		mailAttachment.setCreateTime(LocalDateTime.now());
+		mailAttachmentRepo.save(mailAttachment);
+		return mailAttachment;
 	}
 
 	@Override
