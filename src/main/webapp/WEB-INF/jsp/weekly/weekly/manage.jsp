@@ -63,14 +63,14 @@
 							btnClass: 'btn-dark',
 							keys: ['enter'],
 							action: function () {
-								$.alert('yes!');
+								combineDaily(startOpDateVal, endOpDateVal, operateContentVal, checkboxVal, true);
 							}
 						},
 						no: {
 							text: 'no',
 							btnClass: 'btn-default',
 							action: function(){
-								$.alert('no!');
+								combineDaily(startOpDateVal, endOpDateVal, operateContentVal, checkboxVal, false);
 							}
 						},
 						cancel: {

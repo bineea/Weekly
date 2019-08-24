@@ -34,7 +34,7 @@ public class SendEmailInfo extends BaseModel {
     @NotEmpty
     @Getter
     @Setter
-    private List<String> recipientList; //收件地址
+    private List<String> recipients; //收件地址
     @Getter
     @Setter
     private String templet; //模板
@@ -56,7 +56,7 @@ public class SendEmailInfo extends BaseModel {
     private String subject; //主题
 
     public static void validateInfo(SendEmailInfo sendEmailInfo) throws MyManagerException {
-        Assert.isNull(sendEmailInfo, "EmailInfo不能为空");
+        Assert.notNull(sendEmailInfo, "EmailInfo不能为空");
         if(sendEmailInfo.getConfType() == null)
             throw new MyManagerException("邮箱类型不能为空");
         if(!StringUtils.hasText(sendEmailInfo.getAccount()))
@@ -65,7 +65,7 @@ public class SendEmailInfo extends BaseModel {
             throw new MyManagerException("密码不能为空");
         if(!StringUtils.hasText(sendEmailInfo.getContent()))
             throw new MyManagerException("邮件内容不能为空");
-        if(CollectionUtils.isEmpty(sendEmailInfo.getRecipientList()))
+        if(CollectionUtils.isEmpty(sendEmailInfo.getRecipients()))
             throw new MyManagerException("收件地址不能为空");
         if(!CollectionUtils.isEmpty(sendEmailInfo.getFiles())) {
             for(File f : sendEmailInfo.getFiles()) {

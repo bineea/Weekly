@@ -12,6 +12,7 @@ import my.weekly.model.message.SendEmailInfo;
 import my.weekly.model.message.SendEmailResult;
 import my.weekly.model.weekly.WeeklyModel;
 import my.weekly.web.AbstractController;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -70,35 +71,36 @@ public class WeeklyCombineController extends AbstractController {
 
     @RequestMapping(value="/daily/sendEmail", method=RequestMethod.GET)
     public String dailySendEmailGet(
-            @RequestParam(value="weeklyFileId", required=true) String weeklyFileId,
+            @RequestParam(value="mailAttachmentId", required=true) String mailAttachmentId,
             HttpServletRequest request, Model model) {
         model.addAttribute("emailConfTypes", EmailConfType.values());
-        model.addAttribute("weeklyFileId", weeklyFileId);
+        model.addAttribute("mailAttachmentId", mailAttachmentId);
         return prefix + "weekly/sendEmail";
     }
 
     @RequestMapping(value="/daily/sendEmail", method=RequestMethod.POST)
-    public void dailySendEmailPost(@ModelAttribute SendEmailInfo info,
+    public void dailySendEmailPost(@Valid @ModelAttribute SendEmailInfo info,
                                    HttpServletRequest request, HttpServletResponse response )
             throws MyManagerException, IOException, MessagingException, SQLException {
         SendEmailResult result = dailyManager.weekly2SendEmail(info, request);
         if(result.getMailAttachmentList().size() > 1)
             throw new MyManagerException("尚不支持返回多个附件信息");
+        addSuccess(response, "成功发送邮件至"+ StringUtils.join(info.getRecipients().toArray(), ","));
         NoteModel note = new NoteModel(true, result.getMailAttachmentList().stream().findFirst().get().getId());
         HttpResponseHelper.responseJson(note.toJson(), response);
     }
 
-    @RequestMapping(value="/daily/weeklyFile/result", method=RequestMethod.GET)
+    @RequestMapping(value="/daily/mailAttachment/result", method=RequestMethod.GET)
     public String daily2WeeklyFileResult(
-            @RequestParam(value="weeklyFileId", required=true) String weeklyFileId,
+            @RequestParam(value="mailAttachmentId", required=true) String mailAttachmentId,
             Model model) {
-        model.addAttribute("weeklyFile", dailyManager.findFileById(weeklyFileId));
+        model.addAttribute("mailAttachment", dailyManager.findFileById(mailAttachmentId));
         return prefix + "weekly/result";
     }
 
-    @RequestMapping(value="/daily/weeklyFile/download", method=RequestMethod.GET)
+    @RequestMapping(value="/daily/mailAttachment/download", method=RequestMethod.GET)
     public void daily2WeeklyFileDownload(
-            @RequestParam(value="weeklyFileId", required=true) String weeklyFileId,
+            @RequestParam(value="mailAttachmentId", required=true) String mailAttachmentId,
             HttpServletRequest request, HttpServletResponse response) {
 
     }

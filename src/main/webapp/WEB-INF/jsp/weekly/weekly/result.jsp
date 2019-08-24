@@ -34,58 +34,45 @@
                 <div class="checkout-header">
                     <!-- BEGIN row -->
                     <div class="row">
-                        <!-- BEGIN col-3 -->
-                        <div class="col-md-3 col-sm-3">
+                        <!-- BEGIN col-4 -->
+                        <div class="col-md-4 col-sm-4">
                             <div class="step">
                                 <a href="###">
                                     <div class="number">1</div>
                                     <div class="info">
-                                        <div class="title">项目</div>
-                                        <div class="desc">选择对应的项目</div>
+                                        <div class="title">日报数据</div>
+                                        <div class="desc">选择需要汇总的日报数据</div>
                                     </div>
                                 </a>
                             </div>
                         </div>
-                        <!-- END col-3 -->
-                        <!-- BEGIN col-3 -->
-                        <div class="col-md-3 col-sm-3">
+                        <!-- END col-4 -->
+                        <!-- BEGIN col-4 -->
+                        <div class="col-md-4 col-sm-4">
                             <div class="step">
                                 <a href="###">
                                     <div class="number">2</div>
                                     <div class="info">
-                                        <div class="title">需求事件</div>
-                                        <div class="desc">选择对应的需求</div>
+                                        <div class="title">推送邮件</div>
+                                        <div class="desc">填写推送邮件相关信息</div>
                                     </div>
                                 </a>
                             </div>
                         </div>
-                        <!-- END col-3 -->
-                        <!-- BEGIN col-3 -->
-                        <div class="col-md-3 col-sm-3">
-                            <div class="step">
+                        <!-- END col-4 -->
+                        <!-- BEGIN col-4 -->
+                        <div class="col-md-4 col-sm-4">
+                            <div class="step active">
                                 <a href="###">
                                     <div class="number">3</div>
                                     <div class="info">
-                                        <div class="title">具体操作</div>
-                                        <div class="desc">填写你的具体操作</div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <!-- END col-3 -->
-                        <!-- BEGIN col-3 -->
-                        <div class="col-md-3 col-sm-3">
-                            <div class="step active">
-                                <a href="###">
-                                    <div class="number">4</div>
-                                    <div class="info">
                                         <div class="title">完成</div>
-                                        <div class="desc">日报记录完成</div>
+                                        <div class="desc">日报汇总完成</div>
                                     </div>
                                 </a>
                             </div>
                         </div>
-                        <!-- END col-3 -->
+                        <!-- END col-4 -->
                     </div>
                     <!-- END row -->
                 </div>
@@ -95,13 +82,13 @@
 					<!-- BEGIN checkout-message -->
                     <div class="checkout-message">
                         <c:choose>
-                            <c:when test="">
-                                <h1>Thank you! <small>Your Daily has successfully submitted with the following details.</small></h1>
+                            <c:when test="${mailAttachment.sendEmail != null }">
+                                <h1>Thank you! <small>Your daily report has been summarized successfully. It contains the following details.</small></h1>
                                 <div class="table-responsive2">
                                     <table class="table table-payment-summary">
                                         <tbody>
                                         <tr>
-                                            <td class="field">操作日期</td>
+                                            <td class="field">操作日期---已推送邮件</td>
                                             <td class="value"><javatime:format value="${daily.operateDate}" pattern="yyyy-MM-dd"  /></td>
                                         </tr>
                                         <tr>
@@ -125,12 +112,12 @@
                                 </div>
                             </c:when>
                             <c:otherwise>
-                                <h1>Thank you! <small>Your Daily has successfully submitted with the following details.</small></h1>
+                                <h1>Thank you! <small>Your daily report has been summarized successfully. It contains the following details.</small></h1>
                                 <div class="table-responsive2">
                                     <table class="table table-payment-summary">
                                         <tbody>
                                         <tr>
-                                            <td class="field">操作日期</td>
+                                            <td class="field">操作日期---只是生成文件</td>
                                             <td class="value"><javatime:format value="${daily.operateDate}" pattern="yyyy-MM-dd"  /></td>
                                         </tr>
                                         <tr>

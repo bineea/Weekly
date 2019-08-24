@@ -94,7 +94,7 @@
                 <div class="checkout-body">
 					<!-- BEGIN checkout-message -->
                     <div class="checkout-message">
-                        <h1>Thank you! <small>Your Daily has successfully submitted with the following details.</small></h1>
+                        <h1>Thank you! <small>Your daily report has been submitted successfully. It contains the following details.</small></h1>
                         <div class="table-responsive2">
                             <table class="table table-payment-summary">
                                 <tbody>

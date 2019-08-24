@@ -103,11 +103,11 @@ CREATE TABLE `weekly_daily` (
 	CONSTRAINT `daily_demand_id` FOREIGN KEY (`demand_id`) REFERENCES `weekly_demand` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `weekly_weekly_file` (
+CREATE TABLE `weekly_mail_attachment` (
   `id` varchar(32) NOT NULL,
   `name` varchar(512) NOT NULL,
   `file` blob NOT NULL,
-  `save_path` varchar(512) NOT NULL,
+  `mime_type` varchar(128) NOT NULL,
   `create_time` datetime(0) NOT NULL,
   `send_email_id` varchar(32),
   `user_id` varchar(32) NOT NULL,

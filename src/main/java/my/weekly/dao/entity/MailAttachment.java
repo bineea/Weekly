@@ -21,6 +21,10 @@ public class MailAttachment extends StringUUIDEntity {
     @Getter(onMethod_={@Column(name="file")})
     @Setter
     private Blob file;
+    @NotNull
+    @Getter(onMethod_={@Column(name="mime_type")})
+    @Setter
+    private String mimeType;
     @Getter(onMethod_={@ManyToOne,@JoinColumn(name="send_email_id")})
     @Setter
     private SendEmail sendEmail;

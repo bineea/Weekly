@@ -17,6 +17,7 @@
     $(document).ready(function() {
 
         $('#emailTo').tagit({
+            fieldName: "recipients",
             availableTags: ["c++", "java", "php", "javascript", "ruby", "python", "c"]
         });
 
@@ -24,11 +25,11 @@
             type:'post',
             success:function(data, textStatus, jqXHR) {
                 if($.My.handleSuccessRes(data, textStatus, jqXHR)) {
-                    window.localtion.href = '${rootUrl}app/weekly/daily/project'
+                    window.location.href = '${rootUrl}app/weekly/daily/mailAttachment/result?mailAttachmentId='+data.msg;
                 }
             },
             error:function(xhr, status, error) {
-                $.My.showWarnMsg("系统异常，请稍后重试！");
+                $.My.showMsg(false,"系统异常，请稍后重试！");
             }
         });
     });
@@ -99,6 +100,7 @@
                     <!-- END checkout-header -->
                     <!-- BEGIN checkout-body -->
                     <div class="checkout-body">
+                        <input type="hidden" name="mailAttachmentIds" value="${mailAttachmentId}">
                         <h4 class="checkout-title">Describe specific email</h4>
                         <div class="form-group">
                             <label class="col-md-3 control-label">Email <span class="text-danger">*</span></label>
@@ -125,7 +127,7 @@
                         <div class="form-group">
                             <label class="col-md-3 control-label">To <span class="text-danger">*</span></label>
                             <div class="col-md-6">
-                                <ul id="emailTo" class="inverse" style="border-radius: 4px;">
+                                <ul id="emailTo" name="" class="inverse" style="border-radius: 4px;">
                                 </ul>
                             </div>
                         </div>
@@ -145,7 +147,7 @@
                     <!-- END checkout-body -->
                     <!-- BEGIN checkout-footer -->
                     <div class="checkout-footer">
-                        <a id="giveUp" href="${rootUrl}app/weekly/daily/mailAttachment/result?weeklyFileId=${weeklyFileId}" class="btn btn-white btn-lg pull-left">GiveUp</a>
+                        <a id="quit" href="${rootUrl}app/weekly/daily/mailAttachment/result?weeklyFileId=${weeklyFileId}" class="btn btn-white btn-lg pull-left">Quit</a>
                         <button type="submit" class="btn btn-inverse btn-lg p-l-30 p-r-30 m-l-10">Submit</button>
                     </div>
                     <!-- END checkout-footer -->

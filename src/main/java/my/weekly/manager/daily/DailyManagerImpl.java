@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 
@@ -174,7 +176,7 @@ public class DailyManagerImpl extends AbstractManager implements DailyManager, A
 		info.setFileName(user.getName()
 				+ DateTimeFormatter.ISO_LOCAL_DATE.format(model.getStartOpDate())
 				+ "至"
-				+ DateTimeFormatter.ISO_LOCAL_DATE.format(model.getStartOpDate())
+				+ DateTimeFormatter.ISO_LOCAL_DATE.format(model.getEndOpDate())
 				+ "海南省小客车保有量调控工作情况.xlsx");
 		info.setSavePath(MyFinals.FILE_TMP_PATH + "weekly" + File.separator + user.getId());
 		File f = generateExcel(info, dailyList.stream().filter(d -> model.getDailyIds().contains(d.getId())).collect(Collectors.toList()));
@@ -211,6 +213,7 @@ public class DailyManagerImpl extends AbstractManager implements DailyManager, A
 		MailAttachment mailAttachment = new MailAttachment();
 		mailAttachment.setName(file.getName());
 		mailAttachment.setFile(NonContextualLobCreator.INSTANCE.createBlob(new FileInputStream(file), file.length()));
+		mailAttachment.setMimeType(new MimetypesFileTypeMap().getContentType(file));
 		mailAttachment.setUser(user);
 		mailAttachment.setCreateTime(LocalDateTime.now());
 		mailAttachmentRepo.save(mailAttachment);
