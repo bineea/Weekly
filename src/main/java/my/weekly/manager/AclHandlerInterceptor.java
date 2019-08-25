@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.util.WebUtils;
 
-import my.weekly.common.tools.WebTools;
+import my.weekly.common.tools.WebHelper;
 import my.weekly.dao.entity.AppResource;
 import my.weekly.dao.entity.User;
 import my.weekly.manager.acl.AclManagerImpl;
@@ -34,17 +34,17 @@ public class AclHandlerInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		String uri = WebTools.getUri(request, false);
+		String uri = WebHelper.getUri(request, false);
 		if(uri.startsWith("/")) uri = uri.substring(1);
 		//忽略登陆请求
-		if(uri.startsWith("app/common/login")) return true;
+		if(uri.startsWith("app/common/login") || uri.startsWith("app/common/register")) return true;
 		//跳转到登陆页
 		RequestMethod method = RequestMethod.valueOf(request.getMethod());
 		if(!LoginHelper.alreadyLogin(request)) {
 			request.getSession().invalidate();
 			WebUtils.setSessionAttribute(request, MySession.ERROR_MSG, "会话已失效，请重新登陆");
 			if(method == RequestMethod.GET)
-				WebUtils.setSessionAttribute(request, MySession.LAST_URI, WebTools.getUri(request, true));
+				WebUtils.setSessionAttribute(request, MySession.LAST_URI, WebHelper.getUri(request, true));
 			response.sendRedirect(getLoginUri(request));
 			return false;
 		}
@@ -58,7 +58,7 @@ public class AclHandlerInterceptor extends HandlerInterceptorAdapter {
 		logger.debug(result);
 		WebUtils.setSessionAttribute(request, MySession.ERROR_MSG, result);
 		if (method == RequestMethod.GET)
-			WebUtils.setSessionAttribute(request, MySession.LAST_URI, WebTools.getUri(request, true));
+			WebUtils.setSessionAttribute(request, MySession.LAST_URI, WebHelper.getUri(request, true));
 		response.sendRedirect(getNorightUri(request) + "?method=" + method);
 		return false;
 	}
