@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import my.weekly.common.pub.MyManagerException;
 import my.weekly.common.tools.HttpResponseHelper;
-import my.weekly.common.tools.JsonTools;
+import my.weekly.common.tools.JsonUtil;
 import my.weekly.dao.entity.AppResource;
 import my.weekly.dao.entity.AppResource.MenuType;
 import my.weekly.dao.repo.Spe.AppResourcePageSpe;
@@ -36,7 +36,7 @@ public class ResourceController extends AbstractController {
 
 	@RequestMapping(value = "/manage", method = RequestMethod.GET)
 	public String manageGet(@ModelAttribute("queryModel") AppResourcePageSpe pageSpe, Model model) throws IOException {
-		model.addAttribute("rootMenu", JsonTools.writeValueAsString(manager.findRootMenu()));
+		model.addAttribute("rootMenu", JsonUtil.writeValueAsString(manager.findRootMenu()));
 		return prefix + "manage";
 	}
 	
@@ -55,7 +55,7 @@ public class ResourceController extends AbstractController {
 			HttpServletResponse response) throws IOException
 	{
 		List<ResourceTreeModel> treeList = manager.getResourceTree(id);
-		HttpResponseHelper.responseJson(JsonTools.writeValueAsString(treeList), response);
+		HttpResponseHelper.responseJson(JsonUtil.writeValueAsString(treeList), response);
 	}
 	
 	@RequestMapping(value = "/addResource", method = RequestMethod.GET)

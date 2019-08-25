@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import my.weekly.common.pub.CommonAbstract;
 import my.weekly.common.pub.MyManagerException;
 import my.weekly.common.tools.HttpResponseHelper;
-import my.weekly.common.tools.JsonTools;
+import my.weekly.common.tools.JsonUtil;
 import my.weekly.model.NoteModel;
 
 public abstract class AbstractController extends CommonAbstract {
@@ -79,7 +79,7 @@ public abstract class AbstractController extends CommonAbstract {
 				if (error.isBindingFailure()) msg = "数据的类型错误";
 				map.put(error.getField(), hasText(msg) ? msg : "数据(" + error.getRejectedValue() + ")错误");
 			}
-			return JsonTools.writeValueAsString(map);
+			return JsonUtil.writeValueAsString(map);
 		}
 		catch (IOException e)
 		{

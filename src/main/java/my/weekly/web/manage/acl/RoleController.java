@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import my.weekly.common.pub.MyManagerException;
-import my.weekly.common.tools.JsonTools;
+import my.weekly.common.tools.JsonUtil;
 import my.weekly.dao.entity.Role;
 import my.weekly.dao.repo.Spe.RolePageSpe;
 import my.weekly.manager.acl.RoleManager;
@@ -50,7 +50,7 @@ public class RoleController extends AbstractController {
 	@RequestMapping(value = "/configRole/{id}", method = RequestMethod.GET)
 	public String configGet(@PathVariable("id") String id, HttpServletRequest request, Model model) throws IOException {
 		List<ResourceTreeModel> treeList = manager.getAllResource(id);
-		model.addAttribute("treeJson", JsonTools.writeValueAsString(treeList));
+		model.addAttribute("treeJson", JsonUtil.writeValueAsString(treeList));
 		model.addAttribute("roleId", id);
 		return prefix + "conf";
 	}
