@@ -11,6 +11,8 @@ import my.weekly.dao.entity.User.UserStatus;
 import my.weekly.dao.repo.Spe.UserPageSpe;
 import my.weekly.model.acl.UserInfoModel;
 
+import javax.servlet.http.HttpServletRequest;
+
 public interface UserManager {
 
 	/**
@@ -83,5 +85,11 @@ public interface UserManager {
 	 * @return
 	 */
 	String updateProfilePic(String userId, MultipartFile profilePic) throws MyManagerException, IOException;
+
+	/**
+	 * 推送邮件验证码
+	 * @param email
+	 */
+	void sendCheckCode(String email, HttpServletRequest request);
 	
 }

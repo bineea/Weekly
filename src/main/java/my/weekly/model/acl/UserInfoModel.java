@@ -22,6 +22,7 @@ public class UserInfoModel extends BaseModel {
 	private String confirmPw;// 确认密码
 	private boolean rememberMe;// 记住账号
 	private MultipartFile profilePic;//头像
+	private String checkCode;// 校验码
 
 	public String getUserId() {
 		return userId;
@@ -127,4 +128,11 @@ public class UserInfoModel extends BaseModel {
 		this.profilePic = profilePic;
 	}
 
+	public String getCheckCode() {
+		return checkCode;
+	}
+
+	public void setCheckCode(String checkCode) {
+		this.checkCode = checkCode;
+	}
 }

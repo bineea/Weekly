@@ -147,7 +147,7 @@
                     <!-- END checkout-body -->
                     <!-- BEGIN checkout-footer -->
                     <div class="checkout-footer">
-                        <a id="quit" href="${rootUrl}app/weekly/daily/mailAttachment/result?weeklyFileId=${weeklyFileId}" class="btn btn-white btn-lg pull-left">Quit</a>
+                        <a id="quit" href="${rootUrl}app/weekly/daily/mailAttachment/result?mailAttachmentId=${mailAttachmentId}" class="btn btn-white btn-lg pull-left">Quit</a>
                         <button type="submit" class="btn btn-inverse btn-lg p-l-30 p-r-30 m-l-10">Submit</button>
                     </div>
                     <!-- END checkout-footer -->

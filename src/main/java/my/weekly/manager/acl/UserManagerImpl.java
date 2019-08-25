@@ -3,7 +3,13 @@ package my.weekly.manager.acl;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Arrays;
 
+import my.weekly.dao.entity.SendEmail;
+import my.weekly.dao.entity.dict.EmailConfType;
+import my.weekly.manager.message.SendEmailManager;
+import my.weekly.model.message.SendEmailInfo;
+import org.apache.poi.ss.formula.functions.T;
 import org.hibernate.engine.jdbc.NonContextualLobCreator;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +24,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import my.weekly.common.pub.MyManagerException;
 import my.weekly.common.tools.MyTools;
-import my.weekly.common.tools.SecurityTools;
-import my.weekly.common.tools.SecurityTools.DigestType;
+import my.weekly.common.tools.SecurityHelper;
+import my.weekly.common.tools.SecurityHelper.DigestType;
 import my.weekly.dao.entity.Role;
 import my.weekly.dao.entity.User;
 import my.weekly.dao.entity.User.UserStatus;
@@ -30,6 +36,8 @@ import my.weekly.manager.AbstractManager;
 import my.weekly.model.MyFinals;
 import my.weekly.model.acl.UserInfoModel;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Service
 public class UserManagerImpl extends AbstractManager implements UserManager {
 	
@@ -37,6 +45,8 @@ public class UserManagerImpl extends AbstractManager implements UserManager {
 	private UserRepo userRepo;
 	@Autowired
 	private RoleRepo roleRepo;
+	@Autowired
+	private SendEmailManager sendEmailManager;
 
 	@Override
 	public User toLogin(UserInfoModel userInfoModel) throws MyManagerException {
@@ -45,7 +55,7 @@ public class UserManagerImpl extends AbstractManager implements UserManager {
 			throw new MyManagerException("账号不能为空");
 		if(!StringUtils.hasText(userInfoModel.getPasswd()))
 			throw new MyManagerException("密码不能为空");
-		String passwd = SecurityTools.encryStr(userInfoModel.getPasswd(), DigestType.SHA_1);
+		String passwd = SecurityHelper.encryStr(userInfoModel.getPasswd(), DigestType.SHA_1);
 		User user = userRepo.findByLoginNamePasswd(userInfoModel.getLoginName(), passwd);
 		if(user == null)
 			throw new MyManagerException("账号与密码不匹配");
@@ -71,7 +81,7 @@ public class UserManagerImpl extends AbstractManager implements UserManager {
 			throw new MyManagerException("该邮箱地址【"+model.getEmail()+"】已存在");
 		user = new User();
 		BeanUtils.copyProperties(model, user);
-		user.setPasswd(SecurityTools.encryStr(User.DEFAULT_PWD, DigestType.SHA_1));
+		user.setPasswd(SecurityHelper.encryStr(User.DEFAULT_PWD, DigestType.SHA_1));
 		user.setStatus(UserStatus.NORMAL);
 		if(user.getProfilePicture() == null) {
 			char firstChar = MyTools.handleStr2Spell(user.getName()).toCharArray()[0];
@@ -143,10 +153,10 @@ public class UserManagerImpl extends AbstractManager implements UserManager {
 		User user = userRepo.findById(model.getUserId()).orElse(null);
 		if(user == null)
 			throw new MyManagerException("用户信息不存在，请重新登录");
-		String oldPasswd = SecurityTools.encryStr(model.getOldPasswd(), DigestType.SHA_1);
+		String oldPasswd = SecurityHelper.encryStr(model.getOldPasswd(), DigestType.SHA_1);
 		if(!oldPasswd.equals(user.getPasswd()))
 			throw new MyManagerException("原密码输入错误");
-		user.setPasswd(SecurityTools.encryStr(model.getPasswd(), DigestType.SHA_1));
+		user.setPasswd(SecurityHelper.encryStr(model.getPasswd(), DigestType.SHA_1));
 		userRepo.save(user);
 		return user;
 	}
@@ -180,4 +190,24 @@ public class UserManagerImpl extends AbstractManager implements UserManager {
 		return user.getId();
 	}
 
+	@Override
+	public void sendCheckCode(String email, HttpServletRequest request) {
+		SendEmailInfo info = initCheckCodeEmailInfo(email);
+		sendEmailManager.saveSendEmailByInfo(info, request);
+	}
+
+	private SendEmailInfo initCheckCodeEmailInfo(String email) {
+		User user = userRepo.findByLoginName("admin");
+		SendEmailInfo info = new SendEmailInfo();
+		for(EmailConfType type : EmailConfType.values()) {
+			if(user.getEmail().toLowerCase().endsWith(type.getSuffix().toLowerCase()))
+				info.setConfType(type);
+		}
+		info.setAccount(user.getEmail().toLowerCase().replace(info.getConfType().getSuffix().toLowerCase(), ""));
+		info.setSubject("账号注册验证码");
+		info.setContent(MyTools.randomNumCode(6));
+		info.setPasswd("xsyexenkhcyybcjc");
+		info.setRecipients(Arrays.asList(email));
+		return info;
+	}
 }

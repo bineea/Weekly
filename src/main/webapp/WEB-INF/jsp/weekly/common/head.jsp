@@ -42,7 +42,7 @@
 					<ul class="dropdown-menu">
 						<li><a href="#">Edit Profile</a></li>
 						<li><a href="#">Modify Password</a></li>
-						<li><a href="#">Log Out</a></li>
+						<li><a href="${rootUrl }app/common/logout">Log Out</a></li>
 					</ul>
 				</li>
 			</ul>

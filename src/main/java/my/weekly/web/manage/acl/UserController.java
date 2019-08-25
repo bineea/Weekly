@@ -40,7 +40,7 @@ public class UserController extends AbstractController {
 	private UserManager manager;
 	@Autowired
 	private RoleManager roleManager;
-	private static final String prefix = "acl/user/";
+	private static final String prefix = "manage/acl/user/";
 	
 	@RequestMapping(value = "/manage", method = RequestMethod.GET)
 	public String manageGet(@ModelAttribute("queryModel") UserPageSpe spe, Model model) {

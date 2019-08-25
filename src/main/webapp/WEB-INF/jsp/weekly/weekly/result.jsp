@@ -88,24 +88,28 @@
                                     <table class="table table-payment-summary">
                                         <tbody>
                                         <tr>
-                                            <td class="field">操作日期---已推送邮件</td>
-                                            <td class="value"><javatime:format value="${daily.operateDate}" pattern="yyyy-MM-dd"  /></td>
+                                            <td class="field">邮件主题</td>
+                                            <td class="value">${mailAttachment.sendEmail.subject }</td>
                                         </tr>
                                         <tr>
-                                            <td class="field">处理状态</td>
-                                            <td class="value">${daily.handleStatus.value }</td>
+                                            <td class="field">发件人</td>
+                                            <td class="value">${mailAttachment.sendEmail.account }</td>
                                         </tr>
                                         <tr>
-                                            <td class="field">所属项目</td>
-                                            <td class="value">${daily.demand.project.name }</td>
+                                            <td class="field">操作时间</td>
+                                            <td class="value"><javatime:format value="${mailAttachment.sendEmail.createTime}" pattern="yyyy-MM-dd HH:mm:ss"  /></td>
                                         </tr>
                                         <tr>
-                                            <td class="field">对应需求</td>
-                                            <td class="value">${daily.demand.title }</td>
+                                            <td class="field">收件人</td>
+                                            <td class="value">${mailAttachment.sendEmail.recipients }</td>
                                         </tr>
                                         <tr>
-                                            <td class="field">具体操作</td>
-                                            <td class="value">${daily.operateContent }</td>
+                                            <td class="field">邮件内容</td>
+                                            <td class="value">${mailAttachment.sendEmail.content }</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="field">附件</td>
+                                            <td class="value"><a href="${rootUrl }app/weekly/daily/mailAttachment/download?mailAttachmentId=${mailAttachment.id}">${mailAttachment.name }</a></td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -117,24 +121,12 @@
                                     <table class="table table-payment-summary">
                                         <tbody>
                                         <tr>
-                                            <td class="field">操作日期---只是生成文件</td>
-                                            <td class="value"><javatime:format value="${daily.operateDate}" pattern="yyyy-MM-dd"  /></td>
+                                            <td class="field">操作时间</td>
+                                            <td class="value"><javatime:format value="${mailAttachment.createTime}" pattern="yyyy-MM-dd HH:mm:ss"  /></td>
                                         </tr>
                                         <tr>
-                                            <td class="field">处理状态</td>
-                                            <td class="value">${daily.handleStatus.value }</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="field">所属项目</td>
-                                            <td class="value">${daily.demand.project.name }</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="field">对应需求</td>
-                                            <td class="value">${daily.demand.title }</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="field">具体操作</td>
-                                            <td class="value">${daily.operateContent }</td>
+                                            <td class="field">文件</td>
+                                            <td class="value"><a href="${rootUrl }app/weekly/daily/mailAttachment/download?mailAttachmentId=${mailAttachment.id}">${mailAttachment.name }</a></td>
                                         </tr>
                                         </tbody>
                                     </table>

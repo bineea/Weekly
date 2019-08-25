@@ -101,7 +101,8 @@ public class WeeklyCombineController extends AbstractController {
     @RequestMapping(value="/daily/mailAttachment/download", method=RequestMethod.GET)
     public void daily2WeeklyFileDownload(
             @RequestParam(value="mailAttachmentId", required=true) String mailAttachmentId,
-            HttpServletRequest request, HttpServletResponse response) {
-
+            HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+        MailAttachment mailAttachment = dailyManager.findFileById(mailAttachmentId);
+        HttpResponseHelper.downloadFile(mailAttachment.getFile().getBinaryStream(), mailAttachment.getName(), request, response, false);
     }
 }

@@ -102,9 +102,9 @@
 					$.My.showMsg(false,data.msg);
 				} else {
 					if(toSend) {
-						window.location.href = '${rootUrl}app/weekly/daily/sendEmail?weeklyFileId='+data.msg;
+						window.location.href = '${rootUrl}app/weekly/daily/sendEmail?mailAttachmentId='+data.msg;
 					} else {
-						window.location.href = '${rootUrl}app/weekly/daily/mailAttachment/result?weeklyFileId='+data.msg;
+						window.location.href = '${rootUrl}app/weekly/daily/mailAttachment/result?mailAttachmentId='+data.msg;
 					}
 				}
 			},
