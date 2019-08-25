@@ -70,4 +70,18 @@ public class MyTools {
 		}
 		return stringBuilder.toString();
 	}
+
+	/**
+	 * 获取数字随机码
+	 * @param length
+	 * @return
+	 */
+	public static String randomNumCode(int length) {
+		if(length <= 0) length = 6;
+		StringBuilder builder = new StringBuilder();
+		for(int i=0; i<length; i++) {
+			builder.append(Math.round(Math.random() * 10));
+		}
+		return builder.toString();
+	}
 }
