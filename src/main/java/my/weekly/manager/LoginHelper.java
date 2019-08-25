@@ -19,8 +19,8 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.WebUtils;
 
-import my.weekly.common.tools.JsonTools;
-import my.weekly.common.tools.WebTools;
+import my.weekly.common.tools.JsonUtil;
+import my.weekly.common.tools.WebHelper;
 import my.weekly.dao.entity.AppResource;
 import my.weekly.dao.entity.User;
 import my.weekly.model.MyFinals;
@@ -40,7 +40,7 @@ public class LoginHelper {
 		try {
 			String loginUser = (String) WebUtils.getSessionAttribute(request, MySession.LOGIN_USER);
 			if (StringUtils.hasText(loginUser))
-				return JsonTools.json2Object(loginUser, User.class);
+				return JsonUtil.json2Object(loginUser, User.class);
 		} catch (IOException e) {
 			logger.error("获取登陆用户信息异常，异常信息：{}", e);
 		}
@@ -52,7 +52,7 @@ public class LoginHelper {
 		String str = (String) WebUtils.getSessionAttribute(request, MySession.ROLE_MENU);
 		try
 		{
-			return str == null ? new ArrayList<MenuModel>() : JsonTools.json2List(str, MenuModel.class);
+			return str == null ? new ArrayList<MenuModel>() : JsonUtil.json2List(str, MenuModel.class);
 		}
 		catch (IOException e)
 		{
@@ -66,7 +66,7 @@ public class LoginHelper {
 		String str = (String) WebUtils.getSessionAttribute(request, MySession.CURRENT_RESOURCE);
 		try
 		{
-			if (str != null) return JsonTools.json2Object(str, AppResource.class);
+			if (str != null) return JsonUtil.json2Object(str, AppResource.class);
 		}
 		catch (IOException e)
 		{
@@ -78,7 +78,7 @@ public class LoginHelper {
 	public static void addLoginSession(HttpServletRequest request, User user, List<MenuModel> menus) {
 		
 		Assert.notNull(user, "账号信息不能为空");
-		String ip = WebTools.getIpAddress(request);
+		String ip = WebHelper.getIpAddress(request);
 		if ("0:0:0:0:0:0:0:1".equals(ip)) ip = "127.0.0.1";
 		
 		HttpSession session = request.getSession(false);
@@ -88,7 +88,7 @@ public class LoginHelper {
 		WebUtils.setSessionAttribute(request, MySession.LOGIN_ROLE, user.getRole().getId());
 		WebUtils.setSessionAttribute(request, MySession.LOGIN_TIME, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 		try {
-			String menuJson = JsonTools.writeValueAsString(menus);
+			String menuJson = JsonUtil.writeValueAsString(menus);
 			WebUtils.setSessionAttribute(request, MySession.ROLE_MENU, menuJson);
 			logger.debug("role menu:{}", menuJson);
 		} catch (IOException e) {
