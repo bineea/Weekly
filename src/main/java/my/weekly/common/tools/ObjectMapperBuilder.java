@@ -24,7 +24,7 @@ import my.weekly.common.pub.CommonAbstract;
 
 public class ObjectMapperBuilder  extends CommonAbstract {
 	
-	private static final String DEFAULT_FILTER_NAME = JsonTools.FILTER_NAME;
+	private static final String DEFAULT_FILTER_NAME = JsonUtil.FILTER_NAME;
 	private final ObjectMapper objectMapper = new ObjectMapper();
 	private String filterName;
 	private SimpleDateFormat dateFormat;

@@ -6,7 +6,7 @@ import java.security.NoSuchAlgorithmException;
 
 import org.springframework.util.StringUtils;
 
-public class SecurityTools {
+public class SecurityHelper {
 
 	private static final char[] defaultDigit = { 'L', 'I', 'N', 'X', 'I', 'N', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };
 	private static final char[] commonDigit = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };

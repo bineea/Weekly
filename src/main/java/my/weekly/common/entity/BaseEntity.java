@@ -4,9 +4,9 @@ import java.io.IOException;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
 
-import my.weekly.common.tools.JsonTools;
+import my.weekly.common.tools.JsonUtil;
 
-@JsonFilter(value = JsonTools.FILTER_NAME)
+@JsonFilter(value = JsonUtil.FILTER_NAME)
 public abstract class BaseEntity {
 
 	public final String toJson() {
@@ -16,8 +16,8 @@ public abstract class BaseEntity {
 	public final String toJson(boolean format) {
 		
 		try {
-			String jsonStr = JsonTools.entityToJson(this);
-			return format ? JsonTools.formatJson(jsonStr) : jsonStr;
+			String jsonStr = JsonUtil.entityToJson(this);
+			return format ? JsonUtil.formatJson(jsonStr) : jsonStr;
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;

@@ -19,10 +19,10 @@ import com.fasterxml.jackson.databind.type.MapType;
 
 import my.weekly.common.entity.BaseEntity;
 
-public class JsonTools {
+public class JsonUtil {
 
 	public static final String FILTER_NAME = "myFilter";
-	protected static Logger logger = LoggerFactory.getLogger(JsonTools.class);
+	protected static Logger logger = LoggerFactory.getLogger(JsonUtil.class);
 	protected static ObjectMapper mapper;
 
 	static {

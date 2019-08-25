@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import my.weekly.common.pub.MyManagerException;
 
-public class ImageUploadTools {
+public class ImageUploadHelper {
 	
 	public static File uploadImage(MultipartHttpServletRequest  multipartRequest, String directory) throws IOException, MyManagerException {
 		Iterator<String> iter = multipartRequest.getFileNames();

@@ -8,7 +8,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.WebUtils;
 
-public class WebTools extends WebUtils {
+public class WebHelper extends WebUtils {
 
 	private static String contextPath;
 
