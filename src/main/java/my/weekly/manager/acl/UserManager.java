@@ -1,6 +1,7 @@
 package my.weekly.manager.acl;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,6 +12,7 @@ import my.weekly.dao.entity.User.UserStatus;
 import my.weekly.dao.repo.Spe.UserPageSpe;
 import my.weekly.model.acl.UserInfoModel;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 
 public interface UserManager {
@@ -90,6 +92,6 @@ public interface UserManager {
 	 * 推送邮件验证码
 	 * @param email
 	 */
-	void sendCheckCode(String email, HttpServletRequest request);
+	void sendCheckCode(String email, HttpServletRequest request) throws MessagingException, SQLException, MyManagerException, IOException;
 	
 }

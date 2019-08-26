@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @Controller
 public class RegisterController extends AbstractController {
@@ -35,7 +37,7 @@ public class RegisterController extends AbstractController {
 
     @RequestMapping(value="common/checkCode", method= RequestMethod.POST)
     public void checkCodePost(@RequestParam("email") String email, Model model,
-                              HttpServletRequest request, HttpServletResponse response) throws MyManagerException, IOException {
+                              HttpServletRequest request, HttpServletResponse response) throws MyManagerException, IOException, MessagingException, SQLException {
         userManager.sendCheckCode(email, request);
         addSuccess(response, "邮件验证码已成功推送，请注意查收");
     }

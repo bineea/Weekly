@@ -3,6 +3,7 @@ package my.weekly.manager.acl;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Arrays;
 
 import my.weekly.dao.entity.SendEmail;
@@ -36,6 +37,7 @@ import my.weekly.manager.AbstractManager;
 import my.weekly.model.MyFinals;
 import my.weekly.model.acl.UserInfoModel;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 
 @Service
@@ -191,9 +193,9 @@ public class UserManagerImpl extends AbstractManager implements UserManager {
 	}
 
 	@Override
-	public void sendCheckCode(String email, HttpServletRequest request) {
+	public void sendCheckCode(String email, HttpServletRequest request) throws MessagingException, SQLException, MyManagerException, IOException {
 		SendEmailInfo info = initCheckCodeEmailInfo(email);
-		sendEmailManager.saveSendEmailByInfo(info, request);
+		sendEmailManager.sendEmailHandler(info);
 	}
 
 	private SendEmailInfo initCheckCodeEmailInfo(String email) {
