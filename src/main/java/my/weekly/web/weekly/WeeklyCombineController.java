@@ -6,6 +6,7 @@ import my.weekly.dao.entity.Daily;
 import my.weekly.dao.entity.MailAttachment;
 import my.weekly.dao.entity.dict.EmailConfType;
 import my.weekly.dao.repo.Spe.WeeklyDailyPageSpe;
+import my.weekly.manager.LoginHelper;
 import my.weekly.manager.daily.DailyManager;
 import my.weekly.model.NoteModel;
 import my.weekly.model.message.SendEmailInfo;
@@ -50,6 +51,7 @@ public class WeeklyCombineController extends AbstractController {
         if(spe.getEndOpDate() == null)
             throw new MyManagerException("END DATE不能为空");
         spe.setPageSize(500);
+        spe.setUserId(LoginHelper.getLoginUser(request).getId());
         Page<Daily> page = dailyManager.pageQuery(spe);
         model.addAttribute("queryResult", page.getContent());
         model.addAttribute("currentPage", page.getNumber());
