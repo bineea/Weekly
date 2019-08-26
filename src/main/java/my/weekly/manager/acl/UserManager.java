@@ -93,5 +93,11 @@ public interface UserManager {
 	 * @param email
 	 */
 	void sendCheckCode(String email, HttpServletRequest request) throws MessagingException, SQLException, MyManagerException, IOException;
-	
+
+	/**
+	 * 添加用户
+	 * @param model
+	 * @return
+	 */
+	User register(UserInfoModel model) throws MyManagerException, IOException;
 }
