@@ -31,7 +31,7 @@ public class RoleController extends AbstractController {
 	@Autowired
 	private RoleManager manager;
 
-	private static final String prefix = "acl/role/";
+	private static final String prefix = "manage/acl/role/";
 	@RequestMapping(value = "/manage", method = RequestMethod.GET)
 	public String manageGet(@ModelAttribute("queryModel") RolePageSpe pageSpe, Model model) {
 		return prefix + "manage";

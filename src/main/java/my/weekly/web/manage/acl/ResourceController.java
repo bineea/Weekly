@@ -32,7 +32,7 @@ public class ResourceController extends AbstractController {
 	
 	@Autowired
 	private ResourceManager manager;
-	private final String prefix = "acl/resource/";
+	private final String prefix = "manage/acl/resource/";
 
 	@RequestMapping(value = "/manage", method = RequestMethod.GET)
 	public String manageGet(@ModelAttribute("queryModel") AppResourcePageSpe pageSpe, Model model) throws IOException {
