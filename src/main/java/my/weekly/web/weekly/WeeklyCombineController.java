@@ -4,6 +4,7 @@ import my.weekly.common.pub.MyManagerException;
 import my.weekly.common.tools.HttpResponseHelper;
 import my.weekly.dao.entity.Daily;
 import my.weekly.dao.entity.MailAttachment;
+import my.weekly.dao.entity.User;
 import my.weekly.dao.entity.dict.EmailConfType;
 import my.weekly.dao.repo.Spe.WeeklyDailyPageSpe;
 import my.weekly.manager.LoginHelper;
@@ -50,8 +51,11 @@ public class WeeklyCombineController extends AbstractController {
             throw new MyManagerException("START DATE不能为空");
         if(spe.getEndOpDate() == null)
             throw new MyManagerException("END DATE不能为空");
+        User user = LoginHelper.getLoginUser(request);
+        if(user == null)
+            throw new MyManagerException("用户信息异常，需重新登录");
         spe.setPageSize(500);
-        spe.setUserId(LoginHelper.getLoginUser(request).getId());
+        spe.setUserId(user.getId());
         Page<Daily> page = dailyManager.pageQuery(spe);
         model.addAttribute("queryResult", page.getContent());
         model.addAttribute("currentPage", page.getNumber());
