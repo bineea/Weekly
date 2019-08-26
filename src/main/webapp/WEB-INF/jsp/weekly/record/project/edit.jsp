@@ -11,14 +11,21 @@
 <link href="${rootUrl}assets/e-commerceCss/animate.min.css" rel="stylesheet" />
 
 <%@ include file="/WEB-INF/jsp/weekly/common/include.jsp"%>
+<link href="${rootUrl}assets/manageCss/style.min.css" rel="stylesheet" />
 <script>
 	$(document).ready(function() {
 		$("#editForm").ajaxForm({
 			type:'post',
+			beforeSubmit: function() {
+				// 创建loading
+				$.My.showLoading($.My.Messages.MSG_OPERATE);
+			},
 			success:function(data, textStatus, jqXHR) {
+				$.My.hideLoading();
 				$.My.handleSuccessRes(data, textStatus, jqXHR);
 			},
 			error:function(xhr, status, error) {
+				$.My.hideLoading();
 				$.My.showMsg(false, "系统异常，请稍后重试！");
 			}
 		});

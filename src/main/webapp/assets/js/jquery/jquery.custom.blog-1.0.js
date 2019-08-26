@@ -363,12 +363,17 @@
 		 * 
 		 *************************************************************************/
 		showLoading: function() {
-			$loadingDiv = $("#page_loader");
+			$loadingDiv = $("#page-loader");
 			if(!$loadingDiv.length) {
-				var html = '<div id="page_loader" class="fade in" style="filter:alpha(opacity=60);opacity:0.6;">'
+				var html = '<div id="page-loader" class="fade in" style="filter:alpha(opacity=60);opacity:0.6;">'
 						 +		'<span class="spinner"></span>'
 						 + '</div>';
 				$loadingDiv=$(html).prependTo(document.body);
+			} else {
+				var html = '<div id="page-loader" class="fade in" style="filter:alpha(opacity=60);opacity:0.6;">'
+					+		'<span class="spinner"></span>'
+					+ '</div>';
+				$loadingDiv.replaceWith(html);
 			}
 		},
 		
@@ -378,7 +383,7 @@
 		 * 
 		 *************************************************************************/
 		hideLoading: function() {
-			$("#page_loader").addClass("hide");
+			$("#page-loader").addClass("hide");
 		},
 		
 		/**************************************************************************
@@ -702,7 +707,7 @@
 					this.isRunning = true;
 				}
 				var $this = this,
-					options = { 
+					options = {
 					// 查询配置项
 					// 查询成功处理函数
 					success : function success(responseText,

@@ -4,6 +4,7 @@
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>My Weekly</title>
+<link href="${rootUrl}assets/manageCss/style.min.css" rel="stylesheet" />
 
 <link href="${rootUrl}assets/e-commerceCss/style.min.css" rel="stylesheet" />
 <link href="${rootUrl}assets/one-page-parallaxCss/style.min.css" rel="stylesheet" />
@@ -28,6 +29,15 @@
 				type:'POST',
 				data:{
 					projectId: projectVal
+				},
+				beforeSend: function () {
+					// 创建loading
+					$.My.showLoading($.My.Messages.MSG_OPERATE);
+					$(this).attr({ disabled: "disabled" });
+				},
+				complete: function () {
+					$.My.hideLoading();
+					$(this).removeAttr("disabled");
 				},
 				success:function(data, textStatus, jqXHR) {
 					if($.My.handleSuccessRes(data, textStatus, jqXHR)) {

@@ -5,6 +5,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>My Weekly</title>
 
+<link href="${rootUrl}assets/manageCss/style.min.css" rel="stylesheet" />
+
 <link href="${rootUrl}assets/e-commerceCss/style.min.css" rel="stylesheet" />
 <link href="${rootUrl}assets/one-page-parallaxCss/style.min.css" rel="stylesheet" />
 <link href="${rootUrl}assets/one-page-parallaxCss/theme/default.css" id="theme" rel="stylesheet" />
@@ -30,6 +32,15 @@
 					url:'${rootUrl}app/weekly/daily/check',
 					type:'POST',
 					data:{projectId: val},
+					beforeSend: function () {
+						// 创建loading
+						$.My.showLoading($.My.Messages.MSG_OPERATE);
+						$(this).attr({ disabled: "disabled" });
+					},
+					complete: function () {
+						$.My.hideLoading();
+						$(this).removeAttr("disabled");
+					},
 					success:function(data, textStatus, jqXHR) {
 						if(jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_ERROR)) {
 							$.My.showMsg(false,data.msg);

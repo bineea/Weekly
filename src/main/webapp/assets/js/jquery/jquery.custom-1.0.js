@@ -180,6 +180,11 @@
 						 +		'<span class="spinner"></span>'
 						 + '</div>';
 				$loadingDiv=$(html).prependTo(document.body);
+			} else {
+				var html = '<div id="page-loader" class="fade in" style="filter:alpha(opacity=60);opacity:0.6;">'
+					+		'<span class="spinner"></span>'
+					+ '</div>';
+				$loadingDiv.replaceWith(html);
 			}
 		},
 		
@@ -250,7 +255,7 @@
 	        success: function (responseText, status, xhr) { //提交成功的回调函数
 	        	var $responseText = $(responseText);
 	        	//处理分页
-	        	$._bindPager($responseText.find("#page_query_pager"));
+	        	$._bindPagerRight($responseText.find("#page_query_pager"));
 	        	//显示列表
 	        	$._handleSearchReasult($responseText);
 	        },
@@ -267,7 +272,7 @@
 	        success: function (responseText, status, xhr) { //提交成功的回调函数
 	        	var $responseText = $(responseText);
 	        	//处理分页
-	        	$._bindPager($responseText.find("#query_pager"));
+	        	$._bindPagerRight($responseText.find("#query_pager"));
 	        	//显示列表
 	        	$._handleSearchReasult(null,$responseText);
 	        },
@@ -285,7 +290,7 @@
 	        success: function (responseText, status, xhr) { //提交成功的回调函数
 	        	var $responseText = $(responseText);
 	        	//处理分页
-	        	$._bindPager($responseText.find("#page_query_pager"));
+	        	$._bindPagerRight($responseText.find("#page_query_pager"));
 	        	//显示列表
 	        	$._handleSearchReasult(null,$responseText);
 	        },

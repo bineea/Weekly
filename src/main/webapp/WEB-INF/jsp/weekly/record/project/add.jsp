@@ -11,16 +11,23 @@
 <link href="${rootUrl}assets/e-commerceCss/animate.min.css" rel="stylesheet" />
 
 <%@ include file="/WEB-INF/jsp/weekly/common/include.jsp"%>
+<link href="${rootUrl}assets/manageCss/style.min.css" rel="stylesheet" />
 <script>
 	$(document).ready(function() {
 		$("#addForm").ajaxForm({
 			type:'post',
+			beforeSubmit: function() {
+				// 创建loading
+				$.My.showLoading($.My.Messages.MSG_OPERATE);
+			},
 			success:function(data, textStatus, jqXHR) {
+				$.My.hideLoading();
 				if($.My.handleSuccessRes(data, textStatus, jqXHR)) {
 					window.localtion.href = '${rootUrl}app/weekly/daily/project';
 				}
 			},
 			error:function(xhr, status, error) {
+				$.My.hideLoading();
 				$.My.showWarnMsg("系统异常，请稍后重试！");
 			}
 		});

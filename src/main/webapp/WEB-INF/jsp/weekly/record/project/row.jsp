@@ -37,7 +37,7 @@
         	<li>${data.name }</li>
             <li>${data.summary }</li>
         </ul>
-        <div class="footer">
+        <div class="footer" style="margin-left: 0px; margin-right: 0px;">
             <a href="${rootUrl }app/weekly/project/edit/${data.id }" class="btn btn-inverse btn-block update_op">修改</a>
             <a href="${rootUrl }app/weekly/project/del/${data.id }" class="btn btn-inverse btn-block delete_op">删除</a>
         </div>

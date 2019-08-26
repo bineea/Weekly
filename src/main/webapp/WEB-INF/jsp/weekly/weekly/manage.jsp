@@ -6,14 +6,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>My Weekly</title>
 
-<link href="${rootUrl}assets/e-commerceCss/style.min.css" rel="stylesheet" />
-<link href="${rootUrl}assets/manageCss/style.min.css" rel="stylesheet" />
+	<link href="${rootUrl}assets/e-commerceCss/style.min.css" rel="stylesheet" />
 
-<link href="${rootUrl}assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" />
-<link href="${rootUrl}assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" />
+	<link href="${rootUrl}assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+	<link href="${rootUrl}assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" />
 
-<%@ include file="/WEB-INF/jsp/weekly/common/include.jsp"%>
-<script src="${rootUrl}assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+	<%@ include file="/WEB-INF/jsp/weekly/common/include.jsp"%>
+	<link href="${rootUrl}assets/manageCss/style.min.css" rel="stylesheet" />
+	<script src="${rootUrl}assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 <script>
 	$(document).ready(function() {
 
@@ -96,6 +96,15 @@
 				endOpDate:endOpDateVal,
 				operateContent:operateContentVal,
 				dailyIds: checkboxVal
+			},
+			beforeSend: function () {
+				// 创建loading
+				$.My.showLoading($.My.Messages.MSG_OPERATE);
+				$(this).attr({ disabled: "disabled" });
+			},
+			complete: function () {
+				$.My.hideLoading();
+				$(this).removeAttr("disabled");
 			},
 			success:function(data, textStatus, jqXHR) {
 				if(jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_ERROR)) {

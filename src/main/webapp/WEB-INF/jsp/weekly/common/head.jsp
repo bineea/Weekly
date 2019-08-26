@@ -36,7 +36,7 @@
 				<li>
 					<a href="javascript:;" data-toggle="dropdown">
 						<img src="${rootUrl }assets/img/user-1.jpg" style="float:left;width:20px;height:20px;border-radius:40px;margin-right:10px;" alt="用户头像" />
-						<span class="hidden-md hidden-sm hidden-xs">ABOUT ME</span>
+						<span class="hidden-md hidden-sm hidden-xs">ABOUT ME【${loginUser.loginName }】</span>
 						<b class="caret"></b>
 					</a>
 					<ul class="dropdown-menu">

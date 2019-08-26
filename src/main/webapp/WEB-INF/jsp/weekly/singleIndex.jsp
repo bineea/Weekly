@@ -21,7 +21,7 @@
 	            </h4>
             </blockquote>
             <div class="post-by">
-                Posted By ${loginUser.name } 
+                Posted By ${data.user.name }
                 <span class="divider">|</span> 
                             状态：${fn:escapeXml(data.handleStatus.value) }
                 <span class="divider">|</span> 

@@ -10,10 +10,10 @@
     <link href="${rootUrl}assets/e-commerceCss/style-responsive.min.css" rel="stylesheet" />
     <link href="${rootUrl}assets/e-commerceCss/theme/default.css" rel="stylesheet" />
     <%@ include file="/WEB-INF/jsp/weekly/common/include.jsp"%>
-    <script src="${rootUrl}assets/plugins/jquery-tag-it/js/tag-it.min.js"></script>
-    <link href="${rootUrl}assets/manageCss/style.min.css" rel="stylesheet" />
     <link href="${rootUrl}assets/plugins/jquery-tag-it/css/jquery.tagit.css" rel="stylesheet" />
-<script>
+    <link href="${rootUrl}assets/manageCss/style.min.css" rel="stylesheet" />
+    <script src="${rootUrl}assets/plugins/jquery-tag-it/js/tag-it.min.js"></script>
+    <script>
     $(document).ready(function() {
 
         $('#emailTo').tagit({
@@ -23,12 +23,18 @@
 
         $("#configForm").ajaxForm({
             type:'post',
+            beforeSubmit: function() {
+                // 创建loading
+                $.My.showLoading($.My.Messages.MSG_OPERATE);
+            },
             success:function(data, textStatus, jqXHR) {
+                $.My.hideLoading();
                 if($.My.handleSuccessRes(data, textStatus, jqXHR)) {
                     window.location.href = '${rootUrl}app/weekly/daily/mailAttachment/result?mailAttachmentId='+data.msg;
                 }
             },
             error:function(xhr, status, error) {
+                $.My.hideLoading();
                 $.My.showMsg(false,"系统异常，请稍后重试！");
             }
         });

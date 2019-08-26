@@ -14,6 +14,7 @@
 <link href="${rootUrl}assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" />
 
 <%@ include file="/WEB-INF/jsp/weekly/common/include.jsp"%>
+<link href="${rootUrl}assets/manageCss/style.min.css" rel="stylesheet" />
 <script src="${rootUrl}assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 <script>
 	$(document).ready(function() {
@@ -38,7 +39,12 @@
 		                action: function(){
 		 					$("#dailyForm").ajaxSubmit({
 		 						type: 'POST',
+								beforeSubmit: function() {
+									// 创建loading
+									$.My.showLoading($.My.Messages.MSG_OPERATE);
+								},
 		 						success: function(data, textStatus, jqXHR) {
+									$.My.hideLoading();
 									if(jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_ERROR)) {
 			 							$.showMsg(false, data.msg);
 									} else {
@@ -46,6 +52,7 @@
 									}
 		 						},
 		 						error:function(XMLHttpRequest, textStatus, errorThrown) {
+									$.My.hideLoading();
 		 							$.showWarnMsg("系统异常，请稍后重试！");
 		 						}
 		 					});
