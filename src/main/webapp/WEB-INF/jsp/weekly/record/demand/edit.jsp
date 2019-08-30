@@ -104,7 +104,7 @@
 	                <!-- END checkout-body -->
 	                <!-- BEGIN checkout-footer -->
 	                <div class="checkout-footer">
-	                    <a id="back" href="${rootUrl }app/weekly/daily/demand?projectId=${project.id}" class="btn btn-white btn-lg pull-left">Back</a>
+	                    <a id="back" href="${rootUrl }app/weekly/daily/demand?projectId=${demand.project.id}" class="btn btn-white btn-lg pull-left">Back</a>
                         <button type="submit" class="btn btn-inverse btn-lg p-l-30 p-r-30 m-l-10">Submit</button>
 	                </div>
 	                <!-- END checkout-footer -->
