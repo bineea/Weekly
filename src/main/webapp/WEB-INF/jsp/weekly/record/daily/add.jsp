@@ -46,14 +46,14 @@
 		 						success: function(data, textStatus, jqXHR) {
 									$.My.hideLoading();
 									if(jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_ERROR)) {
-			 							$.showMsg(false, data.msg);
+			 							$.My.showMsg(false, data.msg);
 									} else {
 										window.location.href = "${rootUrl }app/weekly/daily/record?dailyId="+data.msg;
 									}
 		 						},
 		 						error:function(XMLHttpRequest, textStatus, errorThrown) {
 									$.My.hideLoading();
-		 							$.showWarnMsg("系统异常，请稍后重试！");
+		 							$.My.showMsg(false, "系统异常，请稍后重试！");
 		 						}
 		 					});
 		                }
