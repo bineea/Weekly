@@ -120,7 +120,6 @@ public class WeeklyDailyController extends AbstractController {
 	public String dailyAddGet(@RequestParam(name = "projectId", required = true) String projectId,
 			@RequestParam(name = "demandId", required = true) String demandId,
 			HttpServletRequest request, Model model) {
-		//FIXME 校验projectId、demandId
 		Project project = projectManager.findById(projectId);
 		if(project == null) 
 			return prefix + "record/project/manage";
@@ -128,6 +127,8 @@ public class WeeklyDailyController extends AbstractController {
 		if(demand == null)
 			return prefix + "record/project/manage";
 		else if(demand.getHandleStatus() == HandleStatus.DONE)
+			return prefix + "record/project/manage";
+		else if(!demand.getProject().getId().equals(projectId))
 			return prefix + "record/project/manage";
 		model.addAttribute("project", project);
 		model.addAttribute("demand", demand);
