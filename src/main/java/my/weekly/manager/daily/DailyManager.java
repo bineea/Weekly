@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import my.weekly.dao.entity.MailAttachment;
 import my.weekly.model.message.SendEmailInfo;
 import my.weekly.model.message.SendEmailResult;
+import my.weekly.model.weekly.CategoryModel;
 import my.weekly.model.weekly.WeeklyModel;
 import org.springframework.data.domain.Page;
 
@@ -17,6 +18,7 @@ import my.weekly.model.weekly.DailyModel;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
+import java.util.List;
 
 public interface DailyManager {
 
@@ -69,4 +71,16 @@ public interface DailyManager {
 	 * @return
 	 */
 	SendEmailResult weekly2SendEmail(SendEmailInfo info, HttpServletRequest request) throws MyManagerException, IOException, MessagingException, SQLException;
+
+	/**
+	 * 按照需求类型统计日报
+	 * @return
+	 */
+	List<CategoryModel> categoryByDemand();
+
+	/**
+	 * 按照用户统计日报
+	 * @return
+	 */
+	List<CategoryModel> categoryByUser();
 }

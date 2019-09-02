@@ -17,13 +17,15 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 
 import my.weekly.dao.entity.*;
-import my.weekly.dao.repo.jpa.MailAttachmentRepo;
+import my.weekly.dao.entity.dict.CategoryType;
+import my.weekly.dao.repo.jpa.*;
 import my.weekly.manager.message.SendEmailManager;
 import my.weekly.manager.poi.AbstractGenerateExcelManager;
 import my.weekly.model.MyFinals;
 import my.weekly.model.message.SendEmailInfo;
 import my.weekly.model.message.SendEmailResult;
 import my.weekly.model.poi.PoiWriteExcelInfo;
+import my.weekly.model.weekly.CategoryModel;
 import my.weekly.model.weekly.WeeklyModel;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -42,9 +44,6 @@ import org.springframework.util.StringUtils;
 import my.weekly.common.pub.MyManagerException;
 import my.weekly.dao.entity.dict.DemandType;
 import my.weekly.dao.repo.Spe.WeeklyDailyPageSpe;
-import my.weekly.dao.repo.jpa.DailyRepo;
-import my.weekly.dao.repo.jpa.DemandRepo;
-import my.weekly.dao.repo.jpa.ProjectRepo;
 import my.weekly.manager.AbstractManager;
 import my.weekly.manager.LoginHelper;
 import my.weekly.model.weekly.DailyModel;
@@ -62,6 +61,8 @@ public class DailyManagerImpl extends AbstractManager implements DailyManager, A
 	private MailAttachmentRepo mailAttachmentRepo;
 	@Autowired
 	private SendEmailManager sendEmailManager;
+	@Autowired
+	private UserRepo userRepo;
 	
 	@Override
 	public Page<Daily> pageQuery(WeeklyDailyPageSpe spe) {
@@ -196,6 +197,36 @@ public class DailyManagerImpl extends AbstractManager implements DailyManager, A
 		sendEmailManager.sendEmailHandler(info);
 		SendEmailResult result = sendEmailManager.saveSendEmailByInfo(info, request);
 		return result;
+	}
+
+	@Override
+	public List<CategoryModel> categoryByDemand() {
+		List<CategoryModel> categoryModelList = new ArrayList<>();
+		List<DemandType> demandTypeList = Arrays.asList(DemandType.values());
+		demandTypeList.stream().forEach(d -> {
+			CategoryModel model = new CategoryModel();
+			model.setCategoryType(CategoryType.DEMAND_INFO);
+			model.setCategoryItem(d.name());
+			model.setCategoryValue(d.getValue());
+			model.setCategorySum(dailyRepo.countByDemandType(d));
+			categoryModelList.add(model);
+		});
+		return categoryModelList;
+	}
+
+	@Override
+	public List<CategoryModel> categoryByUser() {
+		List<CategoryModel> categoryModelList = new ArrayList<>();
+		List<User> userList = userRepo.findAll();
+		userList.stream().forEach(u -> {
+			CategoryModel model = new CategoryModel();
+			model.setCategoryType(CategoryType.USER_INFO);
+			model.setCategoryItem(u.getId());
+			model.setCategoryValue(u.getName());
+			model.setCategorySum(dailyRepo.countByUser(u.getId()));
+			categoryModelList.add(model);
+		});
+		return categoryModelList;
 	}
 
 	private void validateSendEmailInfo(SendEmailInfo info) throws MyManagerException {

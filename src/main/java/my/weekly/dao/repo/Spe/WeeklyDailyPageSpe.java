@@ -9,6 +9,7 @@ import javax.persistence.criteria.Predicate;
 
 import lombok.Getter;
 import lombok.Setter;
+import my.weekly.dao.entity.dict.DemandType;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 
@@ -33,6 +34,9 @@ public class WeeklyDailyPageSpe extends AbstractPageSpecification<Daily> {
 	private String demandId;
 	@Getter
 	@Setter
+	private DemandType demandType;
+	@Getter
+	@Setter
 	private HandleStatus handleStatus;
 	@Getter
 	@Setter
@@ -51,6 +55,8 @@ public class WeeklyDailyPageSpe extends AbstractPageSpecification<Daily> {
 				predicateList.add(criteriaBuilder.equal(root.get("user").get("id").as(String.class), userId));
 			if(StringUtils.hasText(demandId))
 				predicateList.add(criteriaBuilder.equal(root.get("demand").get("id").as(String.class), demandId));
+			if(demandType != null)
+				predicateList.add(criteriaBuilder.equal(root.get("demand").get("demandType"), demandType));
 			if(handleStatus != null)
 				predicateList.add(criteriaBuilder.equal(root.get("handleStatus"), handleStatus));
 			if(startTime != null)
