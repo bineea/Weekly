@@ -41,7 +41,7 @@ public abstract class AbstractController extends CommonAbstract {
 	@ExceptionHandler(value = MyManagerException.class)
 	public void handleMyManagerException(MyManagerException e, HttpServletResponse response) throws IOException {
 		logger.debug("handle MyManagerException:{}", e.getMessage());
-		NoteModel model = new NoteModel(false, e.getMessage());
+		NoteModel model = new NoteModel(false, "数据处理异常", e.getMessage());
 		jsonResponse(HEADER_ERROR, model.toJson(), response);
 	}
 	
@@ -49,7 +49,7 @@ public abstract class AbstractController extends CommonAbstract {
 	@ExceptionHandler(value = BindException.class)
 	public void handleBindException(BindException e, HttpServletResponse response) throws IOException {
 		logger.debug("handle BindException:{}", e.getMessage());
-		NoteModel model = new NoteModel(false, fieldErrors2Json(e.getBindingResult()));
+		NoteModel model = new NoteModel(false, "数据校验异常", fieldErrors2Json(e.getBindingResult()));
 		jsonResponse(HEADER_CVE, model.toJson(), response);
 	}
 	

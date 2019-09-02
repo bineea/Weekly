@@ -55,7 +55,7 @@
 		 						type: 'POST',
 		 						success: function(data, textStatus, jqXHR) {
 									if(jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_ERROR)) {
-			 							$.showWarnMsg(data.msg);
+			 							$.showWarnMsg(data.resultObj);
 									} else if(jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_NOTE)) {
 										$._handleTableData(data,"delete",trNode);
 										$.showMsg(true,new Base64().decode(jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_NOTE)));

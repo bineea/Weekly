@@ -16,7 +16,7 @@
 			},
 			success: function(responseText, status, xhr){
 				if(xhr.getResponseHeader($.My.Constans.RESPONSE_HEADER_ERROR)){
-					$.showMsg(false,responseText.msg);
+					$.showMsg(false,responseText.resultObj);
 				}else if(xhr.getResponseHeader($.My.Constans.RESPONSE_HEADER_NOTE)){
 					$.showMsg(true,new Base64().decode(xhr.getResponseHeader($.My.Constans.RESPONSE_HEADER_NOTE)));
 				}

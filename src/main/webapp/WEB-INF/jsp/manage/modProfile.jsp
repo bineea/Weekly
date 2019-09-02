@@ -16,7 +16,7 @@
 			},
 			success: function(responseText, status, xhr){
 				if(xhr.getResponseHeader($.My.Constans.RESPONSE_HEADER_ERROR)){
-					$.showMsg(false,responseText.msg);
+					$.showMsg(false,responseText.resultObj);
 				}else if(xhr.getResponseHeader($.My.Constans.RESPONSE_HEADER_NOTE)){
 					$.showMsg(true,new Base64().decode(xhr.getResponseHeader($.My.Constans.RESPONSE_HEADER_NOTE)));
 				}
@@ -59,7 +59,7 @@
     		 				        contentType: false,// 告诉jQuery不要去设置Content-Type请求头
     		 						success: function(data, textStatus, jqXHR) {
     									if(jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_ERROR)) {
-    			 							$.showMsg(false,data.msg);
+    			 							$.showMsg(false,data.resultObj);
     									} else if(jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_NOTE)) {
     								        $("#picture").attr("src", "${rootUrl }app/acl/user/showProfilePic/"+$("#userId").val());
     									}

@@ -46,7 +46,7 @@
 		 						success: function(data, textStatus, jqXHR) {
 									$.My.hideLoading();
 									if($.My.handleSuccessRes(data, textStatus, jqXHR)) {
-										window.location.href = "${rootUrl }app/weekly/daily/record?dailyId="+data.msg;
+										window.location.href = "${rootUrl }app/weekly/daily/record?dailyId="+data.resultObj;
 									}
 		 						},
 		 						error:function(XMLHttpRequest, textStatus, errorThrown) {

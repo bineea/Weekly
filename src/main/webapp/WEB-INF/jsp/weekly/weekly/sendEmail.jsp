@@ -30,7 +30,7 @@
             success:function(data, textStatus, jqXHR) {
                 $.My.hideLoading();
                 if($.My.handleSuccessRes(data, textStatus, jqXHR)) {
-                    window.location.href = '${rootUrl}app/weekly/daily/mailAttachment/result?mailAttachmentId='+data.msg;
+                    window.location.href = '${rootUrl}app/weekly/daily/mailAttachment/result?mailAttachmentId='+data.resultObj;
                 }
             },
             error:function(xhr, status, error) {

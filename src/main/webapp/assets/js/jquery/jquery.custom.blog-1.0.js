@@ -444,10 +444,10 @@
 			};
 			if (responseHeader.error) {
 				// 操作失败,error返回，显示警告信息
-				$.My.showMsg(false, data.msg);
+				$.My.showMsg(false, data.resultObj);
 				return false;
 			} else if (responseHeader.cve) {
-				var ejson = data.msg;
+				var ejson = data.resultObj;
 				var parent = this.currentTarget;
 				var	ejsonContent = $.parseJSON(ejson);
 				$.each(ejsonContent,
@@ -466,7 +466,7 @@
 				window.location = $.My.base64.decode(responseHeader.jump);
 				return false;
 			} else if (responseHeader.note) {
-				$.My.showMsg(true, $.My.base64.decode(responseHeader.note));
+				$.My.log($.My.base64.decode(responseHeader.note));
 				return true;
 			} else {
 				$.My.showMsg(false, "返回未知响应类型！！！");
@@ -497,8 +497,7 @@
 				} else if(hanleOperate==$.My.Constans.HANDLE_RESULT_DEL){
 					$('#data_result', this.currentTarget).find(".custom_clicked").remove();
 				}
-				//FIXME 无法调用方法
-				this._bindULDataClick();
+				this.bindULDataClick();
 			} else if (handleType==$.My.Constans.HANDLE_RESULT_TABLE) {
 				var $row = $(responseText).find("#result_data tr");
 				if(hanleOperate==$.My.Constans.HANDLE_RESULT_ADD){
@@ -511,11 +510,101 @@
 				} else if(hanleOperate==$.My.Constans.HANDLE_RESULT_DEL){
 					$('#data-table', this.currentTarget).find(".custom_clicked").remove();
 				}
-				//FIXME 无法调用方法
-				this._bindTableDataClick();
+				this.bindTableDataClick();
 			}
 		},
+
+		/**************************************************************************
+		 *
+		 * 表格点击事件
+		 *
+		 *************************************************************************/
+		bindTableDataClick: function() {
+			$('#data-table',this.currentTarget)
+				.find(" > tbody > tr")
+				.off("click")
+				.on("click",function(event) {
+					$(this).addClass("custom_clicked")
+						.siblings().removeClass("custom_clicked");
+					$(this).find("input[type='radio']").prop("checked",true);
+				});
+		},
+
+		/**************************************************************************
+		 *
+		 * UL点击事件
+		 *
+		 *************************************************************************/
+		bindULDataClick: function() {
+			$('#data_result',this.currentTarget)
+				.find(" > ul > li")
+				.off("click")
+				.on("click",function(event) {
+					$(this).addClass("custom_clicked")
+						.siblings().removeClass("custom_clicked");
+					$(this).find("input[type='radio']").prop("checked",true);
+				});
+		},
+
+		/**************************************************************************
+		 *
+		 * UL---处理列表
+		 *
+		 *************************************************************************/
+		handleSearchReasult2Ul: function($dataResultTarget, $responseText) {
+			if($dataResultTarget === null || $dataResultTarget === "") {
+				$dataResultTarget = $("#data_result", this.currentTarget);
+			}
+			var hasText = $responseText.find("#query_result ul").children().size() > 0;
+			if(hasText) {
+				var $ubody=$responseText.find("#query_result");
+				$dataResultTarget.empty().append($ubody.html());
+			}
+			else {
+				$dataResultTarget.empty()
+					.append("<div class='data-not-found'>没有检索到符合条件的数据！</div>");
+			}
+			this.bindULDataClick();
+		},
+
+		/**************************************************************************
+		 *
+		 * 表格---处理列表
+		 *
+		 *************************************************************************/
+		handleSearchReasult2Table: function($responseText) {
+			var hasText = $responseText.find("#page_query tbody").children().size() > 0;
+			if(hasText) {
+				var $tbody=$responseText.find("#page_query tbody");
+				$('#data-table').find("> tbody").empty().append($tbody.html());
+			}
+			else {
+				$('#data-table').find("> tbody").empty()
+					.append("<tr><td colspan='15' ><div class='taiji_not_found'>没有检索到符合条件的数据！</div></td></tr>");
+			}
+			this.bindTableDataClick();
+		},
 		
+		listSearchAjax: function (url, listResultIdTarget, handleType) {
+			$.ajax({
+				url: url,
+				type: 'post',
+				success: function (data, textStatus, jqXHR) {
+					if($.My.handleSuccessRes(data, textStatus, jqXHR)) {
+						var $data = $(data);
+						if(handleType === $.My.Constans.HANDLE_RESULT_UL) {
+							$.My.handleSearchReasult2Ul($(listResultIdTarget, this.currentTarget), $data);
+						}else if(handleType === $.My.Constans.HANDLE_RESULT_TABLE) {
+							$.My.handleSearchReasult2Table($data);
+						}
+					}
+				},
+				error: function (XMLHttpRequest, textStatus, errorThrown) {
+					$.My.showMsg(false, "系统异常，请稍后重试！");
+				}
+			});
+		},
+
 		/**********************************************************************
 		 * 
 		 * 默认配置
@@ -635,7 +724,7 @@
 
 /*******************************************************************
  * 
- * 查询分页展示
+ * 分页查询
  * 
  ******************************************************************/
 (function($){
@@ -730,9 +819,9 @@
 						if(responseHeader.note){
 							$.My.showMsg(true, $.My.base64.decode(responseHeader.note));
 						}else if(responseHeader.error){
-							$.My.showMsg(false, responseText.msg);
+							$.My.showMsg(false, responseText.resultObj);
 						}else if(responseHeader.cve){
-							var ejson = data.msg;
+							var ejson = data.resultObj;
 							var parent = this.currentTarget;
 							var	ejsonContent = $.parseJSON(ejson);
 							$.each(ejsonContent,
@@ -755,9 +844,9 @@
 								$this._bindPager($responseText.find("#page_query_pager"), $.My.Constans.BIND_PAGE_RIGHT);
 							}
 							if($this.settings.search.handleResult === $.My.Constans.HANDLE_RESULT_UL) {
-								$this._handleSearchReasult2Ul(null,$responseText);
+								$.My.handleSearchReasult2Ul(null,$responseText);
 							}else if($this.settings.search.handleResult === $.My.Constans.HANDLE_RESULT_TABLE) {
-								$this._handleSearchReasult2Table($responseText);
+								$.My.handleSearchReasult2Table($responseText);
 							}
 						}	
 					},
@@ -775,45 +864,6 @@
 				// 异步查询请求
 				$(this.searchFormClassName, 
 						this.currentTarget).ajaxSubmit(options);
-			},
-			
-			/**************************************************************************
-			 * 
-			 * UL---处理列表
-			 * 
-			 *************************************************************************/
-			_handleSearchReasult2Ul: function($dataResultTarget, $responseText) {
-				if($dataResultTarget === null || $dataResultTarget === "") {
-					$dataResultTarget = $("#data_result", this.currentTarget);
-				}
-				var hasText = $responseText.find("#query_result ul").children().size() > 0;
-				if(hasText) {
-					var $ubody=$responseText.find("#query_result");
-					$dataResultTarget.empty().append($ubody.html());
-				}
-				else {
-					$dataResultTarget.empty()
-					.append("<div class='data-not-found'>没有检索到符合条件的数据！</div>");
-				}
-				this._bindULDataClick();
-			},
-			
-			/**************************************************************************
-			 * 
-			 * 表格---处理列表
-			 * 
-			 *************************************************************************/
-			_handleSearchReasult2Table: function($responseText) {
-				var hasText = $responseText.find("#page_query tbody").children().size() > 0;
-				if(hasText) {
-					var $tbody=$responseText.find("#page_query tbody");
-					$('#data-table').find("> tbody").empty().append($tbody.html());
-				}
-				else {
-					$('#data-table').find("> tbody").empty()
-					.append("<tr><td colspan='15' ><div class='taiji_not_found'>没有检索到符合条件的数据！</div></td></tr>");
-				}
-				this._bindTableDataClick();
 			},
 			
 			/**************************************************************************
@@ -868,39 +918,7 @@
 						$(this).html($ul);
 					}).show();
 				}
-			},
-			
-			/**************************************************************************
-			 * 
-			 * 表格点击事件
-			 * 
-			 *************************************************************************/
-			_bindTableDataClick: function() {
-				$('#data-table',this.currentTarget)
-						.find(" > tbody > tr")
-						.off("click")
-						.on("click",function(event) {
-									$(this).addClass("custom_clicked")
-											.siblings().removeClass("custom_clicked");
-									$(this).find("input[type='radio']").prop("checked",true);
-								});
-			},
-			
-			/**************************************************************************
-			 * 
-			 * UL点击事件
-			 * 
-			 *************************************************************************/
-			_bindULDataClick: function() {
-				$('#data_result',this.currentTarget)
-						.find(" > ul > li")
-						.off("click")
-						.on("click",function(event) {
-									$(this).addClass("custom_clicked")
-											.siblings().removeClass("custom_clicked");
-									$(this).find("input[type='radio']").prop("checked",true);
-								});
-			},
+			}
 			
 		},
 		//可配置项
@@ -1037,3 +1055,107 @@
 
 	});
 })(jQuery);
+
+/******************************************************************************
+ *
+ * 列表查询
+ *
+ *****************************************************************************/
+(function () {
+	$.My.extendMethod({
+		name:"listSearch",
+		init:function(){
+			// 缓存一些设置中的值，减少获取链
+			this.listFormClassName = this.settings.listSearch.listFormClassName;
+			this.listResultIdTarget = this.settings.listSearch.listResultIdTarget;
+
+			var $this=this;
+			$(this.listFormClassName,
+				this.currentTarget).on("submit",function(event){
+					$this._handlelistSearch(event);
+					// 阻止元素发生默认的行为
+					$.My.preventDefault(event);
+			});
+			$(this.listFormClassName, this.currentTarget).trigger("submit");
+		},
+		event:{
+			submit:{
+				listFormClassName:"_handlelistSearch"
+			}
+		},
+		eventHandler:{
+			_handlelistSearch: function(element) {
+				if (this.isRunning === true) {
+					this.warn($.My.Messages.WAR_OPERATE);
+					return;
+				} else {
+					this.isRunning = true;
+				}
+				var $this = this,
+					options = {
+						// 查询配置项
+						// 查询成功处理函数
+						success : function success(responseText,
+												   status, xhr) {
+							var responseHeader = {
+								note:xhr.getResponseHeader($.My.Constans.RESPONSE_HEADER_NOTE),
+								error:xhr.getResponseHeader($.My.Constans.RESPONSE_HEADER_ERROR),
+								cve:xhr.getResponseHeader($.My.Constans.RESPONSE_HEADER_CVE),
+								jump:xhr.getResponseHeader($.My.Constans.RESPONSE_HEADER_JUMP)
+							};
+							var $responseText = $(responseText);
+							// 移出loading
+							$.My.hideLoading();
+							$this.isRunning = false;
+
+							if(responseHeader.note){
+								$.My.showMsg(true, $.My.base64.decode(responseHeader.note));
+							}else if(responseHeader.error){
+								$.My.showMsg(false, responseText.resultObj);
+							}else if(responseHeader.cve){
+								var ejson = data.resultObj;
+								var parent = this.currentTarget;
+								var	ejsonContent = $.parseJSON(ejson);
+								$.each(ejsonContent,
+									function(i, n) {
+										var eles=$("[name='"+i+"']",parent);
+										if(eles.length>1){
+											$("div[data-for='"+i+"']",parent).showPopover(n,{hideConcern:true});
+										}else {
+											$("[name='"+i+"']",parent).showPopover(n,{hideConcern:true});
+										}
+									});
+								// 操作失败,cve返回，显示警告信息
+								$.My.showMsg(false, $.My.Messages.ERR_CVE);
+							}else if (responseHeader.jump) {
+								window.location = $.My.base64.decode(responseHeader.jump);
+							}else{
+								if($this.settings.listSearch.handleResult === $.My.Constans.HANDLE_RESULT_UL) {
+									$.My.handleSearchReasult2Ul($($this.listResultIdTarget, this.currentTarget), $responseText);
+								}else if($this.settings.listSearch.handleResult === $.My.Constans.HANDLE_RESULT_TABLE) {
+									$.My.handleSearchReasult2Table($responseText);
+								}
+							}
+						},
+						// 查询失败处理函数
+						error : function error(xhr) {
+							$this._handleOperateError(xhr.status,$($this.listFormClassName,$this.currentTarget));
+							$($this.currentTarget).triggerHandler("myERROR",$.My.Messages.ERR_RESPONSE + xhr.status);
+						}
+					};
+				// 创建loading
+				$.My.showLoading($.My.Messages.MSG_OPERATE);
+				// 异步查询请求
+				$(this.listFormClassName,
+					this.currentTarget).ajaxSubmit(options);
+			}
+		},
+		//可配置项
+		config : {
+			listFormClassName:'.my_list_form',
+			listResultIdTarget:'',
+			handleResult : $.My.Constans.HANDLE_RESULT_UL
+		}
+
+	});
+})(jQuery)

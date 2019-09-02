@@ -143,7 +143,7 @@ public class WeeklyDailyController extends AbstractController {
 			Model model) throws IOException, MyManagerException {
 		Daily daily = dailyManager.createDaily(dailyModel, request);
 		addSuccess(response, "创建日报成功");
-		NoteModel note = new NoteModel(true, daily.getId());
+		NoteModel note = new NoteModel(true, "创建日报成功", daily.getId());
 		HttpResponseHelper.responseJson(note.toJson(), response);
 	}
 	
@@ -165,7 +165,7 @@ public class WeeklyDailyController extends AbstractController {
 			Model model) throws IOException, MyManagerException {
 		Daily daily = dailyManager.modifyDaily(dailyModel, request);
 		addSuccess(response, "修改日报成功");
-		NoteModel note = new NoteModel(true, daily.getId());
+		NoteModel note = new NoteModel(true, "修改日报成功", daily.getId());
 		HttpResponseHelper.responseJson(note.toJson(), response);
 	}
 	

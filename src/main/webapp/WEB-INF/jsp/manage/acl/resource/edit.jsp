@@ -15,7 +15,7 @@ $(document).ready(function() {
 		},
 		success: function(responseText, status, xhr){
 			if(xhr.getResponseHeader($.My.Constans.RESPONSE_HEADER_ERROR)){
-				$.showWarnMsg(responseText.msg);
+				$.showWarnMsg(responseText.resultObj);
 			}else if(xhr.getResponseHeader($.My.Constans.RESPONSE_HEADER_NOTE) && '${!isRootMenu}'){
 				$._handleTableData(responseText, "update");
 				$('#jstree-default').jstree(true).refresh(); //刷新树

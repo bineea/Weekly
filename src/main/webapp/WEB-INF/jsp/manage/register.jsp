@@ -16,7 +16,7 @@
                 type: "post", //提交方式
                 success: function(responseText, status, xhr){
                     if(xhr.getResponseHeader($.Constans.RESPONSE_HEADER_ERROR)) {
-                        $.showWarnMsg(responseText.msg);
+                        $.showWarnMsg(responseText.resultObj);
                     } else if(xhr.getResponseHeader($.Constans.RESPONSE_HEADER_JUMP)) {
                         $.showMsg(true,  "注册成功，跳转登录");
                         window.location = new Base64().decode(xhr.getResponseHeader($.Constans.RESPONSE_HEADER_JUMP));
@@ -49,7 +49,7 @@
                     },
                     success: function (data, textStatus, jqXHR) {
                         if(jqXHR.getResponseHeader($.Constans.RESPONSE_HEADER_ERROR)) {
-                            $.showWarnMsg(data.msg);
+                            $.showWarnMsg(data.resultObj);
                         } else if(jqXHR.getResponseHeader($.Constans.RESPONSE_HEADER_NOTE)) {
                             $.showMsg(true,  new Base64().decode(jqXHR.getResponseHeader($.Constans.RESPONSE_HEADER_NOTE)));
                         } else {

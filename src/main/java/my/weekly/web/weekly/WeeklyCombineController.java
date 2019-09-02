@@ -71,7 +71,7 @@ public class WeeklyCombineController extends AbstractController {
             throws MyManagerException, IOException {
         MailAttachment mailAttachment = dailyManager.combine(weeklyModel, request);
         addSuccess(response, "汇总日报成功");
-        NoteModel note = new NoteModel(true, mailAttachment.getId());
+        NoteModel note = new NoteModel(true, "汇总日报成功", mailAttachment.getId());
         HttpResponseHelper.responseJson(note.toJson(), response);
     }
 
@@ -92,7 +92,7 @@ public class WeeklyCombineController extends AbstractController {
         if(result.getMailAttachmentList().size() > 1)
             throw new MyManagerException("尚不支持返回多个附件信息");
         addSuccess(response, "成功发送邮件至"+ StringUtils.join(info.getRecipients().toArray(), ","));
-        NoteModel note = new NoteModel(true, result.getMailAttachmentList().stream().findFirst().get().getId());
+        NoteModel note = new NoteModel(true, "成功发送邮件", result.getMailAttachmentList().stream().findFirst().get().getId());
         HttpResponseHelper.responseJson(note.toJson(), response);
     }
 

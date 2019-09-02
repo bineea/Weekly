@@ -43,7 +43,7 @@
 					},
 					success:function(data, textStatus, jqXHR) {
 						if(jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_ERROR)) {
-							$.My.showMsg(false,data.msg);
+							$.My.showMsg(false,data.resultObj);
 						} else {
 							window.location.href = '${rootUrl}app/weekly/daily/demand?projectId='+val;
 						}

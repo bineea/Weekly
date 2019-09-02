@@ -108,12 +108,12 @@
 			},
 			success:function(data, textStatus, jqXHR) {
 				if(jqXHR.getResponseHeader($.My.Constans.RESPONSE_HEADER_ERROR)) {
-					$.My.showMsg(false,data.msg);
+					$.My.showMsg(false,data.resultObj);
 				} else {
 					if(toSend) {
-						window.location.href = '${rootUrl}app/weekly/daily/sendEmail?mailAttachmentId='+data.msg;
+						window.location.href = '${rootUrl}app/weekly/daily/sendEmail?mailAttachmentId='+data.resultObj;
 					} else {
-						window.location.href = '${rootUrl}app/weekly/daily/mailAttachment/result?mailAttachmentId='+data.msg;
+						window.location.href = '${rootUrl}app/weekly/daily/mailAttachment/result?mailAttachmentId='+data.resultObj;
 					}
 				}
 			},
