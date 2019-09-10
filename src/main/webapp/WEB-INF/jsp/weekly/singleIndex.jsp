@@ -6,8 +6,8 @@
     <!-- begin post-left-info -->
     <div class="post-left-info">
         <div class="post-date">
-            <span class="day"><javatime:format value="${data.createTime}" pattern="dd"  /></span>
-            <span class="month"><javatime:format value="${data.createTime}" pattern="yyyy.MM"  /></span>
+            <span class="day"><javatime:format value="${data.operateDate}" pattern="dd"  /></span>
+            <span class="month"><javatime:format value="${data.operateDate}" pattern="yyyy.MM"  /></span>
         </div>
     </div>
     <!-- end post-left-info -->

@@ -68,7 +68,7 @@ public class WeeklyDailyPageSpe extends AbstractPageSpecification<Daily> {
 			if(endOpDate != null)
 				predicateList.add(criteriaBuilder.lessThanOrEqualTo(root.get("operateDate").as(LocalDate.class), endOpDate));
 			query.where(predicateList.stream().toArray(Predicate[]::new));
-			query.orderBy(criteriaBuilder.desc(root.get("createTime").as(LocalDateTime.class)), criteriaBuilder.desc(root.get("id").as(String.class)));
+			query.orderBy(criteriaBuilder.desc(root.get("operateDate").as(LocalDate.class)), criteriaBuilder.desc(root.get("id").as(String.class)));
 			return query.getRestriction();
 		};
 		return spe;
