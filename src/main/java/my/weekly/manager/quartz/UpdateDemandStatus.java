@@ -28,7 +28,7 @@ public class UpdateDemandStatus extends AbstractManager implements Job {
         WeeklyDemandPageSpe spe = new WeeklyDemandPageSpe();
         spe.setPageNo(0);
         spe.setPageSize(1000);
-        spe.setEndUpTime(LocalDateTime.now());
+        spe.setEndUpTime(LocalDateTime.now().plusMinutes(-10));
         Page<Demand> page = demandManager.pageQuery(spe);
         do {
             for(Demand demand : page.getContent()) {

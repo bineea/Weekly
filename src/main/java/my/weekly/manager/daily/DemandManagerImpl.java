@@ -93,24 +93,11 @@ public class DemandManagerImpl extends AbstractManager implements DemandManager 
 	public void updateStatus(Demand demand) {
 		if(demand.getDemandType().isHandleDone()) {
 			List<Daily> dlist = dailyRepo.findByDemandDesc(demand.getId());
-			List<User> ulist = dlist.stream().map(d -> d.getUser()).distinct().collect(Collectors.toList());
-			boolean done = true;
-			boolean doing = false;
-			for(User u : ulist) {
-				List<Daily> dailyList = dailyRepo.findByDemandAndUserDesc(demand.getId(), u.getId());
-				if(dailyList.stream().anyMatch(d -> d.getHandleStatus() != HandleStatus.DONE)) {
-					done = false;
-					break;
-				} 
-			}
-			if(dlist.stream().anyMatch(d -> d.getHandleStatus() == HandleStatus.DOING)) {
-				doing = true;
-			} 
-			if(done) {
+			if(dlist.stream().allMatch(d -> d.getHandleStatus() == HandleStatus.DONE)) {
 				demand.setHandleStatus(HandleStatus.DONE);
 				demand.setUpdateTime(LocalDateTime.now());
 				demandRepo.save(demand);
-			} else if(doing) {
+			} else if(dlist.stream().anyMatch(d -> d.getHandleStatus() == HandleStatus.DOING)) {
 				demand.setHandleStatus(HandleStatus.DOING);
 				demand.setUpdateTime(LocalDateTime.now());
 				demandRepo.save(demand);
