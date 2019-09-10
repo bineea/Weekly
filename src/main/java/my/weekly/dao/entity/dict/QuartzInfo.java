@@ -16,7 +16,7 @@ public enum QuartzInfo {
     HELLOWORLD(HelloJob.class, "hello_job","hello_trigger", MyCronInfo.PER_FIVE_SEC) {},
     FUCKWORLD(FuckJob.class, "fuck_job","fuck_trigger", MyCronInfo.PER_FIVE_SEC) {},
     CLEARINVALIDCODE(ClearInvalidCode.class, "clear_invalid_code_job", "clear_invalid_code_trigger", MyCronInfo.PER_TEN_MINUTE) {},
-    UPDATEDEMANDSTATUS(UpdateDemandStatus.class, "update_demand_status_job","update_demand_status_trigger", MyCronInfo.PER_ONE_HOUR) {},
+    UPDATEDEMANDSTATUS(UpdateDemandStatus.class, "update_demand_status_job","update_demand_status_trigger", MyCronInfo.PER_THREE_HOUR) {},
     ;
 
     @Getter
